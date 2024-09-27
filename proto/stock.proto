@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package stock;
+
+// Mensajes de Usuario
+message Usuario {
+    string nombre_usuario = 1;
+    string contrasena = 2;
+    string nombre = 3;
+    string apellido = 4;
+    string tienda = 5; // Código de la tienda
+    bool habilitado = 6;
+}
+
+message UsuarioResponse {
+    string mensaje = 1;
+    string token = 2; // Posiblemente un token JWT para autenticación
+}
+
+// Mensajes de Tienda
+message Tienda {
+    string codigo = 1; // Código único alfanumérico
+    string direccion = 2;
+    string ciudad = 3;
+    string provincia = 4;
+    bool habilitada = 5; // Habilitada o deshabilitada
+}
+
+message TiendaResponse {
+    string mensaje = 1;
+}
+
+// Mensajes de Producto
+message Producto {
+    string nombre = 1;
+    string codigo = 2; // Código único de 10 caracteres
+    string talle = 3;
+    string foto = 4; // URL o ruta de la imagen
+    string color = 5;
+    int32 stock = 6; // Stock inicial 0
+}
+
+message ProductoResponse {
+    string mensaje = 1;
+    string codigo = 2; // Para devolver el código del producto creado
+}
+
+// Mensajes de Búsqueda
+message BuscarUsuariosRequest {
+    string nombre_usuario = 1;
+    string tienda = 2;
+}
+
+message BuscarTiendasRequest {
+    string codigo = 1;
+    bool estado = 2; // true para habilitada, false para deshabilitada
+}
+
+message BuscarProductosRequest {
+    string nombre = 1;
+    string codigo = 2;
+    string talle = 3;
+    string color = 4;
+}
+
+message BuscarUsuariosResponse {
+    repeated Usuario usuarios = 1; // Lista de usuarios encontrados
+}
+
+message BuscarTiendasResponse {
+    repeated Tienda tiendas = 1; // Lista de tiendas encontradas
+}
+
+message BuscarProductosResponse {
+    repeated Producto productos = 1; // Lista de productos encontrados
+}
+
+// Servicios
+service StockearteService {
+    rpc CrearUsuario(Usuario) returns (UsuarioResponse);
+    rpc AutenticarUsuario(Usuario) returns (UsuarioResponse);
+    rpc CrearTienda(Tienda) returns (TiendaResponse);
+    rpc ModificarTienda(Tienda) returns (TiendaResponse);
+    rpc AlternarHabilitadaTienda(Tienda) returns (TiendaResponse);
+    rpc CrearProducto(Producto) returns (ProductoResponse);
+    rpc ModificarProducto(Producto) returns (ProductoResponse);
+    rpc EliminarProducto(Producto) returns (ProductoResponse); // Considerar solo recibir el código
+    rpc BuscarUsuarios(BuscarUsuariosRequest) returns (BuscarUsuariosResponse);
+    rpc BuscarTiendas(BuscarTiendasRequest) returns (BuscarTiendasResponse);
+    rpc BuscarProductos(BuscarProductosRequest) returns (BuscarProductosResponse);
+}
