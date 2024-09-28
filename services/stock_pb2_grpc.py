@@ -25,8 +25,8 @@ if _version_not_supported:
     )
 
 
-class StockearteServiceStub(object):
-    """Servicios
+class CadenaServiceStub(object):
+    """Servicios de gRPC
     """
 
     def __init__(self, channel):
@@ -35,206 +35,896 @@ class StockearteServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CrearUsuario = channel.unary_unary(
-                '/stock.StockearteService/CrearUsuario',
-                request_serializer=stock__pb2.Usuario.SerializeToString,
-                response_deserializer=stock__pb2.UsuarioResponse.FromString,
+        self.GetCadena = channel.unary_unary(
+                '/cadena.CadenaService/GetCadena',
+                request_serializer=stock__pb2.CadenaId.SerializeToString,
+                response_deserializer=stock__pb2.Cadena.FromString,
                 _registered_method=True)
-        self.AutenticarUsuario = channel.unary_unary(
-                '/stock.StockearteService/AutenticarUsuario',
-                request_serializer=stock__pb2.Usuario.SerializeToString,
-                response_deserializer=stock__pb2.UsuarioResponse.FromString,
+        self.CreateCadena = channel.unary_unary(
+                '/cadena.CadenaService/CreateCadena',
+                request_serializer=stock__pb2.Cadena.SerializeToString,
+                response_deserializer=stock__pb2.Cadena.FromString,
                 _registered_method=True)
-        self.CrearTienda = channel.unary_unary(
-                '/stock.StockearteService/CrearTienda',
-                request_serializer=stock__pb2.Tienda.SerializeToString,
-                response_deserializer=stock__pb2.TiendaResponse.FromString,
+        self.DeleteCadena = channel.unary_unary(
+                '/cadena.CadenaService/DeleteCadena',
+                request_serializer=stock__pb2.CadenaId.SerializeToString,
+                response_deserializer=stock__pb2.Empty.FromString,
                 _registered_method=True)
-        self.ModificarTienda = channel.unary_unary(
-                '/stock.StockearteService/ModificarTienda',
-                request_serializer=stock__pb2.Tienda.SerializeToString,
-                response_deserializer=stock__pb2.TiendaResponse.FromString,
-                _registered_method=True)
-        self.AlternarHabilitadaTienda = channel.unary_unary(
-                '/stock.StockearteService/AlternarHabilitadaTienda',
-                request_serializer=stock__pb2.Tienda.SerializeToString,
-                response_deserializer=stock__pb2.TiendaResponse.FromString,
-                _registered_method=True)
-        self.CrearProducto = channel.unary_unary(
-                '/stock.StockearteService/CrearProducto',
-                request_serializer=stock__pb2.Producto.SerializeToString,
-                response_deserializer=stock__pb2.ProductoResponse.FromString,
-                _registered_method=True)
-        self.ModificarProducto = channel.unary_unary(
-                '/stock.StockearteService/ModificarProducto',
-                request_serializer=stock__pb2.Producto.SerializeToString,
-                response_deserializer=stock__pb2.ProductoResponse.FromString,
-                _registered_method=True)
-        self.EliminarProducto = channel.unary_unary(
-                '/stock.StockearteService/EliminarProducto',
-                request_serializer=stock__pb2.Producto.SerializeToString,
-                response_deserializer=stock__pb2.ProductoResponse.FromString,
-                _registered_method=True)
-        self.BuscarUsuarios = channel.unary_unary(
-                '/stock.StockearteService/BuscarUsuarios',
-                request_serializer=stock__pb2.BuscarUsuariosRequest.SerializeToString,
-                response_deserializer=stock__pb2.BuscarUsuariosResponse.FromString,
-                _registered_method=True)
-        self.BuscarTiendas = channel.unary_unary(
-                '/stock.StockearteService/BuscarTiendas',
-                request_serializer=stock__pb2.BuscarTiendasRequest.SerializeToString,
-                response_deserializer=stock__pb2.BuscarTiendasResponse.FromString,
-                _registered_method=True)
-        self.BuscarProductos = channel.unary_unary(
-                '/stock.StockearteService/BuscarProductos',
-                request_serializer=stock__pb2.BuscarProductosRequest.SerializeToString,
-                response_deserializer=stock__pb2.BuscarProductosResponse.FromString,
+        self.ListCadenas = channel.unary_unary(
+                '/cadena.CadenaService/ListCadenas',
+                request_serializer=stock__pb2.Empty.SerializeToString,
+                response_deserializer=stock__pb2.CadenasList.FromString,
                 _registered_method=True)
 
 
-class StockearteServiceServicer(object):
-    """Servicios
+class CadenaServiceServicer(object):
+    """Servicios de gRPC
     """
 
-    def CrearUsuario(self, request, context):
+    def GetCadena(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def AutenticarUsuario(self, request, context):
+    def CreateCadena(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CrearTienda(self, request, context):
+    def DeleteCadena(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ModificarTienda(self, request, context):
+    def ListCadenas(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def AlternarHabilitadaTienda(self, request, context):
+
+def add_CadenaServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetCadena': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetCadena,
+                    request_deserializer=stock__pb2.CadenaId.FromString,
+                    response_serializer=stock__pb2.Cadena.SerializeToString,
+            ),
+            'CreateCadena': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateCadena,
+                    request_deserializer=stock__pb2.Cadena.FromString,
+                    response_serializer=stock__pb2.Cadena.SerializeToString,
+            ),
+            'DeleteCadena': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteCadena,
+                    request_deserializer=stock__pb2.CadenaId.FromString,
+                    response_serializer=stock__pb2.Empty.SerializeToString,
+            ),
+            'ListCadenas': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListCadenas,
+                    request_deserializer=stock__pb2.Empty.FromString,
+                    response_serializer=stock__pb2.CadenasList.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'cadena.CadenaService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('cadena.CadenaService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class CadenaService(object):
+    """Servicios de gRPC
+    """
+
+    @staticmethod
+    def GetCadena(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.CadenaService/GetCadena',
+            stock__pb2.CadenaId.SerializeToString,
+            stock__pb2.Cadena.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateCadena(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.CadenaService/CreateCadena',
+            stock__pb2.Cadena.SerializeToString,
+            stock__pb2.Cadena.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteCadena(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.CadenaService/DeleteCadena',
+            stock__pb2.CadenaId.SerializeToString,
+            stock__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListCadenas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.CadenaService/ListCadenas',
+            stock__pb2.Empty.SerializeToString,
+            stock__pb2.CadenasList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class ProductoServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetProducto = channel.unary_unary(
+                '/cadena.ProductoService/GetProducto',
+                request_serializer=stock__pb2.ProductoId.SerializeToString,
+                response_deserializer=stock__pb2.Producto.FromString,
+                _registered_method=True)
+        self.CreateProducto = channel.unary_unary(
+                '/cadena.ProductoService/CreateProducto',
+                request_serializer=stock__pb2.Producto.SerializeToString,
+                response_deserializer=stock__pb2.Producto.FromString,
+                _registered_method=True)
+        self.UpdateProducto = channel.unary_unary(
+                '/cadena.ProductoService/UpdateProducto',
+                request_serializer=stock__pb2.Producto.SerializeToString,
+                response_deserializer=stock__pb2.Producto.FromString,
+                _registered_method=True)
+        self.ListProductos = channel.unary_unary(
+                '/cadena.ProductoService/ListProductos',
+                request_serializer=stock__pb2.Empty.SerializeToString,
+                response_deserializer=stock__pb2.ProductosList.FromString,
+                _registered_method=True)
+
+
+class ProductoServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GetProducto(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CrearProducto(self, request, context):
+    def CreateProducto(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ModificarProducto(self, request, context):
+    def UpdateProducto(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def EliminarProducto(self, request, context):
-        """Considerar solo recibir el código
+    def ListProductos(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_ProductoServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetProducto': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetProducto,
+                    request_deserializer=stock__pb2.ProductoId.FromString,
+                    response_serializer=stock__pb2.Producto.SerializeToString,
+            ),
+            'CreateProducto': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateProducto,
+                    request_deserializer=stock__pb2.Producto.FromString,
+                    response_serializer=stock__pb2.Producto.SerializeToString,
+            ),
+            'UpdateProducto': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateProducto,
+                    request_deserializer=stock__pb2.Producto.FromString,
+                    response_serializer=stock__pb2.Producto.SerializeToString,
+            ),
+            'ListProductos': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListProductos,
+                    request_deserializer=stock__pb2.Empty.FromString,
+                    response_serializer=stock__pb2.ProductosList.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'cadena.ProductoService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('cadena.ProductoService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class ProductoService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetProducto(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.ProductoService/GetProducto',
+            stock__pb2.ProductoId.SerializeToString,
+            stock__pb2.Producto.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateProducto(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.ProductoService/CreateProducto',
+            stock__pb2.Producto.SerializeToString,
+            stock__pb2.Producto.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateProducto(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.ProductoService/UpdateProducto',
+            stock__pb2.Producto.SerializeToString,
+            stock__pb2.Producto.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListProductos(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.ProductoService/ListProductos',
+            stock__pb2.Empty.SerializeToString,
+            stock__pb2.ProductosList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class TiendaServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetTienda = channel.unary_unary(
+                '/cadena.TiendaService/GetTienda',
+                request_serializer=stock__pb2.TiendaId.SerializeToString,
+                response_deserializer=stock__pb2.Tienda.FromString,
+                _registered_method=True)
+        self.CreateTienda = channel.unary_unary(
+                '/cadena.TiendaService/CreateTienda',
+                request_serializer=stock__pb2.Tienda.SerializeToString,
+                response_deserializer=stock__pb2.Tienda.FromString,
+                _registered_method=True)
+        self.DeleteTienda = channel.unary_unary(
+                '/cadena.TiendaService/DeleteTienda',
+                request_serializer=stock__pb2.TiendaId.SerializeToString,
+                response_deserializer=stock__pb2.Empty.FromString,
+                _registered_method=True)
+        self.ListTiendas = channel.unary_unary(
+                '/cadena.TiendaService/ListTiendas',
+                request_serializer=stock__pb2.Empty.SerializeToString,
+                response_deserializer=stock__pb2.TiendasList.FromString,
+                _registered_method=True)
+
+
+class TiendaServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GetTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListTiendas(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_TiendaServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTienda,
+                    request_deserializer=stock__pb2.TiendaId.FromString,
+                    response_serializer=stock__pb2.Tienda.SerializeToString,
+            ),
+            'CreateTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateTienda,
+                    request_deserializer=stock__pb2.Tienda.FromString,
+                    response_serializer=stock__pb2.Tienda.SerializeToString,
+            ),
+            'DeleteTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTienda,
+                    request_deserializer=stock__pb2.TiendaId.FromString,
+                    response_serializer=stock__pb2.Empty.SerializeToString,
+            ),
+            'ListTiendas': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTiendas,
+                    request_deserializer=stock__pb2.Empty.FromString,
+                    response_serializer=stock__pb2.TiendasList.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'cadena.TiendaService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('cadena.TiendaService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class TiendaService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.TiendaService/GetTienda',
+            stock__pb2.TiendaId.SerializeToString,
+            stock__pb2.Tienda.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.TiendaService/CreateTienda',
+            stock__pb2.Tienda.SerializeToString,
+            stock__pb2.Tienda.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.TiendaService/DeleteTienda',
+            stock__pb2.TiendaId.SerializeToString,
+            stock__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListTiendas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.TiendaService/ListTiendas',
+            stock__pb2.Empty.SerializeToString,
+            stock__pb2.TiendasList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class UsuarioServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetUsuario = channel.unary_unary(
+                '/cadena.UsuarioService/GetUsuario',
+                request_serializer=stock__pb2.UsuarioId.SerializeToString,
+                response_deserializer=stock__pb2.Usuario.FromString,
+                _registered_method=True)
+        self.CreateUsuario = channel.unary_unary(
+                '/cadena.UsuarioService/CreateUsuario',
+                request_serializer=stock__pb2.Usuario.SerializeToString,
+                response_deserializer=stock__pb2.Usuario.FromString,
+                _registered_method=True)
+        self.UpdateUsuario = channel.unary_unary(
+                '/cadena.UsuarioService/UpdateUsuario',
+                request_serializer=stock__pb2.Usuario.SerializeToString,
+                response_deserializer=stock__pb2.Usuario.FromString,
+                _registered_method=True)
+        self.DeleteUsuario = channel.unary_unary(
+                '/cadena.UsuarioService/DeleteUsuario',
+                request_serializer=stock__pb2.UsuarioId.SerializeToString,
+                response_deserializer=stock__pb2.Empty.FromString,
+                _registered_method=True)
+        self.ListUsuarios = channel.unary_unary(
+                '/cadena.UsuarioService/ListUsuarios',
+                request_serializer=stock__pb2.Empty.SerializeToString,
+                response_deserializer=stock__pb2.UsuariosList.FromString,
+                _registered_method=True)
+
+
+class UsuarioServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GetUsuario(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateUsuario(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateUsuario(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteUsuario(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListUsuarios(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_UsuarioServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUsuario,
+                    request_deserializer=stock__pb2.UsuarioId.FromString,
+                    response_serializer=stock__pb2.Usuario.SerializeToString,
+            ),
+            'CreateUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateUsuario,
+                    request_deserializer=stock__pb2.Usuario.FromString,
+                    response_serializer=stock__pb2.Usuario.SerializeToString,
+            ),
+            'UpdateUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateUsuario,
+                    request_deserializer=stock__pb2.Usuario.FromString,
+                    response_serializer=stock__pb2.Usuario.SerializeToString,
+            ),
+            'DeleteUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteUsuario,
+                    request_deserializer=stock__pb2.UsuarioId.FromString,
+                    response_serializer=stock__pb2.Empty.SerializeToString,
+            ),
+            'ListUsuarios': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListUsuarios,
+                    request_deserializer=stock__pb2.Empty.FromString,
+                    response_serializer=stock__pb2.UsuariosList.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'cadena.UsuarioService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('cadena.UsuarioService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class UsuarioService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetUsuario(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.UsuarioService/GetUsuario',
+            stock__pb2.UsuarioId.SerializeToString,
+            stock__pb2.Usuario.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateUsuario(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.UsuarioService/CreateUsuario',
+            stock__pb2.Usuario.SerializeToString,
+            stock__pb2.Usuario.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateUsuario(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.UsuarioService/UpdateUsuario',
+            stock__pb2.Usuario.SerializeToString,
+            stock__pb2.Usuario.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteUsuario(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.UsuarioService/DeleteUsuario',
+            stock__pb2.UsuarioId.SerializeToString,
+            stock__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListUsuarios(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cadena.UsuarioService/ListUsuarios',
+            stock__pb2.Empty.SerializeToString,
+            stock__pb2.UsuariosList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class StockServiceStub(object):
+    """Métodos para modificar stock
+    """
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.UpdateStock = channel.unary_unary(
+                '/cadena.StockService/UpdateStock',
+                request_serializer=stock__pb2.Producto.SerializeToString,
+                response_deserializer=stock__pb2.Producto.FromString,
+                _registered_method=True)
+
+
+class StockServiceServicer(object):
+    """Métodos para modificar stock
+    """
+
+    def UpdateStock(self, request, context):
+        """Para modificar stock
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BuscarUsuarios(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
-    def BuscarTiendas(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def BuscarProductos(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_StockearteServiceServicer_to_server(servicer, server):
+def add_StockServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CrearUsuario': grpc.unary_unary_rpc_method_handler(
-                    servicer.CrearUsuario,
-                    request_deserializer=stock__pb2.Usuario.FromString,
-                    response_serializer=stock__pb2.UsuarioResponse.SerializeToString,
-            ),
-            'AutenticarUsuario': grpc.unary_unary_rpc_method_handler(
-                    servicer.AutenticarUsuario,
-                    request_deserializer=stock__pb2.Usuario.FromString,
-                    response_serializer=stock__pb2.UsuarioResponse.SerializeToString,
-            ),
-            'CrearTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.CrearTienda,
-                    request_deserializer=stock__pb2.Tienda.FromString,
-                    response_serializer=stock__pb2.TiendaResponse.SerializeToString,
-            ),
-            'ModificarTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.ModificarTienda,
-                    request_deserializer=stock__pb2.Tienda.FromString,
-                    response_serializer=stock__pb2.TiendaResponse.SerializeToString,
-            ),
-            'AlternarHabilitadaTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.AlternarHabilitadaTienda,
-                    request_deserializer=stock__pb2.Tienda.FromString,
-                    response_serializer=stock__pb2.TiendaResponse.SerializeToString,
-            ),
-            'CrearProducto': grpc.unary_unary_rpc_method_handler(
-                    servicer.CrearProducto,
+            'UpdateStock': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateStock,
                     request_deserializer=stock__pb2.Producto.FromString,
-                    response_serializer=stock__pb2.ProductoResponse.SerializeToString,
-            ),
-            'ModificarProducto': grpc.unary_unary_rpc_method_handler(
-                    servicer.ModificarProducto,
-                    request_deserializer=stock__pb2.Producto.FromString,
-                    response_serializer=stock__pb2.ProductoResponse.SerializeToString,
-            ),
-            'EliminarProducto': grpc.unary_unary_rpc_method_handler(
-                    servicer.EliminarProducto,
-                    request_deserializer=stock__pb2.Producto.FromString,
-                    response_serializer=stock__pb2.ProductoResponse.SerializeToString,
-            ),
-            'BuscarUsuarios': grpc.unary_unary_rpc_method_handler(
-                    servicer.BuscarUsuarios,
-                    request_deserializer=stock__pb2.BuscarUsuariosRequest.FromString,
-                    response_serializer=stock__pb2.BuscarUsuariosResponse.SerializeToString,
-            ),
-            'BuscarTiendas': grpc.unary_unary_rpc_method_handler(
-                    servicer.BuscarTiendas,
-                    request_deserializer=stock__pb2.BuscarTiendasRequest.FromString,
-                    response_serializer=stock__pb2.BuscarTiendasResponse.SerializeToString,
-            ),
-            'BuscarProductos': grpc.unary_unary_rpc_method_handler(
-                    servicer.BuscarProductos,
-                    request_deserializer=stock__pb2.BuscarProductosRequest.FromString,
-                    response_serializer=stock__pb2.BuscarProductosResponse.SerializeToString,
+                    response_serializer=stock__pb2.Producto.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'stock.StockearteService', rpc_method_handlers)
+            'cadena.StockService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('stock.StockearteService', rpc_method_handlers)
+    server.add_registered_method_handlers('cadena.StockService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class StockearteService(object):
-    """Servicios
+class StockService(object):
+    """Métodos para modificar stock
     """
 
     @staticmethod
-    def CrearUsuario(request,
+    def UpdateStock(request,
             target,
             options=(),
             channel_credentials=None,
@@ -247,279 +937,9 @@ class StockearteService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/stock.StockearteService/CrearUsuario',
-            stock__pb2.Usuario.SerializeToString,
-            stock__pb2.UsuarioResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def AutenticarUsuario(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/AutenticarUsuario',
-            stock__pb2.Usuario.SerializeToString,
-            stock__pb2.UsuarioResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def CrearTienda(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/CrearTienda',
-            stock__pb2.Tienda.SerializeToString,
-            stock__pb2.TiendaResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ModificarTienda(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/ModificarTienda',
-            stock__pb2.Tienda.SerializeToString,
-            stock__pb2.TiendaResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def AlternarHabilitadaTienda(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/AlternarHabilitadaTienda',
-            stock__pb2.Tienda.SerializeToString,
-            stock__pb2.TiendaResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def CrearProducto(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/CrearProducto',
+            '/cadena.StockService/UpdateStock',
             stock__pb2.Producto.SerializeToString,
-            stock__pb2.ProductoResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ModificarProducto(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/ModificarProducto',
-            stock__pb2.Producto.SerializeToString,
-            stock__pb2.ProductoResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def EliminarProducto(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/EliminarProducto',
-            stock__pb2.Producto.SerializeToString,
-            stock__pb2.ProductoResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def BuscarUsuarios(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/BuscarUsuarios',
-            stock__pb2.BuscarUsuariosRequest.SerializeToString,
-            stock__pb2.BuscarUsuariosResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def BuscarTiendas(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/BuscarTiendas',
-            stock__pb2.BuscarTiendasRequest.SerializeToString,
-            stock__pb2.BuscarTiendasResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def BuscarProductos(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/stock.StockearteService/BuscarProductos',
-            stock__pb2.BuscarProductosRequest.SerializeToString,
-            stock__pb2.BuscarProductosResponse.FromString,
+            stock__pb2.Producto.FromString,
             options,
             channel_credentials,
             insecure,

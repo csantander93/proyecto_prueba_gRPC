@@ -24,37 +24,51 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bstock.proto\x12\x05stock\"{\n\x07Usuario\x12\x16\n\x0enombre_usuario\x18\x01 \x01(\t\x12\x12\n\ncontrasena\x18\x02 \x01(\t\x12\x0e\n\x06nombre\x18\x03 \x01(\t\x12\x10\n\x08\x61pellido\x18\x04 \x01(\t\x12\x0e\n\x06tienda\x18\x05 \x01(\t\x12\x12\n\nhabilitado\x18\x06 \x01(\x08\"1\n\x0fUsuarioResponse\x12\x0f\n\x07mensaje\x18\x01 \x01(\t\x12\r\n\x05token\x18\x02 \x01(\t\"b\n\x06Tienda\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\x12\x11\n\tdireccion\x18\x02 \x01(\t\x12\x0e\n\x06\x63iudad\x18\x03 \x01(\t\x12\x11\n\tprovincia\x18\x04 \x01(\t\x12\x12\n\nhabilitada\x18\x05 \x01(\x08\"!\n\x0eTiendaResponse\x12\x0f\n\x07mensaje\x18\x01 \x01(\t\"e\n\x08Producto\x12\x0e\n\x06nombre\x18\x01 \x01(\t\x12\x0e\n\x06\x63odigo\x18\x02 \x01(\t\x12\r\n\x05talle\x18\x03 \x01(\t\x12\x0c\n\x04\x66oto\x18\x04 \x01(\t\x12\r\n\x05\x63olor\x18\x05 \x01(\t\x12\r\n\x05stock\x18\x06 \x01(\x05\"3\n\x10ProductoResponse\x12\x0f\n\x07mensaje\x18\x01 \x01(\t\x12\x0e\n\x06\x63odigo\x18\x02 \x01(\t\"?\n\x15\x42uscarUsuariosRequest\x12\x16\n\x0enombre_usuario\x18\x01 \x01(\t\x12\x0e\n\x06tienda\x18\x02 \x01(\t\"6\n\x14\x42uscarTiendasRequest\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\x12\x0e\n\x06\x65stado\x18\x02 \x01(\x08\"V\n\x16\x42uscarProductosRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\x12\x0e\n\x06\x63odigo\x18\x02 \x01(\t\x12\r\n\x05talle\x18\x03 \x01(\t\x12\r\n\x05\x63olor\x18\x04 \x01(\t\":\n\x16\x42uscarUsuariosResponse\x12 \n\x08usuarios\x18\x01 \x03(\x0b\x32\x0e.stock.Usuario\"7\n\x15\x42uscarTiendasResponse\x12\x1e\n\x07tiendas\x18\x01 \x03(\x0b\x32\r.stock.Tienda\"=\n\x17\x42uscarProductosResponse\x12\"\n\tproductos\x18\x01 \x03(\x0b\x32\x0f.stock.Producto2\xdd\x05\n\x11StockearteService\x12\x36\n\x0c\x43rearUsuario\x12\x0e.stock.Usuario\x1a\x16.stock.UsuarioResponse\x12;\n\x11\x41utenticarUsuario\x12\x0e.stock.Usuario\x1a\x16.stock.UsuarioResponse\x12\x33\n\x0b\x43rearTienda\x12\r.stock.Tienda\x1a\x15.stock.TiendaResponse\x12\x37\n\x0fModificarTienda\x12\r.stock.Tienda\x1a\x15.stock.TiendaResponse\x12@\n\x18\x41lternarHabilitadaTienda\x12\r.stock.Tienda\x1a\x15.stock.TiendaResponse\x12\x39\n\rCrearProducto\x12\x0f.stock.Producto\x1a\x17.stock.ProductoResponse\x12=\n\x11ModificarProducto\x12\x0f.stock.Producto\x1a\x17.stock.ProductoResponse\x12<\n\x10\x45liminarProducto\x12\x0f.stock.Producto\x1a\x17.stock.ProductoResponse\x12M\n\x0e\x42uscarUsuarios\x12\x1c.stock.BuscarUsuariosRequest\x1a\x1d.stock.BuscarUsuariosResponse\x12J\n\rBuscarTiendas\x12\x1b.stock.BuscarTiendasRequest\x1a\x1c.stock.BuscarTiendasResponse\x12P\n\x0f\x42uscarProductos\x12\x1d.stock.BuscarProductosRequest\x1a\x1e.stock.BuscarProductosResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bstock.proto\x12\x06\x63\x61\x64\x65na\"+\n\x06\x43\x61\x64\x65na\x12\x11\n\tid_cadena\x18\x01 \x01(\x05\x12\x0e\n\x06nombre\x18\x02 \x01(\t\"\xc5\x01\n\x08Producto\x12\x13\n\x0bid_producto\x18\x01 \x01(\x05\x12\x0e\n\x06nombre\x18\x02 \x01(\t\x12\x0e\n\x06\x63odigo\x18\x03 \x01(\t\x12\r\n\x05talle\x18\x04 \x01(\t\x12\x0c\n\x04\x66oto\x18\x05 \x01(\t\x12\r\n\x05\x63olor\x18\x06 \x01(\t\x12*\n\x05stock\x18\x07 \x03(\x0b\x32\x1b.cadena.Producto.StockEntry\x1a,\n\nStockEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\"\xb5\x01\n\x06Tienda\x12\x11\n\tid_tienda\x18\x01 \x01(\x05\x12\x0e\n\x06\x63odigo\x18\x02 \x01(\t\x12\x0e\n\x06nombre\x18\x03 \x01(\t\x12\x11\n\tdireccion\x18\x04 \x01(\t\x12\x0e\n\x06\x63iudad\x18\x05 \x01(\t\x12\x11\n\tprovincia\x18\x06 \x01(\t\x12\x12\n\nhabilitada\x18\x07 \x01(\x08\x12\x14\n\x0c\x63\x61sa_central\x18\x08 \x01(\x08\x12\x18\n\x10\x63\x61\x64\x65na_id_cadena\x18\t \x01(\x05\"\x90\x01\n\x07Usuario\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x12\n\nhabilitado\x18\x04 \x01(\x08\x12\x17\n\x0ftienda_idtienda\x18\x05 \x01(\x05\x12\x0e\n\x06nombre\x18\x06 \x01(\t\x12\x10\n\x08\x61pellido\x18\x07 \x01(\t\"\x07\n\x05\x45mpty\"\x16\n\x08\x43\x61\x64\x65naId\x12\n\n\x02id\x18\x01 \x01(\x05\"\x18\n\nProductoId\x12\n\n\x02id\x18\x01 \x01(\x05\"\x16\n\x08TiendaId\x12\n\n\x02id\x18\x01 \x01(\x05\"\x17\n\tUsuarioId\x12\n\n\x02id\x18\x01 \x01(\x05\".\n\x0b\x43\x61\x64\x65nasList\x12\x1f\n\x07\x63\x61\x64\x65nas\x18\x01 \x03(\x0b\x32\x0e.cadena.Cadena\"4\n\rProductosList\x12#\n\tproductos\x18\x01 \x03(\x0b\x32\x10.cadena.Producto\".\n\x0bTiendasList\x12\x1f\n\x07tiendas\x18\x01 \x03(\x0b\x32\x0e.cadena.Tienda\"1\n\x0cUsuariosList\x12!\n\x08usuarios\x18\x01 \x03(\x0b\x32\x0f.cadena.Usuario2\xd2\x01\n\rCadenaService\x12-\n\tGetCadena\x12\x10.cadena.CadenaId\x1a\x0e.cadena.Cadena\x12.\n\x0c\x43reateCadena\x12\x0e.cadena.Cadena\x1a\x0e.cadena.Cadena\x12/\n\x0c\x44\x65leteCadena\x12\x10.cadena.CadenaId\x1a\r.cadena.Empty\x12\x31\n\x0bListCadenas\x12\r.cadena.Empty\x1a\x13.cadena.CadenasList2\xe9\x01\n\x0fProductoService\x12\x33\n\x0bGetProducto\x12\x12.cadena.ProductoId\x1a\x10.cadena.Producto\x12\x34\n\x0e\x43reateProducto\x12\x10.cadena.Producto\x1a\x10.cadena.Producto\x12\x34\n\x0eUpdateProducto\x12\x10.cadena.Producto\x1a\x10.cadena.Producto\x12\x35\n\rListProductos\x12\r.cadena.Empty\x1a\x15.cadena.ProductosList2\xd2\x01\n\rTiendaService\x12-\n\tGetTienda\x12\x10.cadena.TiendaId\x1a\x0e.cadena.Tienda\x12.\n\x0c\x43reateTienda\x12\x0e.cadena.Tienda\x1a\x0e.cadena.Tienda\x12/\n\x0c\x44\x65leteTienda\x12\x10.cadena.TiendaId\x1a\r.cadena.Empty\x12\x31\n\x0bListTiendas\x12\r.cadena.Empty\x1a\x13.cadena.TiendasList2\x90\x02\n\x0eUsuarioService\x12\x30\n\nGetUsuario\x12\x11.cadena.UsuarioId\x1a\x0f.cadena.Usuario\x12\x31\n\rCreateUsuario\x12\x0f.cadena.Usuario\x1a\x0f.cadena.Usuario\x12\x31\n\rUpdateUsuario\x12\x0f.cadena.Usuario\x1a\x0f.cadena.Usuario\x12\x31\n\rDeleteUsuario\x12\x11.cadena.UsuarioId\x1a\r.cadena.Empty\x12\x33\n\x0cListUsuarios\x12\r.cadena.Empty\x1a\x14.cadena.UsuariosList2A\n\x0cStockService\x12\x31\n\x0bUpdateStock\x12\x10.cadena.Producto\x1a\x10.cadena.Productob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'stock_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_USUARIO']._serialized_start=22
-  _globals['_USUARIO']._serialized_end=145
-  _globals['_USUARIORESPONSE']._serialized_start=147
-  _globals['_USUARIORESPONSE']._serialized_end=196
-  _globals['_TIENDA']._serialized_start=198
-  _globals['_TIENDA']._serialized_end=296
-  _globals['_TIENDARESPONSE']._serialized_start=298
-  _globals['_TIENDARESPONSE']._serialized_end=331
-  _globals['_PRODUCTO']._serialized_start=333
-  _globals['_PRODUCTO']._serialized_end=434
-  _globals['_PRODUCTORESPONSE']._serialized_start=436
-  _globals['_PRODUCTORESPONSE']._serialized_end=487
-  _globals['_BUSCARUSUARIOSREQUEST']._serialized_start=489
-  _globals['_BUSCARUSUARIOSREQUEST']._serialized_end=552
-  _globals['_BUSCARTIENDASREQUEST']._serialized_start=554
-  _globals['_BUSCARTIENDASREQUEST']._serialized_end=608
-  _globals['_BUSCARPRODUCTOSREQUEST']._serialized_start=610
-  _globals['_BUSCARPRODUCTOSREQUEST']._serialized_end=696
-  _globals['_BUSCARUSUARIOSRESPONSE']._serialized_start=698
-  _globals['_BUSCARUSUARIOSRESPONSE']._serialized_end=756
-  _globals['_BUSCARTIENDASRESPONSE']._serialized_start=758
-  _globals['_BUSCARTIENDASRESPONSE']._serialized_end=813
-  _globals['_BUSCARPRODUCTOSRESPONSE']._serialized_start=815
-  _globals['_BUSCARPRODUCTOSRESPONSE']._serialized_end=876
-  _globals['_STOCKEARTESERVICE']._serialized_start=879
-  _globals['_STOCKEARTESERVICE']._serialized_end=1612
+  _globals['_PRODUCTO_STOCKENTRY']._loaded_options = None
+  _globals['_PRODUCTO_STOCKENTRY']._serialized_options = b'8\001'
+  _globals['_CADENA']._serialized_start=23
+  _globals['_CADENA']._serialized_end=66
+  _globals['_PRODUCTO']._serialized_start=69
+  _globals['_PRODUCTO']._serialized_end=266
+  _globals['_PRODUCTO_STOCKENTRY']._serialized_start=222
+  _globals['_PRODUCTO_STOCKENTRY']._serialized_end=266
+  _globals['_TIENDA']._serialized_start=269
+  _globals['_TIENDA']._serialized_end=450
+  _globals['_USUARIO']._serialized_start=453
+  _globals['_USUARIO']._serialized_end=597
+  _globals['_EMPTY']._serialized_start=599
+  _globals['_EMPTY']._serialized_end=606
+  _globals['_CADENAID']._serialized_start=608
+  _globals['_CADENAID']._serialized_end=630
+  _globals['_PRODUCTOID']._serialized_start=632
+  _globals['_PRODUCTOID']._serialized_end=656
+  _globals['_TIENDAID']._serialized_start=658
+  _globals['_TIENDAID']._serialized_end=680
+  _globals['_USUARIOID']._serialized_start=682
+  _globals['_USUARIOID']._serialized_end=705
+  _globals['_CADENASLIST']._serialized_start=707
+  _globals['_CADENASLIST']._serialized_end=753
+  _globals['_PRODUCTOSLIST']._serialized_start=755
+  _globals['_PRODUCTOSLIST']._serialized_end=807
+  _globals['_TIENDASLIST']._serialized_start=809
+  _globals['_TIENDASLIST']._serialized_end=855
+  _globals['_USUARIOSLIST']._serialized_start=857
+  _globals['_USUARIOSLIST']._serialized_end=906
+  _globals['_CADENASERVICE']._serialized_start=909
+  _globals['_CADENASERVICE']._serialized_end=1119
+  _globals['_PRODUCTOSERVICE']._serialized_start=1122
+  _globals['_PRODUCTOSERVICE']._serialized_end=1355
+  _globals['_TIENDASERVICE']._serialized_start=1358
+  _globals['_TIENDASERVICE']._serialized_end=1568
+  _globals['_USUARIOSERVICE']._serialized_start=1571
+  _globals['_USUARIOSERVICE']._serialized_end=1843
+  _globals['_STOCKSERVICE']._serialized_start=1845
+  _globals['_STOCKSERVICE']._serialized_end=1910
 # @@protoc_insertion_point(module_scope)

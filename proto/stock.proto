@@ -1,91 +1,111 @@
 syntax = "proto3";
 
-package stock;
+package cadena;
 
-// Mensajes de Usuario
-message Usuario {
-    string nombre_usuario = 1;
-    string contrasena = 2;
-    string nombre = 3;
-    string apellido = 4;
-    string tienda = 5; // Código de la tienda
-    bool habilitado = 6;
+// Mensajes que representan nuestras entidades
+message Cadena {
+    int32 id_cadena = 1;
+    string nombre = 2;
 }
 
-message UsuarioResponse {
-    string mensaje = 1;
-    string token = 2; // Posiblemente un token JWT para autenticación
-}
-
-// Mensajes de Tienda
-message Tienda {
-    string codigo = 1; // Código único alfanumérico
-    string direccion = 2;
-    string ciudad = 3;
-    string provincia = 4;
-    bool habilitada = 5; // Habilitada o deshabilitada
-}
-
-message TiendaResponse {
-    string mensaje = 1;
-}
-
-// Mensajes de Producto
 message Producto {
-    string nombre = 1;
-    string codigo = 2; // Código único de 10 caracteres
-    string talle = 3;
-    string foto = 4; // URL o ruta de la imagen
-    string color = 5;
-    int32 stock = 6; // Stock inicial 0
+    int32 id_producto = 1;
+    string nombre = 2;
+    string codigo = 3; // Código único de 10 caracteres
+    string talle = 4;
+    string foto = 5;
+    string color = 6;
+    map<string, int32> stock = 7; // Mapeo por color y talle
 }
 
-message ProductoResponse {
-    string mensaje = 1;
-    string codigo = 2; // Para devolver el código del producto creado
+message Tienda {
+    int32 id_tienda = 1;
+    string codigo = 2; // Código alfanumérico
+    string nombre = 3;
+    string direccion = 4;
+    string ciudad = 5;
+    string provincia = 6;
+    bool habilitada = 7; // Habilitar/Deshabilitar
+    bool casa_central = 8;
+    int32 cadena_id_cadena = 9;
 }
 
-// Mensajes de Búsqueda
-message BuscarUsuariosRequest {
-    string nombre_usuario = 1;
-    string tienda = 2;
+message Usuario {
+    int32 id_usuario = 1;
+    string username = 2;
+    string password = 3;
+    bool habilitado = 4; // Habilitado/Deshabilitado
+    int32 tienda_idtienda = 5; // Puede ser ID de tienda o 0 para casa central
+    string nombre = 6;
+    string apellido = 7;
 }
 
-message BuscarTiendasRequest {
-    string codigo = 1;
-    bool estado = 2; // true para habilitada, false para deshabilitada
+// Mensajes adicionales
+message Empty {}
+
+message CadenaId {
+    int32 id = 1;
 }
 
-message BuscarProductosRequest {
-    string nombre = 1;
-    string codigo = 2;
-    string talle = 3;
-    string color = 4;
+message ProductoId {
+    int32 id = 1;
 }
 
-message BuscarUsuariosResponse {
-    repeated Usuario usuarios = 1; // Lista de usuarios encontrados
+message TiendaId {
+    int32 id = 1;
 }
 
-message BuscarTiendasResponse {
-    repeated Tienda tiendas = 1; // Lista de tiendas encontradas
+message UsuarioId {
+    int32 id = 1;
 }
 
-message BuscarProductosResponse {
-    repeated Producto productos = 1; // Lista de productos encontrados
+message CadenasList {
+    repeated Cadena cadenas = 1;
 }
 
-// Servicios
-service StockearteService {
-    rpc CrearUsuario(Usuario) returns (UsuarioResponse);
-    rpc AutenticarUsuario(Usuario) returns (UsuarioResponse);
-    rpc CrearTienda(Tienda) returns (TiendaResponse);
-    rpc ModificarTienda(Tienda) returns (TiendaResponse);
-    rpc AlternarHabilitadaTienda(Tienda) returns (TiendaResponse);
-    rpc CrearProducto(Producto) returns (ProductoResponse);
-    rpc ModificarProducto(Producto) returns (ProductoResponse);
-    rpc EliminarProducto(Producto) returns (ProductoResponse); // Considerar solo recibir el código
-    rpc BuscarUsuarios(BuscarUsuariosRequest) returns (BuscarUsuariosResponse);
-    rpc BuscarTiendas(BuscarTiendasRequest) returns (BuscarTiendasResponse);
-    rpc BuscarProductos(BuscarProductosRequest) returns (BuscarProductosResponse);
+message ProductosList {
+    repeated Producto productos = 1;
+}
+
+message TiendasList {
+    repeated Tienda tiendas = 1;
+}
+
+message UsuariosList {
+    repeated Usuario usuarios = 1;
+}
+
+// Servicios de gRPC
+service CadenaService {
+    rpc GetCadena(CadenaId) returns (Cadena);
+    rpc CreateCadena(Cadena) returns (Cadena);
+    rpc DeleteCadena(CadenaId) returns (Empty);
+    rpc ListCadenas(Empty) returns (CadenasList);
+}
+
+service ProductoService {
+    rpc GetProducto(ProductoId) returns (Producto);
+    rpc CreateProducto(Producto) returns (Producto);
+    rpc UpdateProducto(Producto) returns (Producto);
+    rpc ListProductos(Empty) returns (ProductosList);
+}
+
+service TiendaService {
+    rpc GetTienda(TiendaId) returns (Tienda);
+    rpc CreateTienda(Tienda) returns (Tienda);
+    rpc DeleteTienda(TiendaId) returns (Empty);
+    rpc ListTiendas(Empty) returns (TiendasList);
+}
+
+service UsuarioService {
+    rpc GetUsuario(UsuarioId) returns (Usuario);
+    rpc CreateUsuario(Usuario) returns (Usuario);
+    rpc UpdateUsuario(Usuario) returns (Usuario);
+    rpc DeleteUsuario(UsuarioId) returns (Empty);
+    rpc ListUsuarios(Empty) returns (UsuariosList);
+}
+
+// Métodos para modificar stock
+service StockService {
+    rpc UpdateStock(Producto) returns (Producto); // Para modificar stock
 }

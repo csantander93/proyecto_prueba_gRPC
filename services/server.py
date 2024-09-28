@@ -5,7 +5,9 @@ from app import app
 from models.cadena import Cadena
 from models.tienda import Tienda
 from models.database import db
-from services import UsuarioService, TiendaService, ProductoService
+from usuario_service import UsuarioService
+from tienda_service import TiendaService
+from producto_service import ProductoService
 
 import random
 import string
@@ -34,7 +36,7 @@ def inicializar_cadena_y_tiendas():
                 ciudad='Ciudad Ejemplo',
                 provincia='Provincia Ejemplo',
                 habilitada=True,
-                casa_central=False,
+                casa_central=True,
                 cadena_id_cadena=cadena_id
             )
             db.session.add(nueva_tienda)
@@ -46,9 +48,9 @@ def inicializar_cadena_y_tiendas():
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-    stock_pb2_grpc.add_StockearteServiceServicer_to_server(UsuarioService(), server)
-    stock_pb2_grpc.add_StockearteServiceServicer_to_server(TiendaService(), server)
-    stock_pb2_grpc.add_StockearteServiceServicer_to_server(ProductoService(), server)
+    stock_pb2_grpc.add_UsuarioServiceServicer_to_server(UsuarioService(), server)
+    stock_pb2_grpc.add_TiendaServiceServicer_to_server(TiendaService(), server)
+    stock_pb2_grpc.add_ProductoServiceServicer_to_server(ProductoService(), server)
     
     server.add_insecure_port('[::]:50051')
     inicializar_cadena_y_tiendas()  # Inicializar dentro del contexto de la app

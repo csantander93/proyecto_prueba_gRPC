@@ -8,7 +8,6 @@ class Producto(db.Model):
     foto = db.Column(db.String(45))
     color = db.Column(db.String(45))
     stock = db.Column(db.Integer)
-    habilitada = db.Column(db.Boolean, default=True)  # Si necesitas un campo habilitada
-
+    
     def __repr__(self):
         return f'<Producto {self.codigo}, Talle: {self.talle}, Color: {self.color}>'
