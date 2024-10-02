@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .status {
+            display: flex;
+            justify-content: space-between;
+        }
+        .status label {
+            flex: 1;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Usuario</h1>
+        <form action="/crearUsuario" method="POST">
+            <label for="username">Nombre de Usuario:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="store">Tienda:</label>
+            <select id="store" name="store" required>
+                <option value="" disabled selected>Seleccione una tienda o casa central</option>
+                <option value="casa-central">Casa Central</option>
+                <option value="tienda1">Tienda 1</option>
+                <option value="tienda2">Tienda 2</option>
+                <option value="tienda3">Tienda 3</option>
+                <!-- Agregar más tiendas si es necesario -->
+            </select>
+
+            <label for="firstName">Nombre:</label>
+            <input type="text" id="firstName" name="firstName" required>
+
+            <label for="lastName">Apellido:</label>
+            <input type="text" id="lastName" name="lastName" required>
+
+            <div class="status">
+                <label for="enabled">Habilitado:</label>
+                <input type="radio" id="enabled" name="status" value="habilitado" required>
+                
+                <label for="disabled">Deshabilitado:</label>
+                <input type="radio" id="disabled" name="status" value="deshabilitado" required>
+            </div>
+
+            <input type="submit" value="Crear Usuario">
+        </form>
+    </div>
+</body>
+</html>
