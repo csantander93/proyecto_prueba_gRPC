@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package stock;
+
+service StockearteService {
+  // Métodos para gestionar usuarios
+  rpc CrearUsuario (UsuarioRequest) returns (UsuarioResponse);
+  rpc AutenticarUsuario (LoginRequest) returns (LoginResponse);
+  rpc ModificarUsuario (ModificarUsuarioRequest) returns (UsuarioResponse);
+  rpc ListarTiendas(Empty) returns (ListarTiendasResponse);
+
+
+  // Métodos para gestionar tiendas
+  rpc CrearTienda (TiendaRequest) returns (TiendaResponse);
+  rpc ModificarTienda (ModificarTiendaRequest) returns (TiendaResponse);
+  rpc AlternarHabilitadaTienda (AlternarHabilitadaRequest) returns (TiendaResponse);
+
+  // Métodos para gestionar productos
+  rpc CrearProducto (ProductoRequest) returns (ProductoResponse);
+  rpc ModificarProducto (ModificarProductoRequest) returns (ProductoResponse);
+  rpc EliminarProducto (ProductoIdRequest) returns (ProductoResponse);
+
+  // Métodos para buscar
+  rpc BuscarProductos (BuscarProductosRequest) returns (BuscarProductosResponse);
+  rpc BuscarUsuarios (BuscarUsuariosRequest) returns (BuscarUsuariosResponse);
+  rpc BuscarTiendas (BuscarTiendasRequest) returns (BuscarTiendasResponse);
+}
+
+// Mensajes para usuarios
+message UsuarioRequest {
+  string nombre_usuario = 1;
+  string contrasena = 2;
+  string nombre = 3;
+  string apellido = 4;
+  string tienda = 5;
+}
+
+message UsuarioResponse {
+  string mensaje = 1;
+}
+
+// Mensajes para listar tiendas
+message Tienda {
+    string codigo = 1;
+    string direccion = 2;
+    string ciudad = 3;
+    string provincia = 4;
+    bool habilitada = 5;
+}
+
+message ListarTiendasResponse {
+    repeated Tienda tiendas = 1;
+}
+message ModificarUsuarioRequest {
+  string nombre_usuario = 1;
+  string contrasena = 2;
+  string nombre = 3;
+  string apellido = 4;
+  string tienda = 5;
+  bool habilitado = 6;
+}
+
+message LoginRequest {
+  string nombre_usuario = 1;
+  string contrasena = 2;
+}
+
+message LoginResponse {
+  string mensaje = 1;
+}
+
+// Mensajes para tiendas
+message TiendaRequest {
+  string codigo = 1;
+  string direccion = 2;
+  string ciudad = 3;
+  string provincia = 4;
+  bool habilitada = 5;
+}
+
+message TiendaResponse {
+  string mensaje = 1;
+}
+
+message ModificarTiendaRequest {
+  string codigo = 1;
+  string direccion = 2;
+  string ciudad = 3;
+  string provincia = 4;
+  bool habilitada = 5;
+}
+
+message AlternarHabilitadaRequest {
+  string codigo = 1;
+}
+
+// Mensajes para productos
+message ProductoRequest {
+  string nombre = 1;
+  string codigo = 2;
+  string talle = 3;
+  string color = 4;
+  int32 stock = 5;
+}
+
+message ProductoResponse {
+  string mensaje = 1;
+  string codigo = 2;
+}
+
+message ModificarProductoRequest {
+  string nombre = 1;
+  string codigo = 2;
+  string talle = 3;
+  string color = 4;
+  int32 stock = 5;
+}
+
+message ProductoIdRequest {
+  string codigo = 1;
+}
+
+// Mensajes para búsquedas
+message BuscarProductosRequest {
+  string nombre = 1;
+  string codigo = 2;
+  string talle = 3;
+  string color = 4;
+}
+
+message BuscarProductosResponse {
+  repeated Producto productos = 1;
+}
+
+message Producto {
+  string nombre = 1;
+  string codigo = 2;
+  string talle = 3;
+  string color = 4;
+  int32 stock = 5;
+}
+
+message BuscarUsuariosRequest {
+  string nombre_usuario = 1;
+  string tienda = 2;
+}
+
+message BuscarUsuariosResponse {
+  repeated Usuario usuarios = 1;
+}
+
+message Usuario {
+  string nombre_usuario = 1;
+  string nombre = 2;
+  string apellido = 3;
+  string tienda = 4;
+  bool habilitado = 5;
+}
+
+message BuscarTiendasRequest {
+  string codigo = 1;
+  bool habilitada = 2;
+}
+
+message BuscarTiendasResponse {
+  repeated Tienda tiendas = 1;
+}
+
+
+
