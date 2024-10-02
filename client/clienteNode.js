@@ -3,7 +3,7 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 
 // Carga el archivo proto
-const PROTO_PATH = path.join(__dirname, 'stock.proto');  // Asegúrate de que esta ruta sea correcta
+const PROTO_PATH = path.join(__dirname, '.proto/stock.proto');  
 const stockProto = grpc.loadPackageDefinition(protoLoader.loadSync(PROTO_PATH, { keepCase: true, longs: String, defaults: true, oneofs: true }));
 
 const client = new stockProto.StockearteService('localhost:50051', grpc.credentials.createInsecure());

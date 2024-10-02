@@ -20,18 +20,18 @@ def generar_codigo_tienda():
 
 def inicializar_cadena_y_tiendas():
     with app.app_context():
-        cadena_existente = db.session.query(Cadena).filter_by(nombre='CadenaEjemplo').first()
+        cadena_existente = db.session.query(Cadena).filter_by(nombre='Adidas').first()
         if not cadena_existente:
-            nueva_cadena = Cadena(nombre='CadenaEjemplo')
+            nueva_cadena = Cadena(nombre='Adidas')
             db.session.add(nueva_cadena)
             db.session.commit()
-            logging.info("Cadena inicializada: CadenaEjemplo")
+            logging.info("Cadena inicializada: Adidas")
             cadena_id = nueva_cadena.id_cadena
 
             codigo_tienda = generar_codigo_tienda()
             nueva_tienda = Tienda(
                 codigo=codigo_tienda, 
-                nombre='Tienda Ejemplo',
+                nombre='Tienda 1',
                 direccion='Calle Falsa 123',
                 ciudad='Ciudad Ejemplo',
                 provincia='Provincia Ejemplo',

@@ -1,5 +1,5 @@
 import grpc
-from models import db, Tienda as TiendaModel
+from models import db, Tienda as TiendaModel, Usuario as UsuarioModel
 import stock_pb2
 import stock_pb2_grpc
 from app import app
@@ -67,6 +67,58 @@ class TiendaService(stock_pb2_grpc.TiendaServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details("Error interno del servidor")
             return stock_pb2.Tienda()
+
+    def CrearTiendaHabilitado(self, request, context):
+        logging.debug("Received CrearTiendaHabilitado request: %s", request)
+
+        # Verificar si el usuario está habilitado
+        usuario = self.verificar_usuario_habilitado(request.usuario_id, context)
+        if not usuario:
+            context.set_code(grpc.StatusCode.PERMISSION_DENIED)
+            context.set_details("El usuario no está habilitado para crear tiendas")
+            return stock_pb2.Tienda()
+
+        try:
+            with app.app_context():
+                nueva_tienda = TiendaModel(
+                    codigo=request.codigo,
+                    nombre=request.nombre,
+                    direccion=request.direccion,
+                    ciudad=request.ciudad,
+                    provincia=request.provincia,
+                    habilitada=request.habilitada,
+                    casa_central=request.casa_central,
+                    cadena_id=request.cadena_id_cadena
+                )
+                db.session.add(nueva_tienda)
+                db.session.commit()
+                logging.info("Tienda creada exitosamente: %s", request.codigo)
+                return stock_pb2.Tienda(
+                    id_tienda=nueva_tienda.id,
+                    codigo=nueva_tienda.codigo,
+                    nombre=nueva_tienda.nombre,
+                    direccion=nueva_tienda.direccion,
+                    ciudad=nueva_tienda.ciudad,
+                    provincia=nueva_tienda.provincia,
+                    habilitada=nueva_tienda.habilitada,
+                    casa_central=nueva_tienda.casa_central,
+                    cadena_id_cadena=nueva_tienda.cadena_id
+                )
+        except Exception as e:
+            logging.error("Error al crear tienda: %s", str(e), exc_info=True)
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Error interno del servidor")
+            return stock_pb2.Tienda()
+
+    def verificar_usuario_habilitado(self, usuario_id, context):
+        """Verifica si el usuario está habilitado."""
+        with app.app_context():
+            usuario = UsuarioModel.query.get(usuario_id)
+            if usuario and usuario.habilitado:
+                return usuario
+            else:
+                logging.warning("Usuario no habilitado o no encontrado: %s", usuario_id)
+                return None
 
     def ListTiendas(self, request, context):
         logging.debug("Received ListTiendas request")
