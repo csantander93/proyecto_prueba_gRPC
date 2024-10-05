@@ -6,6 +6,8 @@ const path = require('path');
 const STORE_PROTO_PATH = path.join(__dirname, 'proto', 'tienda.proto');
 // Ruta hacia el archivo .proto de usuario
 const USER_PROTO_PATH = path.join(__dirname, 'proto', 'usuario.proto');
+// Ruta hacia el archivo .proto de producto
+const PRODUCTO_PROTO_PATH = path.join(__dirname, 'proto', 'producto.proto');
 
 // Cargar el tienda .proto
 const packageDefinition = protoLoader.loadSync(STORE_PROTO_PATH, {
@@ -25,16 +27,27 @@ const userPackageDefinition = protoLoader.loadSync(USER_PROTO_PATH, {
   oneofs: true,
 });
 
+// Cargar el archivo .proto de producto
+const productoPackageDefinition = protoLoader.loadSync(PRODUCTO_PROTO_PATH, {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
+});
+
 // Obtener el paquete gRPC del archivo .proto
 const tiendaProto = grpc.loadPackageDefinition(packageDefinition).tienda;
 const userProto = grpc.loadPackageDefinition(userPackageDefinition).usuario;
+const productoProto = grpc.loadPackageDefinition(productoPackageDefinition).producto;
 
 
 // Crear un cliente para TiendaService
 const tiendaClient = new tiendaProto.TiendaService('localhost:50051', grpc.credentials.createInsecure());
 // Crear un cliente para UserService
 const userClient = new userProto.UsuarioService('localhost:50051', grpc.credentials.createInsecure());
-
+// Crear un cliente para ProductoService
+const productoClient = new productoProto.ProductoService('localhost:50051', grpc.credentials.createInsecure());
 
 console.log('Iniciando el cliente...');
 
@@ -225,18 +238,105 @@ function autenticarUsuario() {
   });
 }
 
-// Llamadas de prueba
-//crearTienda(); //probado ok
+// Función para probar CrearProducto
+function crearProducto() {
+  const nuevoProducto = {
+    codigo: 'P123',
+    nombre: 'Nombre del Producto',  // Agregado: nombre del producto
+    talle: 'M',
+    foto: 'url_a_la_foto',
+    color: 'rojo',
+    stock: 50,
+    id_tienda: 1  // Agregado: ID de la tienda
+  };
+
+  productoClient.CrearProducto(nuevoProducto, (error, response) => {
+    if (error) {
+      console.error('Error creando producto:', error);
+    } else {
+      console.log('Producto creado con éxito:', response.producto);
+    }
+  });
+}
+
+// Función para probar ModificarProducto
+function modificarProducto(idProducto) {
+  const productoModificado = {
+    id_producto: idProducto,
+    codigo: 'P111',
+    nombre: 'Nuevo Nombre', // Agregado: nombre del producto
+    talle: 'L',
+    foto: 'nueva_url_a_la_foto',
+    color: 'azul',
+    stock: 100,
+    id_tienda: 'ID_de_la_tienda' // Agregado: ID de la tienda
+  };
+
+  productoClient.ModificarProducto(productoModificado, (error, response) => {
+    if (error) {
+      console.error('Error modificando producto:', error);
+    } else {
+      console.log('Producto modificado con éxito:', response.producto);
+    }
+  });
+}
+
+// Función para probar BorrarProducto
+function borrarProducto(idProducto) {
+  productoClient.BorrarProducto({ id_producto: idProducto }, (error, response) => {
+    if (error) {
+      console.error('Error borrando producto:', error);
+    } else {
+      console.log('Producto borrado con éxito:', response.producto);
+    }
+  });
+}
+
+// Función para probar BuscarProducto
+function buscarProducto(idProducto) {
+  productoClient.BuscarProducto({ id_producto: idProducto }, (error, response) => {
+    if (error) {
+      console.error('Error buscando producto:', error);
+    } else if (response.producto) {
+      console.log('Producto encontrado:', response.producto);
+    } else {
+      console.log('Producto no encontrado');
+    }
+  });
+}
+
+// Función para probar EnlistarProductos
+function enlistarProductos() {
+  productoClient.EnlistarProductos({}, (error, response) => {
+    if (error) {
+      console.error('Error enlistando productos:', error);
+    } else {
+      console.log('Productos encontrados:', response);
+    }
+  });
+}
+
+// Llamadas de prueba Tienda
+crearTienda(); //probado ok
 //modificarTienda(2); // probado ok
 //borrarTienda(2); // probado ok
 //buscarTienda(3); // probado ok
 //enlistarTiendas(); // probado ok
 //buscarTiendaPorNombre('Santa'); //probado ok
 
-// Llamadas de prueba
-//crearUsuario(); // probado ok
+// Llamadas de prueba usuario
+crearUsuario(); // probado ok
 //modificarUsuario(5); // probado ok
 //borrarUsuario(5); // probado ok
 //buscarUsuario("usuarioModificado"); // Reemplazar con el nombre
 //enlistarUsuarios(); // probado ok
 //autenticarUsuario(); // probado ok
+
+// Llamadas de prueba producto
+
+// Llamadas de prueba Producto
+crearProducto(); // probar creación
+// modificarProducto(1); // Descomentar y reemplazar con el ID real
+// borrarProducto(1); // Descomentar y reemplazar con el ID real
+// buscarProducto(1); // Descomentar y reemplazar con el ID real
+// enlistarProductos(); // probar listado

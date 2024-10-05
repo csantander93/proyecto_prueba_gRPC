@@ -14,27 +14,33 @@ service ProductoService {
 message Producto {
     int32 id_producto = 1;
     string codigo = 2;
-    string talle = 3;
-    string foto = 4;
-    string color = 5;
-    int32 stock = 6;
+    string nombre = 3; // Agregado: Nombre del producto
+    string talle = 4;
+    string foto = 5;
+    string color = 6;
+    int32 stock = 7;
+    int32 id_tienda = 8; // Agregado: ID de la tienda a la que pertenece el producto
 }
 
 message CrearProductoRequest {
     string codigo = 1;
-    string talle = 2;
-    string foto = 3;
-    string color = 4;
-    int32 stock = 5;
+    string nombre = 2; // Agregado: Nombre del producto
+    string talle = 3;
+    string foto = 4;
+    string color = 5;
+    int32 stock = 6;
+    int32 id_tienda = 7; // Agregado: ID de la tienda al crear el producto
 }
 
 message ModificarProductoRequest {
     int32 id_producto = 1;
     string codigo = 2;
-    string talle = 3;
-    string foto = 4;
-    string color = 5;
-    int32 stock = 6;
+    string nombre = 3; // Agregado: Nombre del producto
+    string talle = 4;
+    string foto = 5;
+    string color = 6;
+    int32 stock = 7;
+    int32 id_tienda = 8; // Agregado: ID de la tienda al modificar el producto
 }
 
 message BorrarProductoRequest {
@@ -42,7 +48,7 @@ message BorrarProductoRequest {
 }
 
 message BuscarProductoRequest {
-    int32 id_producto = 1;
+    string nombre = 1; // Cambiado: búsqueda por nombre en lugar de id_producto
 }
 
 message EnlistarProductosRequest {}

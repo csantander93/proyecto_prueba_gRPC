@@ -12,21 +12,25 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                 # Crear un nuevo producto en la base de datos
                 nuevo_producto = ProductoModel(
                     codigo=request.codigo,
+                    nombre=request.nombre,  # Agregado: nombre del producto
                     talle=request.talle,
                     foto=request.foto,
                     color=request.color,
-                    stock=request.stock
+                    stock=request.stock,
+                    id_tienda=request.id_tienda  # Agregado: ID de la tienda
                 )
                 db.session.add(nuevo_producto)
                 db.session.commit()
 
                 return ProductoResponse(producto=Producto(
-                    id_producto=nuevo_producto.id,
+                    id_producto=nuevo_producto.id_producto,
                     codigo=nuevo_producto.codigo,
+                    nombre=nuevo_producto.nombre,  # Agregado: nombre del producto
                     talle=nuevo_producto.talle,
                     foto=nuevo_producto.foto,
                     color=nuevo_producto.color,
-                    stock=nuevo_producto.stock
+                    stock=nuevo_producto.stock,
+                    id_tienda=nuevo_producto.id_tienda  # Agregado: ID de la tienda
                 ))
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
@@ -36,24 +40,28 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
     def ModificarProducto(self, request, context):
         try:
             with app.app_context():
-                # Buscar el producto por nombre
-                producto = ProductoModel.query.get(request.nombre)
+                # Buscar el producto por ID
+                producto = ProductoModel.query.get(request.id_producto)
                 if producto:
                     # Modificar los datos del producto
                     producto.codigo = request.codigo
+                    producto.nombre = request.nombre  # Agregado: nombre del producto
                     producto.talle = request.talle
                     producto.foto = request.foto
                     producto.color = request.color
                     producto.stock = request.stock
+                    producto.id_tienda = request.id_tienda  # Agregado: ID de la tienda
                     db.session.commit()
 
                     return ProductoResponse(producto=Producto(
-                        id_producto=producto.id,
+                        id_producto=producto.id_producto,
                         codigo=producto.codigo,
+                        nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
                         foto=producto.foto,
                         color=producto.color,
-                        stock=producto.stock
+                        stock=producto.stock,
+                        id_tienda=producto.id_tienda  # Agregado: ID de la tienda
                     ))
                 else:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
@@ -74,12 +82,14 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                     db.session.commit()
 
                     return ProductoResponse(producto=Producto(
-                        id_producto=producto.id,
+                        id_producto=producto.id_producto,
                         codigo=producto.codigo,
+                        nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
                         foto=producto.foto,
                         color=producto.color,
-                        stock=producto.stock
+                        stock=producto.stock,
+                        id_tienda=producto.id_tienda  # Agregado: ID de la tienda
                     ))
                 else:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
@@ -97,12 +107,14 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                 producto = ProductoModel.query.get(request.id_producto)
                 if producto:
                     return ProductoResponse(producto=Producto(
-                        id_producto=producto.id,
+                        id_producto=producto.id_producto,
                         codigo=producto.codigo,
+                        nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
                         foto=producto.foto,
                         color=producto.color,
-                        stock=producto.stock
+                        stock=producto.stock,
+                        id_tienda=producto.id_tienda  # Agregado: ID de la tienda
                     ))
                 else:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
@@ -121,12 +133,14 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                 response = ProductosResponse()
                 for producto in productos:
                     response.productos.add(
-                        id_producto=producto.id,
+                        id_producto=producto.id_producto,
                         codigo=producto.codigo,
+                        nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
                         foto=producto.foto,
                         color=producto.color,
-                        stock=producto.stock
+                        stock=producto.stock,
+                        id_tienda=producto.id_tienda  # Agregado: ID de la tienda
                     )
                 return response
         except Exception as e:
