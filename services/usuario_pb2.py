@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rusuario.proto\x12\x07usuario\"n\n\x07Usuario\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x12\n\nhabilitado\x18\x04 \x01(\x08\x12\x17\n\x0ftienda_idtienda\x18\x05 \x01(\x05\"f\n\x13\x43rearUsuarioRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nhabilitado\x18\x03 \x01(\x08\x12\x17\n\x0ftienda_idtienda\x18\x04 \x01(\x05\"~\n\x17ModificarUsuarioRequest\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x12\n\nhabilitado\x18\x04 \x01(\x08\x12\x17\n\x0ftienda_idtienda\x18\x05 \x01(\x05\"*\n\x14\x42orrarUsuarioRequest\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\"*\n\x14\x42uscarUsuarioRequest\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\"\x19\n\x17\x45nlistarUsuariosRequest\"4\n\x0fUsuarioResponse\x12!\n\x07usuario\x18\x01 \x01(\x0b\x32\x10.usuario.Usuario\"6\n\x10UsuariosResponse\x12\"\n\x08usuarios\x18\x01 \x03(\x0b\x32\x10.usuario.Usuario\">\n\x18\x41utenticarUsuarioRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"A\n\x19\x41utenticarUsuarioResponse\x12\x13\n\x0b\x61utenticado\x18\x01 \x01(\x08\x12\x0f\n\x07mensaje\x18\x02 \x01(\t2\xe9\x03\n\x0eUsuarioService\x12\x46\n\x0c\x43rearUsuario\x12\x1c.usuario.CrearUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12N\n\x10ModificarUsuario\x12 .usuario.ModificarUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12H\n\rBorrarUsuario\x12\x1d.usuario.BorrarUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12H\n\rBuscarUsuario\x12\x1d.usuario.BuscarUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12O\n\x10\x45nlistarUsuarios\x12 .usuario.EnlistarUsuariosRequest\x1a\x19.usuario.UsuariosResponse\x12Z\n\x11\x41utenticarUsuario\x12!.usuario.AutenticarUsuarioRequest\x1a\".usuario.AutenticarUsuarioResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rusuario.proto\x12\x07usuario\"n\n\x07Usuario\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x12\n\nhabilitado\x18\x04 \x01(\x08\x12\x17\n\x0ftienda_idtienda\x18\x05 \x01(\x05\"f\n\x13\x43rearUsuarioRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x12\n\nhabilitado\x18\x03 \x01(\x08\x12\x17\n\x0ftienda_idtienda\x18\x04 \x01(\x05\"~\n\x17ModificarUsuarioRequest\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x12\n\nhabilitado\x18\x04 \x01(\x08\x12\x17\n\x0ftienda_idtienda\x18\x05 \x01(\x05\"*\n\x14\x42orrarUsuarioRequest\x12\x12\n\nid_usuario\x18\x01 \x01(\x05\"(\n\x14\x42uscarUsuarioRequest\x12\x10\n\x08username\x18\x01 \x01(\t\"\x19\n\x17\x45nlistarUsuariosRequest\"4\n\x0fUsuarioResponse\x12!\n\x07usuario\x18\x01 \x01(\x0b\x32\x10.usuario.Usuario\"6\n\x10UsuariosResponse\x12\"\n\x08usuarios\x18\x01 \x03(\x0b\x32\x10.usuario.Usuario\">\n\x18\x41utenticarUsuarioRequest\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"A\n\x19\x41utenticarUsuarioResponse\x12\x13\n\x0b\x61utenticado\x18\x01 \x01(\x08\x12\x0f\n\x07mensaje\x18\x02 \x01(\t2\xe9\x03\n\x0eUsuarioService\x12\x46\n\x0c\x43rearUsuario\x12\x1c.usuario.CrearUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12N\n\x10ModificarUsuario\x12 .usuario.ModificarUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12H\n\rBorrarUsuario\x12\x1d.usuario.BorrarUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12H\n\rBuscarUsuario\x12\x1d.usuario.BuscarUsuarioRequest\x1a\x18.usuario.UsuarioResponse\x12O\n\x10\x45nlistarUsuarios\x12 .usuario.EnlistarUsuariosRequest\x1a\x19.usuario.UsuariosResponse\x12Z\n\x11\x41utenticarUsuario\x12!.usuario.AutenticarUsuarioRequest\x1a\".usuario.AutenticarUsuarioResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -40,17 +40,17 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_BORRARUSUARIOREQUEST']._serialized_start=370
   _globals['_BORRARUSUARIOREQUEST']._serialized_end=412
   _globals['_BUSCARUSUARIOREQUEST']._serialized_start=414
-  _globals['_BUSCARUSUARIOREQUEST']._serialized_end=456
-  _globals['_ENLISTARUSUARIOSREQUEST']._serialized_start=458
-  _globals['_ENLISTARUSUARIOSREQUEST']._serialized_end=483
-  _globals['_USUARIORESPONSE']._serialized_start=485
-  _globals['_USUARIORESPONSE']._serialized_end=537
-  _globals['_USUARIOSRESPONSE']._serialized_start=539
-  _globals['_USUARIOSRESPONSE']._serialized_end=593
-  _globals['_AUTENTICARUSUARIOREQUEST']._serialized_start=595
-  _globals['_AUTENTICARUSUARIOREQUEST']._serialized_end=657
-  _globals['_AUTENTICARUSUARIORESPONSE']._serialized_start=659
-  _globals['_AUTENTICARUSUARIORESPONSE']._serialized_end=724
-  _globals['_USUARIOSERVICE']._serialized_start=727
-  _globals['_USUARIOSERVICE']._serialized_end=1216
+  _globals['_BUSCARUSUARIOREQUEST']._serialized_end=454
+  _globals['_ENLISTARUSUARIOSREQUEST']._serialized_start=456
+  _globals['_ENLISTARUSUARIOSREQUEST']._serialized_end=481
+  _globals['_USUARIORESPONSE']._serialized_start=483
+  _globals['_USUARIORESPONSE']._serialized_end=535
+  _globals['_USUARIOSRESPONSE']._serialized_start=537
+  _globals['_USUARIOSRESPONSE']._serialized_end=591
+  _globals['_AUTENTICARUSUARIOREQUEST']._serialized_start=593
+  _globals['_AUTENTICARUSUARIOREQUEST']._serialized_end=655
+  _globals['_AUTENTICARUSUARIORESPONSE']._serialized_start=657
+  _globals['_AUTENTICARUSUARIORESPONSE']._serialized_end=722
+  _globals['_USUARIOSERVICE']._serialized_start=725
+  _globals['_USUARIOSERVICE']._serialized_end=1214
 # @@protoc_insertion_point(module_scope)

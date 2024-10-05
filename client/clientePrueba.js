@@ -130,8 +130,8 @@ function buscarTiendaPorNombre(nombreTienda) {
 // Función para probar CrearUsuario
 function crearUsuario() {
   const nuevoUsuario = {
-    username: 'usuarioTest2',
-    password: 'passwordSeguro2',
+    username: 'usuarioTest5',
+    password: 'passwordSeguro5',
     habilitado: true,
     tienda_idtienda: 1
   };
@@ -177,10 +177,10 @@ function borrarUsuario(idUsuario) {
 }
 
 function buscarUsuario(username) {
-  console.log('Buscando usuario con username:', username); // Imprime el username que se va a buscar
+  console.log('Buscando usuario con username:', username);
   userClient.BuscarUsuario({ username: username }, (error, response) => {
     if (error) {
-      console.error('Error buscando usuario:', error);
+      console.error('Error buscando usuario:', error.details); // Detalles del error
     } else if (response.usuario) {
       console.log('Usuario encontrado:', response.usuario);
     } else {
@@ -190,22 +190,26 @@ function buscarUsuario(username) {
 }
 
 
+
 // Función para probar EnlistarUsuarios
 function enlistarUsuarios() {
   userClient.EnlistarUsuarios({}, (error, response) => {
-    if (error) {
-      console.error('Error enlistando usuarios:', error);
-    } else {
-      console.log('Usuarios encontrados:', response);
-    }
+      if (error) {
+          console.error('Error al enlistar usuarios:', error.details); // Muestra el error si lo hay
+      } else {
+          console.log('Usuarios enlistados:', response.usuarios);
+          response.usuarios.forEach(usuario => {
+              console.log(`ID: ${usuario.id_usuario}, Username: ${usuario.username}`);
+          });
+      }
   });
 }
 
 // Función para probar AutenticarUsuario
 function autenticarUsuario() {
   const credenciales = {
-    username: 'usuarioTest',
-    password: 'passwordSeguro'
+    username: 'usuarioTest2',
+    password: 'passwordSeguro2'
   };
 
   userClient.AutenticarUsuario(credenciales, (error, response) => {
@@ -222,17 +226,17 @@ function autenticarUsuario() {
 }
 
 // Llamadas de prueba
-//crearTienda();
-//modificarTienda(2); // Asumiendo que el ID de la tienda es 20
-//borrarTienda(2);
-//buscarTienda(3);
-//enlistarTiendas();
-//buscarTiendaPorNombre('Santa');
+//crearTienda(); //probado ok
+//modificarTienda(2); // probado ok
+//borrarTienda(2); // probado ok
+//buscarTienda(3); // probado ok
+//enlistarTiendas(); // probado ok
+//buscarTiendaPorNombre('Santa'); //probado ok
 
 // Llamadas de prueba
-//crearUsuario();
-//modificarUsuario(3); // Reemplazar con el ID real del usuario
-//borrarUsuario(3); // Reemplazar con el ID real del usuario
-buscarUsuario("usuarioTest"); // Reemplazar con el nombre
-//enlistarUsuarios();
-//autenticarUsuario();
+//crearUsuario(); // probado ok
+//modificarUsuario(5); // probado ok
+//borrarUsuario(5); // probado ok
+//buscarUsuario("usuarioModificado"); // Reemplazar con el nombre
+//enlistarUsuarios(); // probado ok
+//autenticarUsuario(); // probado ok

@@ -42,7 +42,7 @@ message BorrarUsuarioRequest {
 }
 
 message BuscarUsuarioRequest {
-    int32 id_usuario = 1;
+    string username = 1;
 }
 
 message EnlistarUsuariosRequest {}
