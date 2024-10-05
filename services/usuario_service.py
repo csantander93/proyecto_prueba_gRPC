@@ -1,84 +1,176 @@
 import grpc
-from models import db, Usuario as UsuarioModel, Tienda as TiendaModel
-import stock_pb2
-import stock_pb2_grpc
-from app import app
-import logging
+from usuario_pb2 import UsuarioResponse, UsuariosResponse, Usuario, AutenticarUsuarioResponse
+import usuario_pb2_grpc
+from models import db, Usuario as UsuarioModel  # Importa el modelo Usuario y la base de datos
+from app import app  # La app Flask configurada
+from werkzeug.security import generate_password_hash, check_password_hash  # Para el manejo de contraseñas
 
-class UsuarioService(stock_pb2_grpc.UsuarioServiceServicer):
+class UsuarioService(usuario_pb2_grpc.UsuarioServiceServicer):
 
-    def GetUsuario(self, request, context):
-        logging.debug("Received GetUsuario request: %s", request)
+    def CrearUsuario(self, request, context):
         try:
             with app.app_context():
-                usuario = UsuarioModel.query.get(request.id_usuario)  # Changed from request.id to request.id_usuario
-                if usuario:
-                    return stock_pb2.Usuario(
-                        id_usuario=usuario.id,
-                        username=usuario.username,
-                        password=usuario.password,
-                        habilitado=usuario.habilitado,
-                        tienda_idtienda=usuario.tienda_id
-                    )
-                else:
-                    context.set_code(grpc.StatusCode.NOT_FOUND)
-                    context.set_details("Usuario no encontrado")
-                    return stock_pb2.Usuario()
-        except Exception as e:
-            logging.error("Error al obtener usuario: %s", str(e), exc_info=True)
-            context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details("Error interno del servidor")
-            return stock_pb2.Usuario()
+                # Verificar si ya existe un usuario con el mismo username
+                usuario_existente = UsuarioModel.query.filter_by(username=request.username).first()
+                if usuario_existente:
+                    # Si el usuario ya existe, devolver un error gRPC
+                    context.set_code(grpc.StatusCode.ALREADY_EXISTS)
+                    context.set_details(f"El usuario con el username '{request.username}' ya existe.")
+                    return UsuarioResponse()  # Retornar respuesta vacía
 
-    def CreateUsuario(self, request, context):
-        logging.debug("Received CreateUsuario request: %s", request)
-        try:
-            with app.app_context():
-                tienda = TiendaModel.query.get(request.tienda_idtienda)
-                if not tienda:
-                    context.set_code(grpc.StatusCode.NOT_FOUND)
-                    context.set_details("Tienda no encontrada")
-                    return stock_pb2.Usuario()
-
+                # Si no existe, proceder a crear el nuevo usuario
                 nuevo_usuario = UsuarioModel(
                     username=request.username,
-                    password=request.password,
-                    habilitado=True,  # Asumimos que un nuevo usuario está habilitado por defecto
-                    tienda_id=request.tienda_idtienda
+                    password=generate_password_hash(request.password),
+                    habilitado=request.habilitado,
+                    tienda_idtienda=request.tienda_idtienda
                 )
                 db.session.add(nuevo_usuario)
                 db.session.commit()
 
-                return stock_pb2.Usuario(
-                    id_usuario=nuevo_usuario.id,
+                # Retornar la respuesta con el nuevo usuario
+                return UsuarioResponse(usuario=Usuario(
                     username=nuevo_usuario.username,
-                    password=nuevo_usuario.password,
+                    password=request.password,
                     habilitado=nuevo_usuario.habilitado,
-                    tienda_idtienda=nuevo_usuario.tienda_id
-                )
-        except Exception as e:
-            logging.error("Error al crear usuario: %s", str(e), exc_info=True)
-            context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details("Error interno del servidor")
-            return stock_pb2.Usuario()
+                    tienda_idtienda=nuevo_usuario.tienda_idtienda
+                ))
 
-    def ListUsuarios(self, request, context):
-        logging.debug("Received ListUsuarios request")
+        except Exception as e:
+            # Manejo de errores
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Error al crear usuario: " + str(e))
+            print(f"Error en CrearUsuario: {e}")
+        return UsuarioResponse()
+
+
+
+    def ModificarUsuario(self, request, context):
         try:
             with app.app_context():
+                # Buscar el usuario por ID
+                usuario = UsuarioModel.query.get(request.id_usuario)
+                if usuario:
+                    # Modificar los datos del usuario
+                    usuario.username = request.username
+                    if request.password:
+                        usuario.password = generate_password_hash(request.password)
+                    usuario.habilitado = request.habilitado
+                    usuario.tienda_idtienda = request.tienda_idtienda
+                    db.session.commit()
+
+                    return UsuarioResponse(usuario=Usuario(
+                        username=usuario.username,
+                        password=request.password,  # Retornar la nueva contraseña
+                        habilitado=usuario.habilitado,
+                        tienda_idtienda=usuario.tienda_idtienda
+                    ))
+                else:
+                    context.set_code(grpc.StatusCode.NOT_FOUND)
+                    context.set_details("Usuario no encontrado")
+                    return UsuarioResponse()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Error al modificar usuario")
+            return UsuarioResponse()
+
+    def BorrarUsuario(self, request, context):
+        try:
+            with app.app_context():
+                # Buscar el usuario por ID y eliminarlo
+                usuario = UsuarioModel.query.get(request.id_usuario)
+                if usuario:
+                    db.session.delete(usuario)
+                    db.session.commit()
+
+                    return UsuarioResponse(usuario=Usuario(
+                        username=usuario.username,
+                        password="",  # No se necesita retornar la contraseña
+                        habilitado=usuario.habilitado,
+                        tienda_idtienda=usuario.tienda_idtienda
+                    ))
+                else:
+                    context.set_code(grpc.StatusCode.NOT_FOUND)
+                    context.set_details("Usuario no encontrado")
+                    return UsuarioResponse()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Error al borrar usuario")
+            return UsuarioResponse()
+
+def BuscarUsuario(self, request, context):
+    try:
+        with app.app_context():
+            print(f"Buscando usuario con username: {request.username}")  # Esto imprimirá el username recibido
+            usuario = UsuarioModel.query.filter_by(username=request.username).first()
+            if usuario:
+                return UsuarioResponse(usuario=Usuario(
+                    id_usuario=usuario.id,
+                    username=usuario.username,
+                    password="",  # No devolver la contraseña por motivos de seguridad
+                    habilitado=usuario.habilitado,
+                    tienda_idtienda=usuario.tienda_idtienda
+                ))
+            else:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details("Usuario no encontrado")
+                return UsuarioResponse()
+    except Exception as e:
+        print(f"Error en BuscarUsuario: {e}")
+        context.set_code(grpc.StatusCode.INTERNAL)
+        context.set_details("Error al buscar usuario")
+        return UsuarioResponse()
+
+
+
+    def EnlistarUsuarios(self, request, context):
+        try:
+            with app.app_context():
+                # Listar todos los usuarios
                 usuarios = UsuarioModel.query.all()
-                usuarios_list = stock_pb2.UsuariosList()
+                response = UsuariosResponse()
                 for usuario in usuarios:
-                    usuarios_list.usuarios.add(
+                    response.usuarios.add(
                         id_usuario=usuario.id,
                         username=usuario.username,
-                        password=usuario.password,
+                        password="",  # No retornar las contraseñas
                         habilitado=usuario.habilitado,
-                        tienda_idtienda=usuario.tienda_id
+                        tienda_idtienda=usuario.tienda_idtienda
                     )
-                return usuarios_list
+                return response
         except Exception as e:
-            logging.error("Error al listar usuarios: %s", str(e), exc_info=True)
             context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details("Error interno del servidor")
-            return stock_pb2.UsuariosList()
+            context.set_details("Error al enlistar usuarios")
+            return UsuariosResponse()
+
+def AutenticarUsuario(self, request, context):
+    print(request.username)
+    try:
+        with app.app_context():
+            # Buscar el usuario por nombre de usuario
+            usuario = UsuarioModel.query.filter_by(username=request.username).first()
+            print(usuario)
+
+            # Verificar si el usuario existe
+            if not usuario:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details(f"Usuario '{request.username}' no encontrado.")
+                return AutenticarUsuarioResponse(autenticado=False, mensaje="Usuario no encontrado")
+
+            # Verificar la contraseña
+            if not check_password_hash(usuario.password, request.password):
+                context.set_code(grpc.StatusCode.PERMISSION_DENIED)
+                context.set_details("Contraseña incorrecta.")
+                return AutenticarUsuarioResponse(autenticado=False, mensaje="Usuario o contraseña incorrectos")
+
+            # Si todo es correcto, devolver autenticación exitosa
+            return AutenticarUsuarioResponse(autenticado=True, mensaje="Autenticación exitosa")
+
+    except Exception as e:
+        # Manejo de excepciones generales
+        context.set_code(grpc.StatusCode.INTERNAL)
+        context.set_details(f"Error al autenticar usuario: {str(e)}")
+        print(f"Error en AutenticarUsuario: {e}")  # Depuración
+        return AutenticarUsuarioResponse(autenticado=False, mensaje="Error interno")
+
+

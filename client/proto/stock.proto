@@ -9,7 +9,10 @@ service StockearteService {
   rpc CrearUsuario (UsuarioRequest) returns (UsuarioResponse);
   rpc AutenticarUsuario (LoginRequest) returns (LoginResponse);
   rpc ModificarUsuario (ModificarUsuarioRequest) returns (UsuarioResponse);
-  rpc ListarTiendas(Empty) returns (ListarTiendasResponse);
+  rpc ListarTiendas(google.protobuf.Empty) returns (ListarTiendasResponse);
+  // Añadir este método al servicio existente
+  rpc ListarTiendasCasaCentral(google.protobuf.Empty) returns (ListarTiendasResponse);
+
 
 
   // Métodos para gestionar tiendas

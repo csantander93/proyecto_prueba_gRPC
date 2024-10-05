@@ -1,62 +1,23 @@
 import grpc
 from concurrent import futures
-import stock_pb2_grpc
-from app import app
-from models.cadena import Cadena
-from models.tienda import Tienda
-from models.database import db
-from usuario_service import UsuarioService
-from tienda_service import TiendaService
-from producto_service import ProductoService
+import tienda_pb2_grpc
+from tienda_service import TiendaService  # Importa el servicio que acabamos de crear
+import usuario_pb2_grpc
+from usuario_service import UsuarioService  # Importa el servicio Usuario
+import producto_pb2_grpc
+from producto_service import ProductoService  # Importa el servicio Producto
 
-import random
-import string
-import logging
-
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def generar_codigo_tienda():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-
-def inicializar_cadena_y_tiendas():
-    with app.app_context():
-        cadena_existente = db.session.query(Cadena).filter_by(nombre='Adidas').first()
-        if not cadena_existente:
-            nueva_cadena = Cadena(nombre='Adidas')
-            db.session.add(nueva_cadena)
-            db.session.commit()
-            logging.info("Cadena inicializada: Adidas")
-            cadena_id = nueva_cadena.id_cadena
-
-            codigo_tienda = generar_codigo_tienda()
-            nueva_tienda = Tienda(
-                codigo=codigo_tienda, 
-                nombre='Tienda 1',
-                direccion='Calle Falsa 123',
-                ciudad='Ciudad Ejemplo',
-                provincia='Provincia Ejemplo',
-                habilitada=True,
-                casa_central=True,
-                cadena_id_cadena=cadena_id
-            )
-            db.session.add(nueva_tienda)
-            db.session.commit()
-            logging.info(f"Tienda inicializada: {codigo_tienda}")
-        else:
-            logging.info("La cadena ya existe: CadenaEjemplo")
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-    stock_pb2_grpc.add_UsuarioServiceServicer_to_server(UsuarioService(), server)
-    stock_pb2_grpc.add_TiendaServiceServicer_to_server(TiendaService(), server)
-    stock_pb2_grpc.add_ProductoServiceServicer_to_server(ProductoService(), server)
-    
+    tienda_pb2_grpc.add_TiendaServiceServicer_to_server(TiendaService(), server)
+    usuario_pb2_grpc.add_UsuarioServiceServicer_to_server(UsuarioService(), server)
+    producto_pb2_grpc.add_ProductoServiceServicer_to_server(ProductoService(), server)
+
     server.add_insecure_port('[::]:50051')
-    inicializar_cadena_y_tiendas()  # Inicializar dentro del contexto de la app
-    
-    logging.info("Servidor gRPC corriendo en el puerto 50051...")
     server.start()
+    print("Servidor gRPC corriendo en el puerto 50051")
     server.wait_for_termination()
 
 if __name__ == '__main__':

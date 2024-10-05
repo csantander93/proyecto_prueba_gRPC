@@ -5,62 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Usuario</title>
     <style>
+        /* Estilos básicos para la página */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
         }
         .container {
             max-width: 600px;
-            margin: 50px auto;
+            margin: auto;
             padding: 20px;
-            background-color: white;
-            border-radius: 8px;
+            background: white;
+            border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
-            color: #333;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
         }
         label {
-            margin-bottom: 10px;
-            font-weight: bold;
+            display: block;
+            margin: 10px 0 5px;
         }
         input, select {
+            width: 100%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
         }
         input[type="submit"] {
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
         }
         input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        .status {
-            display: flex;
-            justify-content: space-between;
-        }
-        .status label {
-            flex: 1;
-            margin-right: 10px;
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Registro de Usuario</h1>
-        <form action="/crearUsuario" method="POST">
+        <form action="/crear-usuario" method="POST" id="usuarioForm">
             <label for="username">Nombre de Usuario:</label>
             <input type="text" id="username" name="username" required>
 
@@ -68,13 +56,9 @@
             <input type="password" id="password" name="password" required>
 
             <label for="store">Tienda:</label>
-            <select id="store" name="store" required>
+            <select id="store" name="storeId" required>
                 <option value="" disabled selected>Seleccione una tienda o casa central</option>
-                <option value="casa-central">Casa Central</option>
-                <option value="tienda1">Tienda 1</option>
-                <option value="tienda2">Tienda 2</option>
-                <option value="tienda3">Tienda 3</option>
-                <!-- Agregar más tiendas si es necesario -->
+                <!-- Las tiendas se cargarán aquí dinámicamente -->
             </select>
 
             <label for="firstName">Nombre:</label>
@@ -83,16 +67,34 @@
             <label for="lastName">Apellido:</label>
             <input type="text" id="lastName" name="lastName" required>
 
-            <div class="status">
-                <label for="enabled">Habilitado:</label>
-                <input type="radio" id="enabled" name="status" value="habilitado" required>
-                
-                <label for="disabled">Deshabilitado:</label>
-                <input type="radio" id="disabled" name="status" value="deshabilitado" required>
-            </div>
-
             <input type="submit" value="Crear Usuario">
         </form>
     </div>
+
+    <script>
+        // Función para cargar tiendas
+        async function cargarTiendas() {
+            try {
+                const response = await fetch('/tiendas-casa-central');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const tiendas = await response.json();
+                
+                const storeSelect = document.getElementById('store');
+                tiendas.forEach(tienda => {
+                    const option = document.createElement('option');
+                    option.value = tienda.id_tienda; // Asegúrate de usar el id correcto
+                    option.textContent = `${tienda.nombre} (${tienda.codigo})`; // Muestra el nombre y código
+                    storeSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error al cargar tiendas:", error);
+            }
+        }
+    
+        // Cargar tiendas al cargar la página
+        window.onload = cargarTiendas;
+    </script>
 </body>
 </html>

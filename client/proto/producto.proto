@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package producto;
+
+service ProductoService {
+    // CRUD Methods
+    rpc CrearProducto(CrearProductoRequest) returns (ProductoResponse);
+    rpc ModificarProducto(ModificarProductoRequest) returns (ProductoResponse);
+    rpc BorrarProducto(BorrarProductoRequest) returns (ProductoResponse);
+    rpc BuscarProducto(BuscarProductoRequest) returns (ProductoResponse);
+    rpc EnlistarProductos(EnlistarProductosRequest) returns (ProductosResponse);
+}
+
+message Producto {
+    int32 id_producto = 1;
+    string codigo = 2;
+    string talle = 3;
+    string foto = 4;
+    string color = 5;
+    int32 stock = 6;
+}
+
+message CrearProductoRequest {
+    string codigo = 1;
+    string talle = 2;
+    string foto = 3;
+    string color = 4;
+    int32 stock = 5;
+}
+
+message ModificarProductoRequest {
+    int32 id_producto = 1;
+    string codigo = 2;
+    string talle = 3;
+    string foto = 4;
+    string color = 5;
+    int32 stock = 6;
+}
+
+message BorrarProductoRequest {
+    int32 id_producto = 1;
+}
+
+message BuscarProductoRequest {
+    int32 id_producto = 1;
+}
+
+message EnlistarProductosRequest {}
+
+message ProductoResponse {
+    Producto producto = 1;
+}
+
+message ProductosResponse {
+    repeated Producto productos = 1;
+}

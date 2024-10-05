@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package tienda;
+
+service TiendaService {
+    // CRUD Methods
+    rpc CrearTienda(CrearTiendaRequest) returns (TiendaResponse);
+    rpc ModificarTienda(ModificarTiendaRequest) returns (TiendaResponse);
+    rpc BorrarTienda(BorrarTiendaRequest) returns (TiendaResponse);
+    rpc BuscarTienda(BuscarTiendaRequest) returns (TiendaResponse);
+    rpc EnlistarTiendas(EnlistarTiendasRequest) returns (TiendasResponse);
+    rpc BuscarTiendaPorNombre(BuscarTiendaPorNombreRequest) returns (TiendaResponse); // Nuevo método para buscar por nombre
+}
+
+message Tienda {
+    int32 id_tienda = 1;
+    string codigo = 2;
+    string nombre = 3;
+    string direccion = 4;
+    string ciudad = 5;
+    string provincia = 6;
+    bool habilitada = 7;
+    bool casa_central = 8;
+}
+
+message CrearTiendaRequest {
+    string codigo = 1;
+    string nombre = 2;
+    string direccion = 3;
+    string ciudad = 4;
+    string provincia = 5;
+    bool habilitada = 6;
+    bool casa_central = 7;
+}
+
+message ModificarTiendaRequest {
+    int32 id_tienda = 1;
+    string codigo = 2;
+    string nombre = 3;
+    string direccion = 4;
+    string ciudad = 5;
+    string provincia = 6;
+    bool habilitada = 7;
+    bool casa_central = 8;
+}
+
+message BorrarTiendaRequest {
+    int32 id_tienda = 1;
+}
+
+message BuscarTiendaRequest {
+    int32 id_tienda = 1;
+}
+
+message BuscarTiendaPorNombreRequest { // Nuevo mensaje de solicitud
+    string nombre = 1;
+}
+
+message EnlistarTiendasRequest {}
+
+message TiendaResponse {
+    Tienda tienda = 1;
+}
+
+message TiendasResponse {
+    repeated Tienda tiendas = 1;
+}

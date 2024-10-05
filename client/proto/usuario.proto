@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package usuario;
+
+service UsuarioService {
+    // CRUD Methods
+    rpc CrearUsuario(CrearUsuarioRequest) returns (UsuarioResponse);
+    rpc ModificarUsuario(ModificarUsuarioRequest) returns (UsuarioResponse);
+    rpc BorrarUsuario(BorrarUsuarioRequest) returns (UsuarioResponse);
+    rpc BuscarUsuario(BuscarUsuarioRequest) returns (UsuarioResponse);
+    rpc EnlistarUsuarios(EnlistarUsuariosRequest) returns (UsuariosResponse);
+    
+    // Authentication
+    rpc AutenticarUsuario(AutenticarUsuarioRequest) returns (AutenticarUsuarioResponse);
+}
+
+message Usuario {
+    int32 id_usuario = 1;
+    string username = 2;
+    string password = 3;
+    bool habilitado = 4;
+    int32 tienda_idtienda = 5;
+}
+
+message CrearUsuarioRequest {
+    string username = 1;
+    string password = 2;
+    bool habilitado = 3;
+    int32 tienda_idtienda = 4;
+}
+
+message ModificarUsuarioRequest {
+    int32 id_usuario = 1;
+    string username = 2;
+    string password = 3;
+    bool habilitado = 4;
+    int32 tienda_idtienda = 5;
+}
+
+message BorrarUsuarioRequest {
+    int32 id_usuario = 1;
+}
+
+message BuscarUsuarioRequest {
+    int32 id_usuario = 1;
+}
+
+message EnlistarUsuariosRequest {}
+
+message UsuarioResponse {
+    Usuario usuario = 1;
+}
+
+message UsuariosResponse {
+    repeated Usuario usuarios = 1;
+}
+
+message AutenticarUsuarioRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message AutenticarUsuarioResponse {
+    bool autenticado = 1;
+    string mensaje = 2;
+}

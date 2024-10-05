@@ -10,7 +10,6 @@ class Tienda(db.Model):
     provincia = db.Column(db.String(45))
     habilitada = db.Column(db.Boolean)  # TINYINT en MySQL
     casa_central = db.Column(db.Boolean)  # TINYINT en MySQL
-    cadena_id_cadena = db.Column(db.Integer, db.ForeignKey('cadena.id_cadena'))
-
+    
     def __repr__(self):
         return f'<Tienda {self.codigo}, Nombre: {self.nombre}, Habilitada: {self.habilitada}>'

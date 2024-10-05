@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "@grpc/grpc-js": "^1.11.3"
+    "@grpc/grpc-js": "^1.11.3",
+    "express": "^4.21.0"
   },
   "name": "client",
   "version": "1.0.0",

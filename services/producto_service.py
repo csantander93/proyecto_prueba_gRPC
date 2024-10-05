@@ -1,119 +1,126 @@
 import grpc
-from models import db, Producto as ProductoModel
-import stock_pb2
-import stock_pb2_grpc
-from app import app
-import logging
+from producto_pb2 import ProductoResponse, ProductosResponse, Producto
+import producto_pb2_grpc
+from models import db, Producto as ProductoModel  # Modelo de Producto y base de datos
+from app import app  # La aplicación Flask configurada
 
-class ProductoService(stock_pb2_grpc.ProductoServiceServicer):
+class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
 
-    def GetProducto(self, request, context):
-        logging.debug("Received GetProducto request: %s", request)
+    def CrearProducto(self, request, context):
         try:
             with app.app_context():
-                producto = ProductoModel.query.get(request.id_producto)  # Changed to match proto
-                if producto:
-                    return stock_pb2.Producto(
-                        id_producto=producto.id,
-                        codigo=producto.codigo,
-                        talle=producto.talle,
-                        foto=producto.foto,
-                        color=producto.color,
-                        stock=producto.stock
-                    )
-                else:
-                    context.set_code(grpc.StatusCode.NOT_FOUND)
-                    context.set_details("Producto no encontrado")
-                    return stock_pb2.Producto()
-        except Exception as e:
-            logging.error("Error al obtener producto: %s", str(e), exc_info=True)
-            context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details("Error interno del servidor")
-            return stock_pb2.Producto()
-
-    def CreateProducto(self, request, context):
-        logging.debug("Received CreateProducto request: %s", request)
-        try:
-            with app.app_context():
-                producto_existente = ProductoModel.query.filter_by(codigo=request.codigo).first()
-                if producto_existente:
-                    context.set_code(grpc.StatusCode.ALREADY_EXISTS)
-                    context.set_details("Producto con ese código ya existe")
-                    return stock_pb2.Producto()
-
+                # Crear un nuevo producto en la base de datos
                 nuevo_producto = ProductoModel(
                     codigo=request.codigo,
                     talle=request.talle,
                     foto=request.foto,
                     color=request.color,
-                    stock=0  # Initial stock set to 0
+                    stock=request.stock
                 )
                 db.session.add(nuevo_producto)
                 db.session.commit()
 
-                return stock_pb2.Producto(
+                return ProductoResponse(producto=Producto(
                     id_producto=nuevo_producto.id,
                     codigo=nuevo_producto.codigo,
                     talle=nuevo_producto.talle,
                     foto=nuevo_producto.foto,
                     color=nuevo_producto.color,
                     stock=nuevo_producto.stock
-                )
+                ))
         except Exception as e:
-            logging.error("Error al crear producto: %s", str(e), exc_info=True)
             context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details("Error interno del servidor")
-            return stock_pb2.Producto()
+            context.set_details("Error al crear producto")
+            return ProductoResponse()
 
-    def UpdateStock(self, request, context):  # New method to update stock
-        logging.debug("Received UpdateStock request: %s", request)
+    def ModificarProducto(self, request, context):
         try:
             with app.app_context():
-                producto = ProductoModel.query.get(request.id_producto)
-                if not producto:
+                # Buscar el producto por nombre
+                producto = ProductoModel.query.get(request.nombre)
+                if producto:
+                    # Modificar los datos del producto
+                    producto.codigo = request.codigo
+                    producto.talle = request.talle
+                    producto.foto = request.foto
+                    producto.color = request.color
+                    producto.stock = request.stock
+                    db.session.commit()
+
+                    return ProductoResponse(producto=Producto(
+                        id_producto=producto.id,
+                        codigo=producto.codigo,
+                        talle=producto.talle,
+                        foto=producto.foto,
+                        color=producto.color,
+                        stock=producto.stock
+                    ))
+                else:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
                     context.set_details("Producto no encontrado")
-                    return stock_pb2.Producto()
-
-                # Update stock based on the received request
-                producto.stock = request.stock  # Assuming stock is passed in request
-                db.session.commit()
-
-                return stock_pb2.Producto(
-                    id_producto=producto.id,
-                    codigo=producto.codigo,
-                    talle=producto.talle,
-                    foto=producto.foto,
-                    color=producto.color,
-                    stock=producto.stock
-                )
+                    return ProductoResponse()
         except Exception as e:
-            logging.error("Error al actualizar stock: %s", str(e), exc_info=True)
             context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details("Error interno del servidor")
-            return stock_pb2.Producto()
+            context.set_details("Error al modificar producto")
+            return ProductoResponse()
 
-    def ListProductos(self, request, context):
-        logging.debug("Received ListProductos request")
+    def BorrarProducto(self, request, context):
         try:
             with app.app_context():
-                # Filter products based on user type
-                query = ProductoModel.query
+                # Buscar el producto por ID y eliminarlo
+                producto = ProductoModel.query.get(request.id_producto)
+                if producto:
+                    db.session.delete(producto)
+                    db.session.commit()
 
-                if request.usuario_tipo == stock_pb2.UsuarioCasaCentral:  # Assuming you have such enum
-                    # For Casa Central, no filtering
-                    productos = query.all()
-                elif request.usuario_tipo == stock_pb2.UsuarioTienda:  # Assuming you have such enum
-                    # For Tienda, filter by tienda_id
-                    productos = query.filter_by(tienda_id=request.tienda_id).all()
+                    return ProductoResponse(producto=Producto(
+                        id_producto=producto.id,
+                        codigo=producto.codigo,
+                        talle=producto.talle,
+                        foto=producto.foto,
+                        color=producto.color,
+                        stock=producto.stock
+                    ))
                 else:
-                    context.set_code(grpc.StatusCode.PERMISSION_DENIED)
-                    context.set_details("Tipo de usuario no permitido")
-                    return stock_pb2.ProductosList()
+                    context.set_code(grpc.StatusCode.NOT_FOUND)
+                    context.set_details("Producto no encontrado")
+                    return ProductoResponse()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Error al borrar producto")
+            return ProductoResponse()
 
-                productos_list = stock_pb2.ProductosList()
+    def BuscarProducto(self, request, context):
+        try:
+            with app.app_context():
+                # Buscar el producto por ID
+                producto = ProductoModel.query.get(request.id_producto)
+                if producto:
+                    return ProductoResponse(producto=Producto(
+                        id_producto=producto.id,
+                        codigo=producto.codigo,
+                        talle=producto.talle,
+                        foto=producto.foto,
+                        color=producto.color,
+                        stock=producto.stock
+                    ))
+                else:
+                    context.set_code(grpc.StatusCode.NOT_FOUND)
+                    context.set_details("Producto no encontrado")
+                    return ProductoResponse()
+        except Exception as e:
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Error al buscar producto")
+            return ProductoResponse()
+
+    def EnlistarProductos(self, request, context):
+        try:
+            with app.app_context():
+                # Listar todos los productos
+                productos = ProductoModel.query.all()
+                response = ProductosResponse()
                 for producto in productos:
-                    productos_list.productos.add(
+                    response.productos.add(
                         id_producto=producto.id,
                         codigo=producto.codigo,
                         talle=producto.talle,
@@ -121,9 +128,8 @@ class ProductoService(stock_pb2_grpc.ProductoServiceServicer):
                         color=producto.color,
                         stock=producto.stock
                     )
-                return productos_list
+                return response
         except Exception as e:
-            logging.error("Error al listar productos: %s", str(e), exc_info=True)
             context.set_code(grpc.StatusCode.INTERNAL)
-            context.set_details("Error interno del servidor")
-            return stock_pb2.ProductosList()
+            context.set_details("Error al enlistar productos")
+            return ProductosResponse()
