@@ -143,8 +143,8 @@ function buscarTiendaPorNombre(nombreTienda) {
 // Función para probar CrearUsuario
 function crearUsuario() {
   const nuevoUsuario = {
-    username: 'usuarioTest5',
-    password: 'passwordSeguro5',
+    username: 'usuarioTest',
+    password: 'passwordSeguro',
     habilitado: true,
     tienda_idtienda: 1
   };
@@ -317,7 +317,7 @@ function enlistarProductos() {
 }
 
 // Llamadas de prueba Tienda
-crearTienda(); //probado ok
+//crearTienda(); //probado ok
 //modificarTienda(2); // probado ok
 //borrarTienda(2); // probado ok
 //buscarTienda(3); // probado ok
@@ -335,7 +335,7 @@ crearUsuario(); // probado ok
 // Llamadas de prueba producto
 
 // Llamadas de prueba Producto
-crearProducto(); // probar creación
+//crearProducto(); // probar creación
 // modificarProducto(1); // Descomentar y reemplazar con el ID real
 // borrarProducto(1); // Descomentar y reemplazar con el ID real
 // buscarProducto(1); // Descomentar y reemplazar con el ID real
