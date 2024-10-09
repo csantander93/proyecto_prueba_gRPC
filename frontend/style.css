@@ -20,8 +20,67 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s; /* Efecto de transición */
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Color de fondo al pasar el mouse */
+}
+
+nav {
+    background-color: #4CAF50; /* Color de fondo del menú */
+    padding: 10px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra */
+    text-align: center; /* Centrar el texto */
+    display: flex; /* Flexbox para alinear elementos */
+    justify-content: space-between; /* Espacio entre los elementos */
+    align-items: center; /* Alinear elementos verticalmente */
+}
+
+nav a {
+    color: white; /* Color del texto */
+    text-decoration: none; /* Sin subrayado */
+    padding: 10px 15px; /* Espaciado interno para los enlaces */
+    border-radius: 4px; /* Bordes redondeados para los enlaces */
+    transition: background-color 0.3s, transform 0.3s; /* Efecto de transición */
+}
+
+nav a:hover {
+    background-color: #45a049; /* Color de fondo al pasar el mouse */
+    transform: scale(1.05); /* Efecto de escala al pasar el mouse */
+}
+
+#cerrarSesion {
+    background-color: #d9534f; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px 15px; /* Espaciado interno */
+    cursor: pointer; /* Cambiar cursor al pasar el mouse */
+    transition: background-color 0.3s; /* Efecto de transición */
+}
+
+#cerrarSesion:hover {
+    background-color: #c9302c; /* Color de fondo al pasar el mouse */
+}
+.lista-tiendas-container {
+    max-width: 600px; /* Ancho máximo del contenedor */
+    margin: 20px auto; /* Centrar horizontalmente */
+    padding: 20px; /* Espaciado interno */
+    border: 1px solid #ddd; /* Borde */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background-color: white; /* Color de fondo */
+    text-align: center; /* Centrar el texto dentro del div */
+}
+.form-container {
+    max-width: 600px; /* Ancho máximo del contenedor */
+    margin: 20px auto; /* Centrar horizontalmente */
+    padding: 20px; /* Espaciado interno */
+    border: 1px solid #ddd; /* Borde */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background-color: white; /* Color de fondo */
+    text-align: center; /* Centrar el texto dentro del div */
 }

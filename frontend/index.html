@@ -7,10 +7,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Gestión de Stock</h1>
+
+ <!-- Menú de navegación con redirecciones -->
+ <nav style="text-align: center; margin-bottom: 20px;">
+    <a href="index.html" style="margin-right: 15px;">Stockearte</a>
+    <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
+    <a href="usuarios.html" style="margin-right: 15px;">Usuarios</a>
+    <a href="productos.html">Productos</a>
+    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+</nav>
+     <!-- Vista para crear tienda -->
+    <div class="lista-tiendas-container">
+        <h2>Listado de tienda</h2>
+        <a href="crearTienda.html"><button onclick="crearTienda()">Nueva Tienda</button></a>
+        <ul id="lista-tiendas"></ul>
+    </div>
 
     <!-- Vista para crear tienda -->
-    <div>
+    <!-- <div>
         <h2>Crear Tienda</h2>
         <input id="tiendaCodigo" placeholder="Código de Tienda">
         <input id="tiendaDireccion" placeholder="Dirección">
@@ -20,7 +34,7 @@
     </div>
 
     <!-- Vista para modificar tienda -->
-    <div>
+    <!--<div>
         <h2>Modificar Tienda</h2>
         <input id="modificarTiendaCodigo" placeholder="Código de Tienda">
         <input id="modificarTiendaDireccion" placeholder="Nueva Dirección">
@@ -30,15 +44,15 @@
     </div>
 
     <!-- Vista para habilitar/deshabilitar tienda -->
-    <div>
+    <!-- <div>
         <h2>Alternar Tienda</h2>
         <input id="alternarTiendaCodigo" placeholder="Código de Tienda">
         <button onclick="alternarTienda()">Habilitar/Inhabilitar Tienda</button>
-    </div>
+    </div> -->
 
 
     <!-- Vista para crear producto -->
-    <div>
+    <!-- <div>
         <h2>Crear Producto</h2>
         <input id="productoNombre" placeholder="Nombre del Producto">
         <input id="productoCodigo" placeholder="Código">
@@ -49,7 +63,7 @@
     </div>
 
     <!-- Vista para modificar producto -->
-    <div>
+    <!-- <div>
         <h2>Modificar Producto</h2>
         <input id="modificarProductoCodigo" placeholder="Código del Producto">
         <input id="modificarProductoNombre" placeholder="Nuevo Nombre">
@@ -57,23 +71,23 @@
         <input id="modificarProductoColor" placeholder="Nuevo Color">
         <input id="modificarProductoStock" placeholder="Nuevo Stock">
         <button onclick="modificarProducto()">Modificar Producto</button>
-    </div>
+    </div> -->
 
     <!-- Vista para eliminar producto -->
-    <div>
+    <!-- <div>
         <h2>Eliminar Producto</h2>
         <input id="eliminarProductoCodigo" placeholder="Código del Producto">
         <button onclick="eliminarProducto()">Eliminar Producto</button>
-    </div>
+    </div> -->
 
     <!-- Vista para buscar productos -->
-    <div>
+    <!-- <div>
         <h2>Buscar Productos</h2>
         <input id="busquedaProducto" placeholder="Nombre del Producto">
         <button onclick="buscarProductos()">Buscar</button>
     </div>
 
-    <div id="resultados"></div>
+    <div id="resultados"></div>  -->
 
     <script>
         // Función para crear tienda
@@ -258,7 +272,28 @@
                 console.error('Error eliminando producto:', error);
             }
         }
+// Función para enlistar tiendas
+async function enlistarTiendas() {
+            try {
+                const response = await fetch('/index'); // Ajusta la ruta según tu API
+                const tiendas = await response.json();
 
+                const listaTiendas = document.getElementById('lista-tiendas');
+                listaTiendas.innerHTML = ''; // Limpiar la lista antes de agregar nuevas tiendas
+
+                // Iterar sobre las tiendas y agregarlas al contenedor
+                tiendas.forEach(tienda => {
+                    const li = document.createElement('li'); // Crear un elemento <li> para cada tienda
+                    li.textContent = `${tienda.codigo} - ${tienda.direccion} - ${tienda.ciudad} - ${tienda.provincia}`; // Personaliza cómo mostrar los datos
+                    listaTiendas.appendChild(li); // Agregar el <li> al <ul>
+                });
+            } catch (error) {
+                console.error('Error enlistando tiendas:', error);
+            }
+        }
+
+        // Llamar a enlistarTiendas cuando cargue la página
+        window.onload = enlistarTiendas;
         // Función para buscar productos
         async function buscarProductos() {
             const nombre = document.getElementById('busquedaProducto').value;
@@ -275,6 +310,12 @@
             } catch (error) {
                 console.error('Error buscando productos:', error);
             }
+        }
+        // Función para cerrar sesión 
+        function cerrarSesion() {
+            alert('Cerrando sesión...');
+            // aca hay que redireccionar el cierre de sesion falta hacerlo
+            // window.location.href = 'ruta_de_cierre_de_sesion';
         }
     </script>
 </body>
