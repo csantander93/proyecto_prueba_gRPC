@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Nueva Tienda</title>
+</head>
+<body>
+    <h1>Crear Nueva Tienda</h1>
+        <label for="codigo">Código:</label>
+        <input type="text" id="tiendaCodigo" name="codigo" required><br>
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="tiendaDireccion" name="direccion" required><br>
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="tiendaCiudad" name="ciudad" required><br>
+        <label for="provincia">Provincia:</label>
+        <input type="text" id="tiendaProvincia" name="provincia" required><br>
+        <button onclick="crearTienda()">Confirmar Tienda</button>
+    </form>
+</body>
+<script>
+    // Función para crear tienda
+    async function crearTienda() {
+            const tienda = {
+                codigo: document.getElementById('tiendaCodigo').value,
+                direccion: document.getElementById('tiendaDireccion').value,
+                ciudad: document.getElementById('tiendaCiudad').value,
+                provincia: document.getElementById('tiendaProvincia').value
+            };
+
+            try {
+                const response = await fetch('/crear-tienda', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tienda)
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Tienda creada con éxito');
+            } catch (error) {
+                console.error('Error creando tienda:', error);
+            }
+        }
+
+</script>
+</html>
