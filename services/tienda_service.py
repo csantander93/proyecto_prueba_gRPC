@@ -1,6 +1,6 @@
 import grpc
-from tienda_pb2 import TiendaResponse, TiendasResponse, Tienda  # Importa los mensajes
-import tienda_pb2_grpc  # Importa el servicio gRPC
+from generated.tienda_pb2 import TiendaResponse, TiendasResponse, Tienda  # Importa los mensajes
+import generated.tienda_pb2_grpc  # Importa el servicio gRPC
 from models import db, Tienda as TiendaModel  # Importa el modelo Tienda y la conexión de base de datos (SQLAlchemy)
 from app import app  # La app Flask configurada
 import datetime

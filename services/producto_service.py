@@ -1,6 +1,6 @@
 import grpc
-from producto_pb2 import ProductoResponse, ProductosResponse, Producto
-import producto_pb2_grpc
+from generated.producto_pb2 import ProductoResponse, ProductosResponse, Producto
+import generated.producto_pb2_grpc
 from models import db, Producto as ProductoModel  # Modelo de Producto y base de datos
 from app import app  # La aplicación Flask configurada
 

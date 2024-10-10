@@ -1,6 +1,6 @@
 import grpc
-from usuario_pb2 import UsuarioResponse, UsuariosResponse, Usuario, AutenticarUsuarioResponse
-import usuario_pb2_grpc
+from generated.usuario_pb2 import UsuarioResponse, UsuariosResponse, Usuario, AutenticarUsuarioResponse
+import generated.usuario_pb2_grpc
 from models import db, Usuario as UsuarioModel  # Importa el modelo Usuario y la base de datos
 from app import app  # La app Flask configurada
 from werkzeug.security import generate_password_hash, check_password_hash  # Para el manejo de contraseñas

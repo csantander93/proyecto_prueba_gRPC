@@ -1,7 +1,6 @@
 from confluent_kafka import Consumer, KafkaException, KafkaError
 
 def consumir_mensajes():
-    # Configurar el consumidor de Kafka
     conf = {
         'bootstrap.servers': 'localhost:9092',  # Dirección del broker de Kafka
         'group.id': 'mi-grupo',  # Identificador del grupo de consumidores
