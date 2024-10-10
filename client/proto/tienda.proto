@@ -8,6 +8,7 @@ service TiendaService {
     rpc ModificarTienda(ModificarTiendaRequest) returns (TiendaResponse);
     rpc BorrarTienda(BorrarTiendaRequest) returns (TiendaResponse);
     rpc BuscarTienda(BuscarTiendaRequest) returns (TiendaResponse);
+    rpc CrearOrdenDeCompra (OrdenCompraRequest) returns (TiendaResponse);
     rpc EnlistarTiendas(EnlistarTiendasRequest) returns (TiendasResponse);
     rpc BuscarTiendaPorNombre(BuscarTiendaPorNombreRequest) returns (TiendaResponse); // Nuevo método para buscar por nombre
 }
@@ -31,6 +32,19 @@ message CrearTiendaRequest {
     string provincia = 5;
     bool habilitada = 6;
     bool casa_central = 7;
+}
+
+message OrdenCompraRequest {
+    string codigo_tienda = 1;
+    repeated Item items = 2;
+    string observaciones = 3;
+}
+
+message Item {
+    string codigo_articulo = 1;
+    string color = 2;
+    string talle = 3;
+    int32 cantidad = 4;
 }
 
 message ModificarTiendaRequest {

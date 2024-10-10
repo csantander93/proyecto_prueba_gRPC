@@ -5,7 +5,7 @@ import warnings
 
 import tienda_pb2 as tienda__pb2
 
-GRPC_GENERATED_VERSION = '1.66.2'
+GRPC_GENERATED_VERSION = '1.66.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -54,6 +54,11 @@ class TiendaServiceStub(object):
                 request_serializer=tienda__pb2.BuscarTiendaRequest.SerializeToString,
                 response_deserializer=tienda__pb2.TiendaResponse.FromString,
                 _registered_method=True)
+        self.CrearOrdenDeCompra = channel.unary_unary(
+                '/tienda.TiendaService/CrearOrdenDeCompra',
+                request_serializer=tienda__pb2.OrdenCompraRequest.SerializeToString,
+                response_deserializer=tienda__pb2.TiendaResponse.FromString,
+                _registered_method=True)
         self.EnlistarTiendas = channel.unary_unary(
                 '/tienda.TiendaService/EnlistarTiendas',
                 request_serializer=tienda__pb2.EnlistarTiendasRequest.SerializeToString,
@@ -94,6 +99,12 @@ class TiendaServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CrearOrdenDeCompra(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def EnlistarTiendas(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -128,6 +139,11 @@ def add_TiendaServiceServicer_to_server(servicer, server):
             'BuscarTienda': grpc.unary_unary_rpc_method_handler(
                     servicer.BuscarTienda,
                     request_deserializer=tienda__pb2.BuscarTiendaRequest.FromString,
+                    response_serializer=tienda__pb2.TiendaResponse.SerializeToString,
+            ),
+            'CrearOrdenDeCompra': grpc.unary_unary_rpc_method_handler(
+                    servicer.CrearOrdenDeCompra,
+                    request_deserializer=tienda__pb2.OrdenCompraRequest.FromString,
                     response_serializer=tienda__pb2.TiendaResponse.SerializeToString,
             ),
             'EnlistarTiendas': grpc.unary_unary_rpc_method_handler(
@@ -248,6 +264,33 @@ class TiendaService(object):
             target,
             '/tienda.TiendaService/BuscarTienda',
             tienda__pb2.BuscarTiendaRequest.SerializeToString,
+            tienda__pb2.TiendaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CrearOrdenDeCompra(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/tienda.TiendaService/CrearOrdenDeCompra',
+            tienda__pb2.OrdenCompraRequest.SerializeToString,
             tienda__pb2.TiendaResponse.FromString,
             options,
             channel_credentials,

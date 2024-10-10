@@ -10,6 +10,9 @@ class Tienda(db.Model):
     provincia = db.Column(db.String(45))
     habilitada = db.Column(db.Boolean)  # TINYINT en MySQL
     casa_central = db.Column(db.Boolean)  # TINYINT en MySQL
+
+    ordenes_compra = db.relationship("OrdenCompraModel", back_populates="store", lazy=True)
+
     
     def __repr__(self):
         return f'<Tienda {self.codigo}, Nombre: {self.nombre}, Habilitada: {self.habilitada}>'

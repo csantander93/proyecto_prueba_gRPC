@@ -10,9 +10,12 @@ class Producto(db.Model):
     color = db.Column(db.String(45))
     stock = db.Column(db.Integer)
 
+
+    items = db.relationship("ItemModel", back_populates="producto", cascade="all, delete-orphan")
     # Relación con Tienda
     id_tienda = db.Column(db.Integer, db.ForeignKey('tienda.id_tienda'), nullable=False)  # Clave foránea a tienda
     tienda = db.relationship('Tienda', backref=db.backref('productos', lazy=True))  # Relación con Tienda
     
+
     def __repr__(self):
-        return f'<Producto {self.codigo}, Talle: {self.talle}, Color: {self.color}>'
+        return f'<Producto {self.id}, Nombre: {self.nombre}>'

@@ -9,6 +9,8 @@ service StockearteService {
   rpc CrearUsuario (UsuarioRequest) returns (UsuarioResponse);
   rpc AutenticarUsuario (LoginRequest) returns (LoginResponse);
   rpc ModificarUsuario (ModificarUsuarioRequest) returns (UsuarioResponse);
+  rpc CrearOrdenDeCompra (OrdenCompraRequest) returns (OrdenCompraResponse);
+
   rpc ListarTiendas(google.protobuf.Empty) returns (ListarTiendasResponse);
   // Añadir este método al servicio existente
   rpc ListarTiendasCasaCentral(google.protobuf.Empty) returns (ListarTiendasResponse);
@@ -171,5 +173,20 @@ message BuscarTiendasResponse {
   repeated Tienda tiendas = 1;
 }
 
+message OrdenCompraRequest {
+    string codigo_tienda = 1;
+    repeated Item items = 2;
+    string observaciones = 3;
+}
 
+message Item {
+    string codigo_articulo = 1;
+    string color = 2;
+    string talle = 3;
+    int32 cantidad = 4;
+}
+
+message OrdenCompraResponse {
+    string mensaje = 1;
+}
 

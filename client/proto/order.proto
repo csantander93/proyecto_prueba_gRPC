@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package order;
+
+// Mensaje para los ítems de la orden
+message Item {
+    string codigo_articulo = 1;
+    string color = 2;
+    string talle = 3;
+    int32 cantidad = 4;
+}
+
+// Mensaje para la orden de compra
+message Order {
+    int32 id = 1;
+    int32 codigo_tienda = 2;
+    string estado = 3;
+    string fecha_solicitud = 4;  // Considera usar tipos de fecha si es necesario
+    string fecha_recepcion = 5;   // Considera usar tipos de fecha si es necesario
+    string observaciones = 6;
+    string orden_despacho = 7;
+    repeated Item items = 8;  // Lista de ítems
+}
+
+// Mensaje de solicitud para crear una orden
+message CreateOrderRequest {
+    int32 codigo_tienda = 1;
+    string estado = 2;
+    string observaciones = 3;
+    string orden_despacho = 4;
+    string fecha_solicitud = 5;  // Considera usar tipos de fecha si es necesario
+    string fecha_recepcion = 6;   // Considera usar tipos de fecha si es necesario
+    repeated Item items = 7;  // Lista de ítems
+}
+
+// Mensaje de respuesta para crear una orden
+message CreateOrderResponse {
+    int32 id = 1;
+    int32 codigo_tienda = 2;
+    string estado = 3;
+    string fecha_solicitud = 4;  // Considera usar tipos de fecha si es necesario
+    string fecha_recepcion = 5;   // Considera usar tipos de fecha si es necesario
+    string observaciones = 6;
+    string orden_despacho = 7;
+    repeated Item items = 8; }
+
+// Mensaje de solicitud para obtener una orden
+message GetOrderRequest {
+    int32 id = 1;
+}
+
+// Mensaje de respuesta para obtener una orden
+message GetOrderResponse {
+    Order order = 1;  // Devuelve la orden
+}
+
+// Mensaje de solicitud para actualizar una orden
+message UpdateOrderRequest {
+    int32 id = 1;
+    int32 codigo_tienda = 2;
+    string estado = 3;
+    string observaciones = 4;
+    string orden_despacho = 5;
+    string fecha_recepcion = 6;   // Considera usar tipos de fecha si es necesario
+}
+
+// Mensaje de solicitud para eliminar una orden
+message DeleteOrderRequest {
+    int32 id = 1;
+}
+
+// Servicio para manejar las órdenes
+service OrderService {
+    rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+    rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+    rpc UpdateOrder(UpdateOrderRequest) returns (Order);
+    rpc DeleteOrder(DeleteOrderRequest) returns (Order);
+}

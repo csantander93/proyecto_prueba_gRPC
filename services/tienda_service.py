@@ -3,6 +3,8 @@ from tienda_pb2 import TiendaResponse, TiendasResponse, Tienda  # Importa los me
 import tienda_pb2_grpc  # Importa el servicio gRPC
 from models import db, Tienda as TiendaModel  # Importa el modelo Tienda y la conexión de base de datos (SQLAlchemy)
 from app import app  # La app Flask configurada
+import datetime
+
 
 class TiendaService(tienda_pb2_grpc.TiendaServiceServicer):
 
@@ -96,7 +98,46 @@ class TiendaService(tienda_pb2_grpc.TiendaServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details("Error al borrar tienda")
             return TiendaResponse()
+        
+    
+    # def CrearOrdenDeCompra(self, request, context):
+    #     try:
+    #         with app.app_context():
+    #             nueva_orden = OrdenCompraModel(
+    #                 codigo_tienda=request.codigo_tienda,
+    #                 estado='SOLICITADA',
+    #                 fecha_solicitud=datetime.now(),
+    #                 # Aquí agregas los items, observaciones, etc.
+    #             )
+    #             db.session.add(nueva_orden)
+    #             db.session.commit()
 
+    #             # Preparar el mensaje para Kafka
+    #             mensaje = {
+    #                 'codigo_tienda': nueva_orden.codigo_tienda,
+    #                 'id_orden': nueva_orden.id,
+    #                 'items': request.items,  # Los items se mandan como lista
+    #                 'fecha_solicitud': nueva_orden.fecha_solicitud.isoformat()
+    #             }
+
+    #             # Enviar el mensaje al topic de Kafka
+    #             # producer.send('orden-de-compra', mensaje)
+
+    #             print(f"Orden de compra {nueva_orden.id} creada y enviada a Kafka")
+
+    #             # Retornar la respuesta del gRPC
+    #             return TiendaResponse(
+    #                 tienda=Tienda(
+    #                     codigo=nueva_orden.codigo_tienda,
+    #                     estado=nueva_orden.estado,
+    #                     # Otros campos de la respuesta
+    #                 )
+    #             )
+    #     except Exception as e:
+    #         print(f"Error al crear orden de compra: {str(e)}")
+    #         context.set_code(grpc.StatusCode.INTERNAL)
+    #         context.set_details("Error al crear orden de compra")
+    #         return TiendaResponse()
         
     def BuscarTiendaPorNombre(self, request, context):
         try:
@@ -175,3 +216,17 @@ class TiendaService(tienda_pb2_grpc.TiendaServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Error al enlistar tiendas: {str(e)}")  # Include the error details
             return TiendasResponse()
+
+    # def validar_orden(orden):
+    #     """Validar si la orden de compra puede ser aceptada o debe ser rechazada."""
+    #     for item in orden['items']:
+    #         # Simulación: Verificar si el stock del artículo es suficiente
+    #         if not verificar_stock(item['codigo'], item['cantidad']):
+    #             return False, f"Artículo {item['codigo']} no disponible o stock insuficiente"
+    #     return True, "Orden aceptada"
+
+    # def verificar_stock(codigo_articulo, cantidad_solicitada):
+    #     """Simular la verificación de stock en el sistema del proveedor."""
+    #     # Supongamos que el stock es insuficiente si la cantidad solicitada es mayor a 10
+    #     stock_disponible = 10
+    #     return cantidad_solicitada <= stock_disponible
