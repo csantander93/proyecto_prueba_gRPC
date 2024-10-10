@@ -322,10 +322,10 @@ function enlistarProductos() {
 //borrarTienda(2); // probado ok
 //buscarTienda(3); // probado ok
 //enlistarTiendas(); // probado ok
-//buscarTiendaPorNombre('Santa'); //probado ok
+//buscarTiendaPorNombre('nomej'); //probado ok
 
 // Llamadas de prueba usuario
-crearUsuario(); // probado ok
+//crearUsuario(); // probado ok
 //modificarUsuario(5); // probado ok
 //borrarUsuario(5); // probado ok
 //buscarUsuario("usuarioModificado"); // Reemplazar con el nombre
@@ -336,7 +336,7 @@ crearUsuario(); // probado ok
 
 // Llamadas de prueba Producto
 //crearProducto(); // probar creación
-// modificarProducto(1); // Descomentar y reemplazar con el ID real
+ modificarProducto(1); // Descomentar y reemplazar con el ID real
 // borrarProducto(1); // Descomentar y reemplazar con el ID real
 // buscarProducto(1); // Descomentar y reemplazar con el ID real
 // enlistarProductos(); // probar listado

@@ -1,4 +1,5 @@
 from .database import db
+from sqlalchemy import event
 
 class Tienda(db.Model):
     __tablename__ = 'tienda'

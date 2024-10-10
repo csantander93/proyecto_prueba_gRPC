@@ -48,7 +48,7 @@ message BorrarProductoRequest {
 }
 
 message BuscarProductoRequest {
-    string nombre = 1; // Cambiado: búsqueda por nombre en lugar de id_producto
+    string nombre = 3; // Cambiado: búsqueda por nombre en lugar de id_producto
 }
 
 message EnlistarProductosRequest {}
