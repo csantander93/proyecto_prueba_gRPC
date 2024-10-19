@@ -181,8 +181,6 @@ const packageDefinitionStock = protoLoader.loadSync(PROTO_PATH_STOCK, {
   defaults: true,
   oneofs: true
 });
-const stock_proto = grpc.loadPackageDefinition(packageDefinitionStock).stock;
-
 // Carga del archivo .proto para tienda
 const PROTO_PATH_TIENDA = path.join(__dirname, 'proto', 'tienda.proto');
 const packageDefinitionTienda = protoLoader.loadSync(PROTO_PATH_TIENDA, {
@@ -311,5 +309,5 @@ app.get('/tiendas-casa-central', (req, res) => {
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Cliente escuchando en http://localhost:${PORT}`);
+  console.log(`Cliente escuchando en http://localhost:${PORT}/login`);
 });

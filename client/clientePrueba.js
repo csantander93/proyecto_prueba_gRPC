@@ -440,7 +440,7 @@ function crearOrdenDeCompra(orden, callback) {
   ordenClient.CreateOrder(orden, callback);
 }
 
-// Rutas de Express
+
 
 // Ruta para servir el archivo login.html
 app.get('/login', (req, res) => {
@@ -537,8 +537,141 @@ app.get('/tiendas-casa-central', (req, res) => {
   });
 });
 
-// Iniciar el servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Cliente escuchando en http://localhost:${PORT}`);
-});
+
+
+// Función para probar EnlistarUsuarios
+function enlistarUsuarios() {
+  userClient.EnlistarUsuarios({}, (error, response) => {
+      if (error) {
+          console.error('Error al enlistar usuarios:', error.details); // Muestra el error si lo hay
+      } else {
+          console.log('Usuarios enlistados:', response.usuarios);
+          response.usuarios.forEach(usuario => {
+              console.log(`ID: ${usuario.id_usuario}, Username: ${usuario.username}`);
+          });
+      }
+  });
+}
+
+// Función para probar AutenticarUsuario
+function autenticarUsuario() {
+  const credenciales = {
+    username: 'usuarioTest2',
+    password: 'passwordSeguro2'
+  };
+
+  userClient.AutenticarUsuario(credenciales, (error, response) => {
+    if (error) {
+      console.error('Error autenticando usuario:', error);
+    } else {
+      if (response.autenticado) {
+        console.log('Autenticación exitosa:', response.mensaje);
+      } else {
+        console.log('Fallo en la autenticación:', response.mensaje);
+      }
+    }
+  });
+}
+
+// Función para probar CrearProducto
+function crearProducto() {
+  const nuevoProducto = {
+    codigo: 'P123',
+    nombre: 'Nombre del Producto',  // Agregado: nombre del producto
+    talle: 'M',
+    foto: 'url_a_la_foto',
+    color: 'rojo',
+    stock: 50,
+    id_tienda: 1  // Agregado: ID de la tienda
+  };
+
+  productoClient.CrearProducto(nuevoProducto, (error, response) => {
+    if (error) {
+      console.error('Error creando producto:', error);
+    } else {
+      console.log('Producto creado con éxito:', response.producto);
+    }
+  });
+}
+
+// Función para probar ModificarProducto
+function modificarProducto(idProducto) {
+  const productoModificado = {
+    id_producto: idProducto,
+    codigo: 'P111',
+    nombre: 'Nuevo Nombre', // Agregado: nombre del producto
+    talle: 'L',
+    foto: 'nueva_url_a_la_foto',
+    color: 'azul',
+    stock: 100,
+    id_tienda: 'ID_de_la_tienda' // Agregado: ID de la tienda
+  };
+
+  productoClient.ModificarProducto(productoModificado, (error, response) => {
+    if (error) {
+      console.error('Error modificando producto:', error);
+    } else {
+      console.log('Producto modificado con éxito:', response.producto);
+    }
+  });
+}
+
+// Función para probar BorrarProducto
+function borrarProducto(idProducto) {
+  productoClient.BorrarProducto({ id_producto: idProducto }, (error, response) => {
+    if (error) {
+      console.error('Error borrando producto:', error);
+    } else {
+      console.log('Producto borrado con éxito:', response.producto);
+    }
+  });
+}
+
+// Función para probar BuscarProducto
+function buscarProducto(idProducto) {
+  productoClient.BuscarProducto({ id_producto: idProducto }, (error, response) => {
+    if (error) {
+      console.error('Error buscando producto:', error);
+    } else if (response.producto) {
+      console.log('Producto encontrado:', response.producto);
+    } else {
+      console.log('Producto no encontrado');
+    }
+  });
+}
+
+// Función para probar EnlistarProductos
+function enlistarProductos() {
+  productoClient.EnlistarProductos({}, (error, response) => {
+    if (error) {
+      console.error('Error enlistando productos:', error);
+    } else {
+      console.log('Productos encontrados:', response);
+    }
+  });
+}
+
+// Llamadas de prueba Tienda
+//crearTienda(); //probado ok
+//modificarTienda(2); // probado ok
+//borrarTienda(2); // probado ok
+//buscarTienda(3); // probado ok
+//enlistarTiendas(); // probado ok
+//buscarTiendaPorNombre('Santa'); //probado ok
+
+// Llamadas de prueba usuario
+crearUsuario(); // probado ok
+//modificarUsuario(5); // probado ok
+//borrarUsuario(5); // probado ok
+//buscarUsuario("usuarioModificado"); // Reemplazar con el nombre
+//enlistarUsuarios(); // probado ok
+//autenticarUsuario(); // probado ok
+
+// Llamadas de prueba producto
+
+// Llamadas de prueba Producto
+//crearProducto(); // probar creación
+// modificarProducto(1); // Descomentar y reemplazar con el ID real
+// borrarProducto(1); // Descomentar y reemplazar con el ID real
+// buscarProducto(1); // Descomentar y reemplazar con el ID real
+// enlistarProductos(); // probar listado
