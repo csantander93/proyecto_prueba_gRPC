@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Stock</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+ <!-- Menú de navegación con redirecciones -->
+ <nav style="text-align: center; margin-bottom: 20px;">
+    <a href="index.html" style="margin-right: 15px;">Stockearte</a>
+    <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
+    <a href="usuario.html" style="margin-right: 15px;">Usuarios</a>
+    <a href="producto.html">Productos</a>
+    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+</nav>
+    <!-- Vista para crear producto -->
+    <div class="form-container">
+        <h2>Crear Producto</h2>
+        <input id="productoNombre" placeholder="Nombre del Producto">
+        <input id="productoCodigo" placeholder="Código">
+        <input id="productoTalle" placeholder="Talle">
+        <input id="productoColor" placeholder="Color">
+        <input id="productoStock" placeholder="Stock">
+        <button onclick="crearProducto()">Crear Producto</button>
+    </div>
+
+    <!-- Vista para modificar producto -->
+    <div class="form-container">
+        <h2>Modificar Producto</h2>
+        <input id="modificarProductoCodigo" placeholder="Código del Producto">
+        <input id="modificarProductoNombre" placeholder="Nuevo Nombre">
+        <input id="modificarProductoTalle" placeholder="Nuevo Talle">
+        <input id="modificarProductoColor" placeholder="Nuevo Color">
+        <input id="modificarProductoStock" placeholder="Nuevo Stock">
+        <button onclick="modificarProducto()">Modificar Producto</button>
+    </div> 
+
+    <!-- Vista para eliminar producto -->
+     <div class="form-container">
+        <h2>Eliminar Producto</h2>
+        <input id="eliminarProductoCodigo" placeholder="Código del Producto">
+        <button onclick="eliminarProducto()">Eliminar Producto</button>
+    </div> 
+
+    <!-- Vista para buscar productos -->
+     <div class="form-container">
+        <h2>Buscar Productos</h2>
+        <input id="busquedaProducto" placeholder="Nombre del Producto">
+        <button onclick="buscarProductos()">Buscar</button>
+    </div>
+    <div id="resultados"></div> 
+</body>
+</html>

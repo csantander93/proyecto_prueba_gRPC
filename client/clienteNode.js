@@ -311,5 +311,5 @@ app.get('/tiendas-casa-central', (req, res) => {
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Cliente escuchando en http://localhost:${PORT}`);
+  console.log(`Cliente escuchando en http://localhost:${PORT}/login`);
 });
