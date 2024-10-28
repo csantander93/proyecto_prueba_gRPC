@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package orden_compra;
+
+enum EstadoOrden {
+  SOLICITADA = 0;
+  RECHAZADA = 1;
+  ACEPTADA = 2;
+  RECIBIDA = 3;
+}
+
+message Item {
+  string codigo_articulo = 1;
+  string color = 2;
+  string talle = 3;
+  int32 cantidad_solicitada = 4;
+}
+
+message OrdenDeCompra {
+  int32 id = 1;
+  string codigo_tienda = 2;
+  repeated Item items = 3;
+  EstadoOrden estado = 4;
+  string observaciones = 5;
+  string orden_despacho = 6;
+  string fecha_solicitud = 7;
+  string fecha_recepcion = 8;
+}
+
+// Mensajes para crear una orden
+message CrearOrdenRequest {
+  OrdenDeCompra orden = 1;
+}
+
+message CrearOrdenResponse {
+  bool exito = 1;
+  string mensaje = 2;
+}
+
+// Mensajes para obtener una orden por ID
+message ObtenerOrdenRequest {
+  int32 id_orden = 1;
+}
+
+message ObtenerOrdenResponse {
+  OrdenDeCompra orden = 1;
+}
+
+// Mensajes para actualizar una orden
+message ModificarOrdenRequest {
+  int32 id_orden = 1;
+  EstadoOrden estado = 2;
+  string observaciones = 3;
+}
+
+message ModificarOrdenResponse {
+  bool exito = 1;
+  string mensaje = 2;
+}
+
+// Mensajes para eliminar una orden por ID
+message BorrarOrdenRequest {
+  int32 id_orden = 1;
+}
+
+message BorrarOrdenResponse {
+  bool exito = 1;
+  string mensaje = 2;
+}
+
+// Mensajes para listar todas las órdenes
+message EnlistarOrdenesRequest {}
+
+message EnlistarOrdenesResponse {
+  repeated OrdenDeCompra ordenes = 1;
+}
+
+// Definición del servicio
+service OrdenCompraService {
+  rpc CrearOrdenDeCompra (CrearOrdenRequest) returns (CrearOrdenResponse);
+  rpc ObtenerOrdenDeCompra (ObtenerOrdenRequest) returns (ObtenerOrdenResponse);
+  rpc ModificarOrdenDeCompra (ModificarOrdenRequest) returns (ModificarOrdenResponse);
+  rpc BorrarOrdenDeCompra (BorrarOrdenRequest) returns (BorrarOrdenResponse);
+  rpc EnlistarOrdenesDeCompra (EnlistarOrdenesRequest) returns (EnlistarOrdenesResponse);
+}

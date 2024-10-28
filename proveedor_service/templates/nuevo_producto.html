@@ -1,0 +1,85 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Nuevo Producto</title>
+</head>
+<body>
+    <h1>Agregar Nuevo Producto</h1>
+    <form method="POST" action="{{ url_for('nuevo_producto') }}">
+        <label>Código Artículo:</label>
+        <input type="text" name="codigo_articulo"><br>
+        <label>Nombre:</label>
+        <input type="text" name="nombre"><br>
+        <label>Talle:</label>
+        <input type="text" name="talle"><br>
+        <label>Color:</label>
+        <input type="text" name="color"><br>
+        <label>Stock:</label>
+        <input type="number" name="stock"><br>
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Nuevo Producto</title>
+    <script>
+        function agregarTalle() {
+            const tallesDiv = document.getElementById('talles');
+            const index = tallesDiv.children.length;
+            const talleHTML = `
+                <div>
+                    <h4>Talle ${index + 1}</h4>
+                    Talle: <input type="text" name="talles[${index}][talle]" required><br>
+                    <button type="button" onclick="agregarColor(${index})">Agregar Color</button>
+                    <div id="colores_${index}"></div>
+                </div>
+            `;
+            tallesDiv.insertAdjacentHTML('beforeend', talleHTML);
+        }
+
+        function agregarColor(talleIndex) {
+            const coloresDiv = document.getElementById(`colores_${talleIndex}`);
+            const index = coloresDiv.children.length;
+            const colorHTML = `
+                <div>
+                    Color: <input type="text" name="talles[${talleIndex}][colores][]" required>
+                </div>
+            `;
+            coloresDiv.insertAdjacentHTML('beforeend', colorHTML);
+        }
+
+        function agregarFoto() {
+            const fotosDiv = document.getElementById('fotos');
+            const index = fotosDiv.children.length;
+            const fotoHTML = `
+                <div>
+                    URL de la foto: <input type="text" name="urls_fotos[]" required>
+                </div>
+            `;
+            fotosDiv.insertAdjacentHTML('beforeend', fotoHTML);
+        }
+    </script>
+</head>
+<body>
+    <h1>Agregar Nuevo Producto</h1>
+    <form method="POST">
+        Código Artículo: <input type="text" name="codigo_articulo" required><br>
+        Nombre: <input type="text" name="nombre" required><br>
+        Stock: <input type="number" name="stock" required><br>
+
+        <h3>Talles y Colores</h3>
+        <button type="button" onclick="agregarTalle()">Agregar Talle</button>
+        <div id="talles"></div>
+
+        <h3>Fotos del Producto</h3>
+        <button type="button" onclick="agregarFoto()">Agregar Foto</button>
+        <div id="fotos"></div>
+
+        <input type="submit" value="Agregar Producto">
+    </form>
+</body>
+</html>
+
