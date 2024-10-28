@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Orden de Compra</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <h1>Crear Orden de Compra</h1>
+  <form action="/ordenes/crear" method="POST">
+    <label>Código de Tienda: <input type="text" name="codigo_tienda" required></label><br>
+    <label>Observaciones: <input type="text" name="observaciones"></label><br>
+    <label>Items (JSON): <textarea name="items">[{"codigo_articulo": "A123", "color": "rojo", "talle": "M", "cantidad_solicitada": 2}]</textarea></label><br>
+    <button type="submit">Crear Orden</button>
+  </form>
+</body>
+</html>

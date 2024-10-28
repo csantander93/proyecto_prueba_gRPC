@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Novedades de Productos</title>
+</head>
+<body>
+    <h1>Novedades de Productos</h1>
+    {% for novedad in novedades %}
+    <div>
+        <h2>Código de Producto: {{ novedad.codigo_producto }}</h2>
+        <p>Fecha de Recepción: {{ novedad.fecha_recepcion }}</p>
+        <a href="{{ url_for('procesar_novedad', id=novedad.id) }}">Procesar Novedad</a>
+    </div>
+    <hr>
+    {% else %}
+    <p>No hay novedades pendientes.</p>
+    {% endfor %}
+</body>
+</html>

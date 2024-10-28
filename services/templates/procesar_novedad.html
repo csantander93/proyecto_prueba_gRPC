@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesar Novedad - {{ novedad.codigo_producto }}</title>
+    <script>
+        function mostrarColores(talleIndex) {
+            const checkbox = document.getElementById(`talle_${talleIndex}`);
+            const coloresDiv = document.getElementById(`colores_${talleIndex}`);
+            if (checkbox && coloresDiv) {
+                coloresDiv.style.display = checkbox.checked ? 'block' : 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Procesar Novedad - {{ novedad.codigo_producto }}</h1>
+    <form method="POST">
+        {% for item in talles_colores %}
+        <div>
+            <input type="checkbox" name="talles[]" value="{{ item.talle }}" id="talle_{{ loop.index0 }}" onclick="mostrarColores('{{ loop.index0 }}')">
+            <label for="talle_{{ loop.index0 }}">Talle: {{ item.talle }}</label>
+            <div id="colores_{{ loop.index0 }}" style="display:none; margin-left:20px;">
+                <p>Selecciona los colores:</p>
+                {% for color in item.colores %}
+                <div>
+                    <input type="checkbox" name="colores_{{ item.talle }}[]" value="{{ color }}">
+                    <label>{{ color }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        <input type="submit" value="Agregar Productos Seleccionados">
+    </form>
+</body>
+</html>

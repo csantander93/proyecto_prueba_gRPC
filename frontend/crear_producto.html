@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Producto</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <h1>Crear Producto</h1>
+  <form action="/productos/crear" method="POST">
+    <label>Código: <input type="text" name="codigo" required></label><br>
+    <label>Nombre: <input type="text" name="nombre" required></label><br>
+    <label>Talle: <input type="text" name="talle"></label><br>
+    <label>Color: <input type="text" name="color"></label><br>
+    <label>Stock: <input type="number" name="stock"></label><br>
+    <button type="submit">Crear Producto</button>
+  </form>
+</body>
+</html>

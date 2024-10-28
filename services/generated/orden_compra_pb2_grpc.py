@@ -3,9 +3,9 @@
 import grpc
 import warnings
 
-import producto_pb2 as producto__pb2
+import generated.orden_compra_pb2 as orden__compra__pb2
 
-GRPC_GENERATED_VERSION = '1.66.2'
+GRPC_GENERATED_VERSION = '1.66.1'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
@@ -18,15 +18,16 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in producto_pb2_grpc.py depends on'
+        + f' but the generated code in orden_compra_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class ProductoServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+class OrdenCompraServiceStub(object):
+    """Definición del servicio
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -34,108 +35,109 @@ class ProductoServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CrearProducto = channel.unary_unary(
-                '/producto.ProductoService/CrearProducto',
-                request_serializer=producto__pb2.CrearProductoRequest.SerializeToString,
-                response_deserializer=producto__pb2.ProductoResponse.FromString,
+        self.CrearOrdenDeCompra = channel.unary_unary(
+                '/orden_compra.OrdenCompraService/CrearOrdenDeCompra',
+                request_serializer=orden__compra__pb2.CrearOrdenRequest.SerializeToString,
+                response_deserializer=orden__compra__pb2.CrearOrdenResponse.FromString,
                 _registered_method=True)
-        self.ModificarProducto = channel.unary_unary(
-                '/producto.ProductoService/ModificarProducto',
-                request_serializer=producto__pb2.ModificarProductoRequest.SerializeToString,
-                response_deserializer=producto__pb2.ProductoResponse.FromString,
+        self.ObtenerOrdenDeCompra = channel.unary_unary(
+                '/orden_compra.OrdenCompraService/ObtenerOrdenDeCompra',
+                request_serializer=orden__compra__pb2.ObtenerOrdenRequest.SerializeToString,
+                response_deserializer=orden__compra__pb2.ObtenerOrdenResponse.FromString,
                 _registered_method=True)
-        self.BorrarProducto = channel.unary_unary(
-                '/producto.ProductoService/BorrarProducto',
-                request_serializer=producto__pb2.BorrarProductoRequest.SerializeToString,
-                response_deserializer=producto__pb2.ProductoResponse.FromString,
+        self.ModificarOrdenDeCompra = channel.unary_unary(
+                '/orden_compra.OrdenCompraService/ModificarOrdenDeCompra',
+                request_serializer=orden__compra__pb2.ModificarOrdenRequest.SerializeToString,
+                response_deserializer=orden__compra__pb2.ModificarOrdenResponse.FromString,
                 _registered_method=True)
-        self.BuscarProducto = channel.unary_unary(
-                '/producto.ProductoService/BuscarProducto',
-                request_serializer=producto__pb2.BuscarProductoRequest.SerializeToString,
-                response_deserializer=producto__pb2.ProductoResponse.FromString,
+        self.BorrarOrdenDeCompra = channel.unary_unary(
+                '/orden_compra.OrdenCompraService/BorrarOrdenDeCompra',
+                request_serializer=orden__compra__pb2.BorrarOrdenRequest.SerializeToString,
+                response_deserializer=orden__compra__pb2.BorrarOrdenResponse.FromString,
                 _registered_method=True)
-        self.EnlistarProductos = channel.unary_unary(
-                '/producto.ProductoService/EnlistarProductos',
-                request_serializer=producto__pb2.EnlistarProductosRequest.SerializeToString,
-                response_deserializer=producto__pb2.ProductosResponse.FromString,
+        self.EnlistarOrdenesDeCompra = channel.unary_unary(
+                '/orden_compra.OrdenCompraService/EnlistarOrdenesDeCompra',
+                request_serializer=orden__compra__pb2.EnlistarOrdenesRequest.SerializeToString,
+                response_deserializer=orden__compra__pb2.EnlistarOrdenesResponse.FromString,
                 _registered_method=True)
 
 
-class ProductoServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
+class OrdenCompraServiceServicer(object):
+    """Definición del servicio
+    """
 
-    def CrearProducto(self, request, context):
-        """CRUD Methods
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ModificarProducto(self, request, context):
+    def CrearOrdenDeCompra(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BorrarProducto(self, request, context):
+    def ObtenerOrdenDeCompra(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BuscarProducto(self, request, context):
+    def ModificarOrdenDeCompra(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def EnlistarProductos(self, request, context):
+    def BorrarOrdenDeCompra(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def EnlistarOrdenesDeCompra(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_ProductoServiceServicer_to_server(servicer, server):
+def add_OrdenCompraServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CrearProducto': grpc.unary_unary_rpc_method_handler(
-                    servicer.CrearProducto,
-                    request_deserializer=producto__pb2.CrearProductoRequest.FromString,
-                    response_serializer=producto__pb2.ProductoResponse.SerializeToString,
+            'CrearOrdenDeCompra': grpc.unary_unary_rpc_method_handler(
+                    servicer.CrearOrdenDeCompra,
+                    request_deserializer=orden__compra__pb2.CrearOrdenRequest.FromString,
+                    response_serializer=orden__compra__pb2.CrearOrdenResponse.SerializeToString,
             ),
-            'ModificarProducto': grpc.unary_unary_rpc_method_handler(
-                    servicer.ModificarProducto,
-                    request_deserializer=producto__pb2.ModificarProductoRequest.FromString,
-                    response_serializer=producto__pb2.ProductoResponse.SerializeToString,
+            'ObtenerOrdenDeCompra': grpc.unary_unary_rpc_method_handler(
+                    servicer.ObtenerOrdenDeCompra,
+                    request_deserializer=orden__compra__pb2.ObtenerOrdenRequest.FromString,
+                    response_serializer=orden__compra__pb2.ObtenerOrdenResponse.SerializeToString,
             ),
-            'BorrarProducto': grpc.unary_unary_rpc_method_handler(
-                    servicer.BorrarProducto,
-                    request_deserializer=producto__pb2.BorrarProductoRequest.FromString,
-                    response_serializer=producto__pb2.ProductoResponse.SerializeToString,
+            'ModificarOrdenDeCompra': grpc.unary_unary_rpc_method_handler(
+                    servicer.ModificarOrdenDeCompra,
+                    request_deserializer=orden__compra__pb2.ModificarOrdenRequest.FromString,
+                    response_serializer=orden__compra__pb2.ModificarOrdenResponse.SerializeToString,
             ),
-            'BuscarProducto': grpc.unary_unary_rpc_method_handler(
-                    servicer.BuscarProducto,
-                    request_deserializer=producto__pb2.BuscarProductoRequest.FromString,
-                    response_serializer=producto__pb2.ProductoResponse.SerializeToString,
+            'BorrarOrdenDeCompra': grpc.unary_unary_rpc_method_handler(
+                    servicer.BorrarOrdenDeCompra,
+                    request_deserializer=orden__compra__pb2.BorrarOrdenRequest.FromString,
+                    response_serializer=orden__compra__pb2.BorrarOrdenResponse.SerializeToString,
             ),
-            'EnlistarProductos': grpc.unary_unary_rpc_method_handler(
-                    servicer.EnlistarProductos,
-                    request_deserializer=producto__pb2.EnlistarProductosRequest.FromString,
-                    response_serializer=producto__pb2.ProductosResponse.SerializeToString,
+            'EnlistarOrdenesDeCompra': grpc.unary_unary_rpc_method_handler(
+                    servicer.EnlistarOrdenesDeCompra,
+                    request_deserializer=orden__compra__pb2.EnlistarOrdenesRequest.FromString,
+                    response_serializer=orden__compra__pb2.EnlistarOrdenesResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'producto.ProductoService', rpc_method_handlers)
+            'orden_compra.OrdenCompraService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('producto.ProductoService', rpc_method_handlers)
+    server.add_registered_method_handlers('orden_compra.OrdenCompraService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class ProductoService(object):
-    """Missing associated documentation comment in .proto file."""
+class OrdenCompraService(object):
+    """Definición del servicio
+    """
 
     @staticmethod
-    def CrearProducto(request,
+    def CrearOrdenDeCompra(request,
             target,
             options=(),
             channel_credentials=None,
@@ -148,9 +150,9 @@ class ProductoService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/producto.ProductoService/CrearProducto',
-            producto__pb2.CrearProductoRequest.SerializeToString,
-            producto__pb2.ProductoResponse.FromString,
+            '/orden_compra.OrdenCompraService/CrearOrdenDeCompra',
+            orden__compra__pb2.CrearOrdenRequest.SerializeToString,
+            orden__compra__pb2.CrearOrdenResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -162,7 +164,7 @@ class ProductoService(object):
             _registered_method=True)
 
     @staticmethod
-    def ModificarProducto(request,
+    def ObtenerOrdenDeCompra(request,
             target,
             options=(),
             channel_credentials=None,
@@ -175,9 +177,9 @@ class ProductoService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/producto.ProductoService/ModificarProducto',
-            producto__pb2.ModificarProductoRequest.SerializeToString,
-            producto__pb2.ProductoResponse.FromString,
+            '/orden_compra.OrdenCompraService/ObtenerOrdenDeCompra',
+            orden__compra__pb2.ObtenerOrdenRequest.SerializeToString,
+            orden__compra__pb2.ObtenerOrdenResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -189,7 +191,7 @@ class ProductoService(object):
             _registered_method=True)
 
     @staticmethod
-    def BorrarProducto(request,
+    def ModificarOrdenDeCompra(request,
             target,
             options=(),
             channel_credentials=None,
@@ -202,9 +204,9 @@ class ProductoService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/producto.ProductoService/BorrarProducto',
-            producto__pb2.BorrarProductoRequest.SerializeToString,
-            producto__pb2.ProductoResponse.FromString,
+            '/orden_compra.OrdenCompraService/ModificarOrdenDeCompra',
+            orden__compra__pb2.ModificarOrdenRequest.SerializeToString,
+            orden__compra__pb2.ModificarOrdenResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -216,7 +218,7 @@ class ProductoService(object):
             _registered_method=True)
 
     @staticmethod
-    def BuscarProducto(request,
+    def BorrarOrdenDeCompra(request,
             target,
             options=(),
             channel_credentials=None,
@@ -229,9 +231,9 @@ class ProductoService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/producto.ProductoService/BuscarProducto',
-            producto__pb2.BuscarProductoRequest.SerializeToString,
-            producto__pb2.ProductoResponse.FromString,
+            '/orden_compra.OrdenCompraService/BorrarOrdenDeCompra',
+            orden__compra__pb2.BorrarOrdenRequest.SerializeToString,
+            orden__compra__pb2.BorrarOrdenResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -243,7 +245,7 @@ class ProductoService(object):
             _registered_method=True)
 
     @staticmethod
-    def EnlistarProductos(request,
+    def EnlistarOrdenesDeCompra(request,
             target,
             options=(),
             channel_credentials=None,
@@ -256,9 +258,9 @@ class ProductoService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/producto.ProductoService/EnlistarProductos',
-            producto__pb2.EnlistarProductosRequest.SerializeToString,
-            producto__pb2.ProductosResponse.FromString,
+            '/orden_compra.OrdenCompraService/EnlistarOrdenesDeCompra',
+            orden__compra__pb2.EnlistarOrdenesRequest.SerializeToString,
+            orden__compra__pb2.EnlistarOrdenesResponse.FromString,
             options,
             channel_credentials,
             insecure,

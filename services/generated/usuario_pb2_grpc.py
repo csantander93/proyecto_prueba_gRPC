@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import tienda_pb2 as tienda__pb2
+import generated.usuario_pb2 as usuario__pb2
 
 GRPC_GENERATED_VERSION = '1.66.2'
 GRPC_VERSION = grpc.__version__
@@ -18,14 +18,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in tienda_pb2_grpc.py depends on'
+        + f' but the generated code in usuario_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class TiendaServiceStub(object):
+class UsuarioServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -34,125 +34,125 @@ class TiendaServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CrearTienda = channel.unary_unary(
-                '/tienda.TiendaService/CrearTienda',
-                request_serializer=tienda__pb2.CrearTiendaRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TiendaResponse.FromString,
+        self.CrearUsuario = channel.unary_unary(
+                '/usuario.UsuarioService/CrearUsuario',
+                request_serializer=usuario__pb2.CrearUsuarioRequest.SerializeToString,
+                response_deserializer=usuario__pb2.UsuarioResponse.FromString,
                 _registered_method=True)
-        self.ModificarTienda = channel.unary_unary(
-                '/tienda.TiendaService/ModificarTienda',
-                request_serializer=tienda__pb2.ModificarTiendaRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TiendaResponse.FromString,
+        self.ModificarUsuario = channel.unary_unary(
+                '/usuario.UsuarioService/ModificarUsuario',
+                request_serializer=usuario__pb2.ModificarUsuarioRequest.SerializeToString,
+                response_deserializer=usuario__pb2.UsuarioResponse.FromString,
                 _registered_method=True)
-        self.BorrarTienda = channel.unary_unary(
-                '/tienda.TiendaService/BorrarTienda',
-                request_serializer=tienda__pb2.BorrarTiendaRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TiendaResponse.FromString,
+        self.BorrarUsuario = channel.unary_unary(
+                '/usuario.UsuarioService/BorrarUsuario',
+                request_serializer=usuario__pb2.BorrarUsuarioRequest.SerializeToString,
+                response_deserializer=usuario__pb2.UsuarioResponse.FromString,
                 _registered_method=True)
-        self.BuscarTienda = channel.unary_unary(
-                '/tienda.TiendaService/BuscarTienda',
-                request_serializer=tienda__pb2.BuscarTiendaRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TiendaResponse.FromString,
+        self.BuscarUsuario = channel.unary_unary(
+                '/usuario.UsuarioService/BuscarUsuario',
+                request_serializer=usuario__pb2.BuscarUsuarioRequest.SerializeToString,
+                response_deserializer=usuario__pb2.UsuarioResponse.FromString,
                 _registered_method=True)
-        self.EnlistarTiendas = channel.unary_unary(
-                '/tienda.TiendaService/EnlistarTiendas',
-                request_serializer=tienda__pb2.EnlistarTiendasRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TiendasResponse.FromString,
+        self.EnlistarUsuarios = channel.unary_unary(
+                '/usuario.UsuarioService/EnlistarUsuarios',
+                request_serializer=usuario__pb2.EnlistarUsuariosRequest.SerializeToString,
+                response_deserializer=usuario__pb2.UsuariosResponse.FromString,
                 _registered_method=True)
-        self.BuscarTiendaPorNombre = channel.unary_unary(
-                '/tienda.TiendaService/BuscarTiendaPorNombre',
-                request_serializer=tienda__pb2.BuscarTiendaPorNombreRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TiendaResponse.FromString,
+        self.AutenticarUsuario = channel.unary_unary(
+                '/usuario.UsuarioService/AutenticarUsuario',
+                request_serializer=usuario__pb2.AutenticarUsuarioRequest.SerializeToString,
+                response_deserializer=usuario__pb2.AutenticarUsuarioResponse.FromString,
                 _registered_method=True)
 
 
-class TiendaServiceServicer(object):
+class UsuarioServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def CrearTienda(self, request, context):
+    def CrearUsuario(self, request, context):
         """CRUD Methods
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ModificarTienda(self, request, context):
+    def ModificarUsuario(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BorrarTienda(self, request, context):
+    def BorrarUsuario(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BuscarTienda(self, request, context):
+    def BuscarUsuario(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def EnlistarTiendas(self, request, context):
+    def EnlistarUsuarios(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BuscarTiendaPorNombre(self, request, context):
-        """Nuevo método para buscar por nombre
+    def AutenticarUsuario(self, request, context):
+        """Authentication
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_TiendaServiceServicer_to_server(servicer, server):
+def add_UsuarioServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CrearTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.CrearTienda,
-                    request_deserializer=tienda__pb2.CrearTiendaRequest.FromString,
-                    response_serializer=tienda__pb2.TiendaResponse.SerializeToString,
+            'CrearUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.CrearUsuario,
+                    request_deserializer=usuario__pb2.CrearUsuarioRequest.FromString,
+                    response_serializer=usuario__pb2.UsuarioResponse.SerializeToString,
             ),
-            'ModificarTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.ModificarTienda,
-                    request_deserializer=tienda__pb2.ModificarTiendaRequest.FromString,
-                    response_serializer=tienda__pb2.TiendaResponse.SerializeToString,
+            'ModificarUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.ModificarUsuario,
+                    request_deserializer=usuario__pb2.ModificarUsuarioRequest.FromString,
+                    response_serializer=usuario__pb2.UsuarioResponse.SerializeToString,
             ),
-            'BorrarTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.BorrarTienda,
-                    request_deserializer=tienda__pb2.BorrarTiendaRequest.FromString,
-                    response_serializer=tienda__pb2.TiendaResponse.SerializeToString,
+            'BorrarUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.BorrarUsuario,
+                    request_deserializer=usuario__pb2.BorrarUsuarioRequest.FromString,
+                    response_serializer=usuario__pb2.UsuarioResponse.SerializeToString,
             ),
-            'BuscarTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.BuscarTienda,
-                    request_deserializer=tienda__pb2.BuscarTiendaRequest.FromString,
-                    response_serializer=tienda__pb2.TiendaResponse.SerializeToString,
+            'BuscarUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.BuscarUsuario,
+                    request_deserializer=usuario__pb2.BuscarUsuarioRequest.FromString,
+                    response_serializer=usuario__pb2.UsuarioResponse.SerializeToString,
             ),
-            'EnlistarTiendas': grpc.unary_unary_rpc_method_handler(
-                    servicer.EnlistarTiendas,
-                    request_deserializer=tienda__pb2.EnlistarTiendasRequest.FromString,
-                    response_serializer=tienda__pb2.TiendasResponse.SerializeToString,
+            'EnlistarUsuarios': grpc.unary_unary_rpc_method_handler(
+                    servicer.EnlistarUsuarios,
+                    request_deserializer=usuario__pb2.EnlistarUsuariosRequest.FromString,
+                    response_serializer=usuario__pb2.UsuariosResponse.SerializeToString,
             ),
-            'BuscarTiendaPorNombre': grpc.unary_unary_rpc_method_handler(
-                    servicer.BuscarTiendaPorNombre,
-                    request_deserializer=tienda__pb2.BuscarTiendaPorNombreRequest.FromString,
-                    response_serializer=tienda__pb2.TiendaResponse.SerializeToString,
+            'AutenticarUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.AutenticarUsuario,
+                    request_deserializer=usuario__pb2.AutenticarUsuarioRequest.FromString,
+                    response_serializer=usuario__pb2.AutenticarUsuarioResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'tienda.TiendaService', rpc_method_handlers)
+            'usuario.UsuarioService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('tienda.TiendaService', rpc_method_handlers)
+    server.add_registered_method_handlers('usuario.UsuarioService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class TiendaService(object):
+class UsuarioService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def CrearTienda(request,
+    def CrearUsuario(request,
             target,
             options=(),
             channel_credentials=None,
@@ -165,9 +165,9 @@ class TiendaService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/tienda.TiendaService/CrearTienda',
-            tienda__pb2.CrearTiendaRequest.SerializeToString,
-            tienda__pb2.TiendaResponse.FromString,
+            '/usuario.UsuarioService/CrearUsuario',
+            usuario__pb2.CrearUsuarioRequest.SerializeToString,
+            usuario__pb2.UsuarioResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -179,7 +179,7 @@ class TiendaService(object):
             _registered_method=True)
 
     @staticmethod
-    def ModificarTienda(request,
+    def ModificarUsuario(request,
             target,
             options=(),
             channel_credentials=None,
@@ -192,9 +192,9 @@ class TiendaService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/tienda.TiendaService/ModificarTienda',
-            tienda__pb2.ModificarTiendaRequest.SerializeToString,
-            tienda__pb2.TiendaResponse.FromString,
+            '/usuario.UsuarioService/ModificarUsuario',
+            usuario__pb2.ModificarUsuarioRequest.SerializeToString,
+            usuario__pb2.UsuarioResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -206,7 +206,7 @@ class TiendaService(object):
             _registered_method=True)
 
     @staticmethod
-    def BorrarTienda(request,
+    def BorrarUsuario(request,
             target,
             options=(),
             channel_credentials=None,
@@ -219,9 +219,9 @@ class TiendaService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/tienda.TiendaService/BorrarTienda',
-            tienda__pb2.BorrarTiendaRequest.SerializeToString,
-            tienda__pb2.TiendaResponse.FromString,
+            '/usuario.UsuarioService/BorrarUsuario',
+            usuario__pb2.BorrarUsuarioRequest.SerializeToString,
+            usuario__pb2.UsuarioResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -233,7 +233,7 @@ class TiendaService(object):
             _registered_method=True)
 
     @staticmethod
-    def BuscarTienda(request,
+    def BuscarUsuario(request,
             target,
             options=(),
             channel_credentials=None,
@@ -246,9 +246,9 @@ class TiendaService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/tienda.TiendaService/BuscarTienda',
-            tienda__pb2.BuscarTiendaRequest.SerializeToString,
-            tienda__pb2.TiendaResponse.FromString,
+            '/usuario.UsuarioService/BuscarUsuario',
+            usuario__pb2.BuscarUsuarioRequest.SerializeToString,
+            usuario__pb2.UsuarioResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -260,7 +260,7 @@ class TiendaService(object):
             _registered_method=True)
 
     @staticmethod
-    def EnlistarTiendas(request,
+    def EnlistarUsuarios(request,
             target,
             options=(),
             channel_credentials=None,
@@ -273,9 +273,9 @@ class TiendaService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/tienda.TiendaService/EnlistarTiendas',
-            tienda__pb2.EnlistarTiendasRequest.SerializeToString,
-            tienda__pb2.TiendasResponse.FromString,
+            '/usuario.UsuarioService/EnlistarUsuarios',
+            usuario__pb2.EnlistarUsuariosRequest.SerializeToString,
+            usuario__pb2.UsuariosResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -287,7 +287,7 @@ class TiendaService(object):
             _registered_method=True)
 
     @staticmethod
-    def BuscarTiendaPorNombre(request,
+    def AutenticarUsuario(request,
             target,
             options=(),
             channel_credentials=None,
@@ -300,9 +300,9 @@ class TiendaService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/tienda.TiendaService/BuscarTiendaPorNombre',
-            tienda__pb2.BuscarTiendaPorNombreRequest.SerializeToString,
-            tienda__pb2.TiendaResponse.FromString,
+            '/usuario.UsuarioService/AutenticarUsuario',
+            usuario__pb2.AutenticarUsuarioRequest.SerializeToString,
+            usuario__pb2.AutenticarUsuarioResponse.FromString,
             options,
             channel_credentials,
             insecure,
