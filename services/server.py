@@ -9,7 +9,6 @@ from producto_service import ProductoService  # Importa el servicio Producto
 import generated.orden_compra_pb2_grpc as orden_compra_pb2_grpc
 from order_service import OrdenCompraService
 
-from threading import Thread
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -22,11 +21,6 @@ def serve():
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Servidor gRPC corriendo en el puerto 50051")
-
-    # Iniciar Kafka en un hilo separado
-    # kafka_thread = Thread(target=consume_messages)
-    # kafka_thread.start()
-
     server.wait_for_termination()
 
 if __name__ == '__main__':
