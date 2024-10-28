@@ -1,12 +1,12 @@
 import grpc
 from concurrent import futures
-import tienda_pb2_grpc
+from generated import tienda_pb2_grpc
+from generated import usuario_pb2_grpc
+from generated import producto_pb2_grpc
+from generated import order_pb2_grpc
 from tienda_service import TiendaService  # Importa el servicio que acabamos de crear
-import usuario_pb2_grpc
 from usuario_service import UsuarioService  # Importa el servicio Usuario
-import producto_pb2_grpc
 from producto_service import ProductoService  # Importa el servicio Producto
-import order_pb2_grpc  # Importa el archivo generado por order.proto
 from order_service import OrderService
 
 from threading import Thread

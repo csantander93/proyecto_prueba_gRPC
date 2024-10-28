@@ -152,6 +152,6 @@ class OrderService(generated.order_pb2_grpc.OrderServiceServicer):
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f'Error al eliminar la orden: {str(e)}')
-            return order_pb2.Order()
+            return generated.order_pb2.Order()
 
 
