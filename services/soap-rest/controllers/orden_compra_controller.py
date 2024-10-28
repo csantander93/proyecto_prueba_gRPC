@@ -1,11 +1,9 @@
-# controllers/orden_compra_controller.py
-
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
 from flask_restx import Namespace, Resource, fields
 from services.orden_compra_service import OrdenCompraService
 import xml.etree.ElementTree as ET
 
-orden_compra_bp = Blueprint('orden_compra', __name__)
+orden_compra_bp = Blueprint('orden_compra', __name__, template_folder='templates')
 orden_compra_service = OrdenCompraService()
 
 # Namespace para los endpoints
@@ -22,6 +20,11 @@ orden_model = api.model('OrdenCompra', {
     'orden_despacho': fields.String(description='Orden de despacho asociada'),
     'total_cantidad': fields.Integer(description='Cantidad total de productos')
 })
+
+@orden_compra_bp.route('/ordenes_compra')
+def ordenes_compra():
+    """Renderiza la página HTML de órdenes de compra."""
+    return render_template('ordenes_compra.html')
 
 @api.route('/ordenes_compra')
 class OrdenesCompraResource(Resource):
