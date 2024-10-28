@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Órdenes de Compra</title>
-    <link rel="stylesheet" href="/static/styles.css"> <!-- Incluye el CSS aquí -->
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <h1>Órdenes de Compra</h1>
 
-        <!-- Formulario de filtros -->
+    <!-- Formulario de filtros -->
     <div class="filter-container">
         <label for="codigoTienda">Código de Tienda:</label>
         <input type="text" id="codigoTienda" placeholder="Código Tienda">
@@ -18,9 +18,9 @@
         <select id="estado">
             <option value="">Todos</option>
             <option value="SOLICITADO">SOLICITADO</option>
-            <option value="PENDIENTE">PENDIENTE</option>
-            <option value="RECHAZADO">RECHAZADO</option>
-            <!-- Añadir más estados según corresponda -->
+            <option value="RECIBIDA">RECIBIDA</option>
+            <option value="RECHAZADA">RECHAZADA</option>
+            <option value="ACEPTADA">ACEPTADA</option>
         </select>
 
         <label for="fechaSolicitudDesde">Fecha de Solicitud Desde:</label>
@@ -29,9 +29,21 @@
         <label for="fechaSolicitudHasta">Fecha de Solicitud Hasta:</label>
         <input type="date" id="fechaSolicitudHasta">
         
-
         <button onclick="aplicarFiltros()">Aplicar Filtros</button>
+        <button onclick="mostrarModalGuardarFiltro()">Guardar Filtro</button>
     </div>
+
+    <!-- Modal para guardar filtros -->
+    <div id="modalGuardarFiltro" style="display: none;">
+        <label for="nombreFiltro">Nombre del Filtro:</label>
+        <input type="text" id="nombreFiltro">
+        <button onclick="guardarFiltro()">Guardar</button>
+        <button onclick="cerrarModalGuardarFiltro()">Cancelar</button>
+    </div>
+
+    <!-- Lista de filtros guardados -->
+    <h2>Filtros Guardados</h2>
+    <ul id="listaFiltrosGuardados"></ul>
 
     <table id="ordenesTable">
         <thead>
@@ -50,67 +62,132 @@
             <!-- Las órdenes de compra se insertarán aquí -->
         </tbody>
     </table>
+
     <script>
-        let ordenesCompra = []; // Variable global para almacenar las órdenes de compra originales
+        let ordenesCompra = [];
+        let filtrosGuardados = JSON.parse(localStorage.getItem('filtrosGuardados')) || [];
 
-async function fetchOrdenesCompra() {
-    try {
-        const response = await fetch('/api/ordenes_compra');
-        if (!response.ok) {
-            throw new Error('Error al obtener las órdenes de compra');
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchOrdenesCompra();
+            mostrarFiltrosGuardados();
+        });
+
+        async function fetchOrdenesCompra() {
+            try {
+                const response = await fetch('/api/ordenes_compra');
+                if (!response.ok) throw new Error('Error al obtener las órdenes de compra');
+                ordenesCompra = await response.json();
+                displayOrdenesCompra(ordenesCompra);
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
-        ordenesCompra = await response.json(); // Almacena los datos originales en la variable global
-        displayOrdenesCompra(ordenesCompra); // Muestra todas las órdenes inicialmente
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
-function displayOrdenesCompra(ordenes) {
-    const tableBody = document.getElementById('ordenesTable').querySelector('tbody');
-    tableBody.innerHTML = ''; // Limpiar el contenido anterior
+        function displayOrdenesCompra(ordenes) {
+            const tableBody = document.getElementById('ordenesTable').querySelector('tbody');
+            tableBody.innerHTML = '';
+            ordenes.forEach(orden => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${orden.codigo_tienda || 'N/A'}</td>
+                    <td>${orden.estado || 'N/A'}</td>
+                    <td>${orden.fecha_recepcion || 'N/A'}</td>
+                    <td>${orden.fecha_solicitud || 'N/A'}</td>
+                    <td>${orden.id || 'N/A'}</td>
+                    <td>${orden.observaciones || 'N/A'}</td>
+                    <td>${orden.orden_despacho || 'N/A'}</td>
+                    <td>${orden.total_cantidad || 'N/A'}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
 
-    ordenes.forEach(orden => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${orden.codigo_tienda || 'N/A'}</td>
-            <td>${orden.estado || 'N/A'}</td>
-            <td>${orden.fecha_recepcion || 'N/A'}</td>
-            <td>${orden.fecha_solicitud || 'N/A'}</td>
-            <td>${orden.id || 'N/A'}</td>
-            <td>${orden.observaciones || 'N/A'}</td>
-            <td>${orden.orden_despacho || 'N/A'}</td>
-            <td>${orden.total_cantidad || 'N/A'}</td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
+        function aplicarFiltros() {
+            const codigoTienda = document.getElementById('codigoTienda').value.trim().toUpperCase();
+            const estado = document.getElementById('estado').value;
+            const fechaSolicitudDesde = document.getElementById('fechaSolicitudDesde').value;
+            const fechaSolicitudHasta = document.getElementById('fechaSolicitudHasta').value;
 
-function aplicarFiltros() {
-    const codigoTienda = document.getElementById('codigoTienda').value.trim().toUpperCase();
-    const estado = document.getElementById('estado').value;
-    const fechaSolicitudDesde = document.getElementById('fechaSolicitudDesde').value;
-    const fechaSolicitudHasta = document.getElementById('fechaSolicitudHasta').value;
+            const ordenesFiltradas = ordenesCompra.filter(orden => {
+                const matchesCodigoTienda = !codigoTienda || orden.codigo_tienda === codigoTienda;
+                const matchesEstado = !estado || orden.estado === estado;
+                const fechaSolicitud = orden.fecha_solicitud ? new Date(orden.fecha_solicitud) : null;
+                const matchesFechaSolicitud = (!fechaSolicitudDesde || (fechaSolicitud && fechaSolicitud >= new Date(fechaSolicitudDesde))) &&
+                                              (!fechaSolicitudHasta || (fechaSolicitud && fechaSolicitud <= new Date(fechaSolicitudHasta)));
+                return matchesCodigoTienda && matchesEstado && matchesFechaSolicitud;
+            });
 
-    // Filtrar las órdenes de compra según los criterios de filtro
-    const ordenesFiltradas = ordenesCompra.filter(orden => {
-        const matchesCodigoTienda = !codigoTienda || orden.codigo_tienda === codigoTienda;
-        const matchesEstado = !estado || orden.estado === estado;
-        
-        // Validar si la fecha de solicitud está dentro del rango (si se especifica)
-        const fechaSolicitud = orden.fecha_solicitud ? new Date(orden.fecha_solicitud) : null;
-        const matchesFechaSolicitud = (!fechaSolicitudDesde || (fechaSolicitud && fechaSolicitud >= new Date(fechaSolicitudDesde))) &&
-                                      (!fechaSolicitudHasta || (fechaSolicitud && fechaSolicitud <= new Date(fechaSolicitudHasta)));
-        
-        return matchesCodigoTienda && matchesEstado && matchesFechaSolicitud;
-    });
+            displayOrdenesCompra(ordenesFiltradas);
+        }
 
-    displayOrdenesCompra(ordenesFiltradas); // Muestra las órdenes filtradas en la tabla
-}
+        function mostrarModalGuardarFiltro() {
+            document.getElementById('modalGuardarFiltro').style.display = 'block';
+        }
 
-// Llamar a la función para obtener y mostrar las órdenes de compra al cargar la página
-document.addEventListener('DOMContentLoaded', fetchOrdenesCompra);
+        function cerrarModalGuardarFiltro() {
+            document.getElementById('modalGuardarFiltro').style.display = 'none';
+        }
 
+        function guardarFiltro() {
+            const nombreFiltro = document.getElementById('nombreFiltro').value;
+            if (!nombreFiltro) {
+                alert('Por favor ingresa un nombre para el filtro.');
+                return;
+            }
+
+            const filtro = {
+                nombre: nombreFiltro,
+                codigoTienda: document.getElementById('codigoTienda').value.trim().toUpperCase(),
+                estado: document.getElementById('estado').value,
+                fechaSolicitudDesde: document.getElementById('fechaSolicitudDesde').value,
+                fechaSolicitudHasta: document.getElementById('fechaSolicitudHasta').value,
+            };
+
+            filtrosGuardados.push(filtro);
+            localStorage.setItem('filtrosGuardados', JSON.stringify(filtrosGuardados));
+            mostrarFiltrosGuardados();
+            cerrarModalGuardarFiltro();
+        }
+
+        function mostrarFiltrosGuardados() {
+            const listaFiltros = document.getElementById('listaFiltrosGuardados');
+            listaFiltros.innerHTML = '';
+            filtrosGuardados.forEach((filtro, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${filtro.nombre}</span>
+                    <button onclick="aplicarFiltroGuardado(${index})">Aplicar</button>
+                    <button onclick="editarFiltro(${index})">Editar</button>
+                    <button onclick="eliminarFiltro(${index})">Eliminar</button>
+                `;
+                listaFiltros.appendChild(li);
+            });
+        }
+
+        function aplicarFiltroGuardado(index) {
+            const filtro = filtrosGuardados[index];
+            document.getElementById('codigoTienda').value = filtro.codigoTienda;
+            document.getElementById('estado').value = filtro.estado;
+            document.getElementById('fechaSolicitudDesde').value = filtro.fechaSolicitudDesde;
+            document.getElementById('fechaSolicitudHasta').value = filtro.fechaSolicitudHasta;
+            aplicarFiltros();
+        }
+
+        function editarFiltro(index) {
+            const filtro = filtrosGuardados[index];
+            document.getElementById('codigoTienda').value = filtro.codigoTienda;
+            document.getElementById('estado').value = filtro.estado;
+            document.getElementById('fechaSolicitudDesde').value = filtro.fechaSolicitudDesde;
+            document.getElementById('fechaSolicitudHasta').value = filtro.fechaSolicitudHasta;
+            filtrosGuardados.splice(index, 1);  // Elimina el filtro viejo para reemplazarlo con el actualizado
+            mostrarModalGuardarFiltro();
+        }
+
+        function eliminarFiltro(index) {
+            filtrosGuardados.splice(index, 1);
+            localStorage.setItem('filtrosGuardados', JSON.stringify(filtrosGuardados));
+            mostrarFiltrosGuardados();
+        }
     </script>
 </body>
 </html>
