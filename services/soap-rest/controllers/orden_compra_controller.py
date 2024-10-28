@@ -1,27 +1,40 @@
-import xml.etree.ElementTree as ET
-from flask import Blueprint, Response, jsonify, render_template
+# controllers/orden_compra_controller.py
+
+from flask import Blueprint, jsonify
+from flask_restx import Namespace, Resource, fields
 from services.orden_compra_service import OrdenCompraService
-import os
+import xml.etree.ElementTree as ET
 
 orden_compra_bp = Blueprint('orden_compra', __name__)
 orden_compra_service = OrdenCompraService()
 
-@orden_compra_bp.route('/api/ordenes_compra', methods=['GET'])
-def obtener_ordenes_compra():
-    try:
-        xml_data = orden_compra_service.obtener_ordenes_compra()
-        
-        # Convertir el XML a JSON
-        json_data = xml_to_json(xml_data)
-        
-        return jsonify(json_data)  # Retorna JSON en vez de XML
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+# Namespace para los endpoints
+api = Namespace('api', description='Operaciones de Órdenes de Compra')
 
-@orden_compra_bp.route('/ordenes_compra', methods=['GET'])
-def mostrar_ordenes_compra():
-    # Servir el archivo HTML para mostrar las órdenes de compra
-    return render_template('ordenes_compra.html')  # Asumiendo que el HTML está en la carpeta templates
+# Definición del modelo de orden para Swagger
+orden_model = api.model('OrdenCompra', {
+    'codigo_tienda': fields.String(description='Código de la tienda'),
+    'estado': fields.String(description='Estado de la orden de compra'),
+    'fecha_recepcion': fields.String(description='Fecha de recepción de la orden'),
+    'fecha_solicitud': fields.String(description='Fecha de solicitud de la orden'),
+    'id': fields.Integer(description='ID de la orden de compra'),
+    'observaciones': fields.String(description='Observaciones de la orden de compra'),
+    'orden_despacho': fields.String(description='Orden de despacho asociada'),
+    'total_cantidad': fields.Integer(description='Cantidad total de productos')
+})
+
+@api.route('/ordenes_compra')
+class OrdenesCompraResource(Resource):
+    @api.doc(description="Obtener todas las órdenes de compra")
+    @api.marshal_list_with(orden_model)
+    def get(self):
+        """Retorna todas las órdenes de compra en formato JSON."""
+        try:
+            xml_data = orden_compra_service.obtener_ordenes_compra()
+            json_data = xml_to_json(xml_data)
+            return json_data
+        except Exception as e:
+            api.abort(500, e.__doc__, status="Error al obtener las órdenes de compra", statusCode="500")
 
 def xml_to_json(xml_string):
     root = ET.fromstring(xml_string)
