@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Modificar Orden de Compra</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <h1>Modificar Orden de Compra</h1>
+  <form action="/ordenes/modificar/<%= orden.id %>" method="POST">
+    <label>Estado: <input type="text" name="estado" value="<%= orden.estado %>"></label><br>
+    <label>Observaciones: <input type="text" name="observaciones" value="<%= orden.observaciones %>"></label><br>
+    <button type="submit">Modificar Orden</button>
+  </form>
+</body>
+</html>

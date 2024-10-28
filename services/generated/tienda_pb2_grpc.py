@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import tienda_pb2 as tienda__pb2
+import generated.tienda_pb2 as tienda__pb2
 
 GRPC_GENERATED_VERSION = '1.66.1'
 GRPC_VERSION = grpc.__version__

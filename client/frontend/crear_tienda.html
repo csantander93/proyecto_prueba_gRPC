@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Tienda</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <h1>Crear Tienda</h1>
+  <form action="/tiendas/crear" method="POST">
+    <label>Código: <input type="text" name="codigo" required></label><br>
+    <label>Nombre: <input type="text" name="nombre" required></label><br>
+    <label>Dirección: <input type="text" name="direccion"></label><br>
+    <label>Ciudad: <input type="text" name="ciudad"></label><br>
+    <label>Provincia: <input type="text" name="provincia"></label><br>
+    <button type="submit">Crear Tienda</button>
+  </form>
+</body>
+</html>

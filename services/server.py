@@ -1,13 +1,13 @@
 import grpc
 from concurrent import futures
-from generated import tienda_pb2_grpc
-from generated import usuario_pb2_grpc
-from generated import producto_pb2_grpc
-from generated import order_pb2_grpc
+import generated.tienda_pb2_grpc as tienda_pb2_grpc
 from tienda_service import TiendaService  # Importa el servicio que acabamos de crear
+import generated.usuario_pb2_grpc as usuario_pb2_grpc
 from usuario_service import UsuarioService  # Importa el servicio Usuario
+import generated.producto_pb2_grpc as producto_pb2_grpc
 from producto_service import ProductoService  # Importa el servicio Producto
-from order_service import OrderService
+import generated.orden_compra_pb2_grpc as orden_compra_pb2_grpc
+from order_service import OrdenCompraService
 
 from threading import Thread
 
@@ -17,8 +17,7 @@ def serve():
     tienda_pb2_grpc.add_TiendaServiceServicer_to_server(TiendaService(), server)
     usuario_pb2_grpc.add_UsuarioServiceServicer_to_server(UsuarioService(), server)
     producto_pb2_grpc.add_ProductoServiceServicer_to_server(ProductoService(), server)
-    order_pb2_grpc.add_OrderServiceServicer_to_server(OrderService(), server)  
-
+    orden_compra_pb2_grpc.add_OrdenCompraServiceServicer_to_server(OrdenCompraService(), server)
 
     server.add_insecure_port('[::]:50051')
     server.start()

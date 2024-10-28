@@ -181,6 +181,7 @@ const packageDefinitionStock = protoLoader.loadSync(PROTO_PATH_STOCK, {
   defaults: true,
   oneofs: true
 });
+<<<<<<< HEAD
 // Carga del archivo .proto para tienda
 const PROTO_PATH_TIENDA = path.join(__dirname, 'proto', 'tienda.proto');
 const packageDefinitionTienda = protoLoader.loadSync(PROTO_PATH_TIENDA, {
@@ -191,6 +192,10 @@ const packageDefinitionTienda = protoLoader.loadSync(PROTO_PATH_TIENDA, {
   oneofs: true
 });
 const tienda_proto = grpc.loadPackageDefinition(packageDefinitionTienda).tienda;
+=======
+
+const stock_proto = grpc.loadPackageDefinition(packageDefinition).stock;
+>>>>>>> master
 
 // Creación del cliente gRPC para Stock
 const stockClient = new stock_proto.StockearteService('localhost:50051', grpc.credentials.createInsecure());

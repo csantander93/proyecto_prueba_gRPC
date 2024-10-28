@@ -347,11 +347,25 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+<<<<<<< HEAD
 // Cargar los archivos .proto
 // const PROTO_PATH_TIENDA = path.join(__dirname, 'proto/tienda.proto');
 //cargo tienda
 const PROTO_PATH_TIENDA = path.join(__dirname, 'proto', 'tienda.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH_TIENDA, {
+=======
+// Ruta hacia el archivo .proto de la tienda
+const STORE_PROTO_PATH = path.join(__dirname, 'proto', 'tienda.proto');
+// Ruta hacia el archivo .proto de usuario
+const USER_PROTO_PATH = path.join(__dirname, 'proto', 'usuario.proto');
+// Ruta hacia el archivo .proto de producto
+const PRODUCTO_PROTO_PATH = path.join(__dirname, 'proto', 'producto.proto');
+
+const ORDER_PROTO_PATH = path.join(__dirname, 'proto', 'orden_compra.proto');
+
+// Cargar el tienda .proto
+const packageDefinition = protoLoader.loadSync(STORE_PROTO_PATH, {
+>>>>>>> master
   keepCase: true,
   longs: String,
   enums: String,
@@ -359,9 +373,23 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH_TIENDA, {
   oneofs: true
 });
 
+<<<<<<< HEAD
 //cargo usuario
 const PROTO_PATH_USUARIO = path.join(__dirname, 'proto/usuario.proto');
 const userPackageDefinition = protoLoader.loadSync(PROTO_PATH_USUARIO, {
+=======
+// Cargar el archivo .proto de orden_compra
+const ordenCompraPackageDefinition = protoLoader.loadSync(ORDER_PROTO_PATH, {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
+});
+
+// Cargar el archivo .proto de usuario
+const userPackageDefinition = protoLoader.loadSync(USER_PROTO_PATH, {
+>>>>>>> master
   keepCase: true,
   longs: String,
   enums: String,
@@ -390,9 +418,15 @@ const orderPackageDefinition = protoLoader.loadSync(PROTO_PATH_ORDEN, {
 
 // Cargar los servicios usando protoLoader
 const tiendaProto = grpc.loadPackageDefinition(packageDefinition).tienda;
+<<<<<<< HEAD
 const usuarioProto = grpc.loadPackageDefinition(userPackageDefinition).usuario;
 const productoProto = grpc.loadPackageDefinition(pruductoPackageDefinition).producto;
 const ordenProto = grpc.loadPackageDefinition(orderPackageDefinition).order;
+=======
+const userProto = grpc.loadPackageDefinition(userPackageDefinition).usuario;
+const productoProto = grpc.loadPackageDefinition(productoPackageDefinition).producto;
+const ordenCompraProto = grpc.loadPackageDefinition(ordenCompraPackageDefinition).orden_compra;
+>>>>>>> master
 
 // Crear los clientes para cada servicio
 const tiendaClient = new tiendaProto.TiendaService('localhost:50051', grpc.credentials.createInsecure());
@@ -400,8 +434,14 @@ const usuarioClient = new usuarioProto.UsuarioService('localhost:50051', grpc.cr
 const productoClient = new productoProto.ProductoService('localhost:50051', grpc.credentials.createInsecure());
 const ordenClient = new ordenProto.OrderService('localhost:50051', grpc.credentials.createInsecure());
 
+<<<<<<< HEAD
 // Creación de la aplicación Express
 const app = express();
+=======
+const ordenCompraClient = new ordenCompraProto.OrdenCompraService('localhost:50051', grpc.credentials.createInsecure());
+
+console.log('Iniciando el cliente...');
+>>>>>>> master
 
 // Middleware para parsear JSON y servir archivos estáticos
 app.use(express.json());
@@ -440,6 +480,17 @@ function crearOrdenDeCompra(orden, callback) {
   ordenClient.CreateOrder(orden, callback);
 }
 
+<<<<<<< HEAD
+=======
+// Función para probar CrearUsuario
+function crearUsuario() {
+  const nuevoUsuario = {
+    username: 'usuarioTest',
+    password: 'passwordSeguro',
+    habilitado: true,
+    tienda_idtienda: 1
+  };
+>>>>>>> master
 
 
 // Ruta para servir el archivo login.html
@@ -576,7 +627,7 @@ function autenticarUsuario() {
 // Función para probar CrearProducto
 function crearProducto() {
   const nuevoProducto = {
-    codigo: 'P123',
+    codigo: 'A123',
     nombre: 'Nombre del Producto',  // Agregado: nombre del producto
     talle: 'M',
     foto: 'url_a_la_foto',
@@ -650,6 +701,90 @@ function enlistarProductos() {
     }
   });
 }
+
+// Función para probar CrearOrdenDeCompra
+function crearOrdenDeCompra() {
+  const nuevaOrden = {
+    codigo_tienda: 'T123',
+    observaciones: 'Orden de prueba',
+    items: [
+      {
+        codigo_articulo: 'AA2233',
+        color: 'negro',
+        talle: 's',
+        cantidad_solicitada: 5
+      },
+
+    ]
+  };
+
+  ordenCompraClient.CrearOrdenDeCompra({ orden: nuevaOrden }, (error, response) => {
+    if (error) {
+      console.error('Error creando orden de compra:', error);
+    } else {
+      console.log('Orden de compra creada con éxito:', response);
+    }
+  });
+}
+
+// Función para probar ModificarOrdenDeCompra (Ejemplo: modificar el estado de la orden)
+// function modificarOrdenDeCompra(idOrden, nuevoEstado) {
+//   const ordenModificada = {
+//     id_orden: idOrden,
+//     estado: nuevoEstado
+//   };
+
+//   ordenCompraClient.ModificarOrdenDeCompra(ordenModificada, (error, response) => {
+//     if (error) {
+//       console.error('Error modificando orden de compra:', error);
+//     } else {
+//       console.log('Orden de compra modificada con éxito:', response);
+//     }
+//   });
+// }
+
+// // Función para probar BorrarOrdenDeCompra
+// function borrarOrdenDeCompra(idOrden) {
+//   ordenCompraClient.BorrarOrdenDeCompra({ id_orden: idOrden }, (error, response) => {
+//     if (error) {
+//       console.error('Error borrando orden de compra:', error);
+//     } else {
+//       console.log('Orden de compra borrada con éxito:', response);
+//     }
+//   });
+// }
+
+// Función para probar BuscarOrdenDeCompra
+// function buscarOrdenDeCompra(idOrden) {
+//   ordenCompraClient.BuscarOrdenDeCompra({ id_orden: idOrden }, (error, response) => {
+//     if (error) {
+//       console.error('Error buscando orden de compra:', error);
+//     } else if (response.orden) {
+//       console.log('Orden de compra encontrada:', response.orden);
+//     } else {
+//       console.log('Orden de compra no encontrada');
+//     }
+//   });
+// }
+
+// Función para probar EnlistarOrdenesDeCompra
+// function enlistarOrdenesDeCompra() {
+//   ordenCompraClient.EnlistarOrdenesDeCompra({}, (error, response) => {
+//     if (error) {
+//       console.error('Error enlistando órdenes de compra:', error);
+//     } else {
+//       console.log('Órdenes de compra encontradas:', response.ordenes);
+//     }
+//   });
+// }
+
+// Llamadas de prueba
+crearOrdenDeCompra(); // Prueba la creación de una nueva orden de compra
+// buscarOrdenDeCompra(1); // Prueba la búsqueda de una orden de compra con ID 1
+// enlistarOrdenesDeCompra(); // Prueba enlistar todas las órdenes de compra
+// modificarOrdenDeCompra(1, 'EN_PROCESO'); // Prueba modificar el estado de la orden de compra con ID 1
+// borrarOrdenDeCompra(1); // Prueba borrar la orden de compra con ID 1
+
 
 // Llamadas de prueba Tienda
 //crearTienda(); //probado ok
