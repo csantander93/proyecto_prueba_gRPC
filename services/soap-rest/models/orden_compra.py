@@ -1,13 +1,15 @@
-# models/orden_compra.py
+# /soap_rest/models/orden_compra.py
 
+from dataclasses import dataclass
+from datetime import datetime
+
+@dataclass
 class OrdenCompra:
-    def __init__(self, id: int, codigo_tienda: str, estado: str, observaciones: str,
-                 orden_despacho: str, fecha_solicitud: str, fecha_recepcion: str, total_cantidad: int = 0):
-        self.id = id
-        self.codigo_tienda = codigo_tienda
-        self.estado = estado
-        self.observaciones = observaciones
-        self.orden_despacho = orden_despacho
-        self.fecha_solicitud = fecha_solicitud
-        self.fecha_recepcion = fecha_recepcion
-        self.total_cantidad = total_cantidad
+    id: int
+    codigo_tienda: str
+    estado: str
+    observaciones: str
+    orden_despacho: str
+    fecha_solicitud: datetime
+    fecha_recepcion: datetime
+    total_cantidad: int  # Agregamos el total_cantidad para que se pueda usar en la respuesta

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Órdenes de Compra</title>
+    <link rel="stylesheet" href="/static/styles.css"> <!-- Incluye el CSS aquí -->
+</head>
+<body>
+    <h1>Órdenes de Compra</h1>
+
+        <!-- Formulario de filtros -->
+    <div class="filter-container">
+        <label for="codigoTienda">Código de Tienda:</label>
+        <input type="text" id="codigoTienda" placeholder="Código Tienda">
+    
+        <label for="estado">Estado:</label>
+        <select id="estado">
+            <option value="">Todos</option>
+            <option value="SOLICITADO">SOLICITADO</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="RECHAZADO">RECHAZADO</option>
+            <!-- Añadir más estados según corresponda -->
+        </select>
+
+        <label for="fechaSolicitudDesde">Fecha de Solicitud Desde:</label>
+        <input type="date" id="fechaSolicitudDesde">
+        
+        <label for="fechaSolicitudHasta">Fecha de Solicitud Hasta:</label>
+        <input type="date" id="fechaSolicitudHasta">
+        
+
+        <button onclick="aplicarFiltros()">Aplicar Filtros</button>
+    </div>
+
+    <table id="ordenesTable">
+        <thead>
+            <tr>
+                <th>Código Tienda</th>
+                <th>Estado</th>
+                <th>Fecha Recepción</th>
+                <th>Fecha Solicitud</th>
+                <th>ID</th>
+                <th>Observaciones</th>
+                <th>Orden Despacho</th>
+                <th>Total Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las órdenes de compra se insertarán aquí -->
+        </tbody>
+    </table>
+    <script>
+        let ordenesCompra = []; // Variable global para almacenar las órdenes de compra originales
+
+async function fetchOrdenesCompra() {
+    try {
+        const response = await fetch('/api/ordenes_compra');
+        if (!response.ok) {
+            throw new Error('Error al obtener las órdenes de compra');
+        }
+        ordenesCompra = await response.json(); // Almacena los datos originales en la variable global
+        displayOrdenesCompra(ordenesCompra); // Muestra todas las órdenes inicialmente
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function displayOrdenesCompra(ordenes) {
+    const tableBody = document.getElementById('ordenesTable').querySelector('tbody');
+    tableBody.innerHTML = ''; // Limpiar el contenido anterior
+
+    ordenes.forEach(orden => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${orden.codigo_tienda || 'N/A'}</td>
+            <td>${orden.estado || 'N/A'}</td>
+            <td>${orden.fecha_recepcion || 'N/A'}</td>
+            <td>${orden.fecha_solicitud || 'N/A'}</td>
+            <td>${orden.id || 'N/A'}</td>
+            <td>${orden.observaciones || 'N/A'}</td>
+            <td>${orden.orden_despacho || 'N/A'}</td>
+            <td>${orden.total_cantidad || 'N/A'}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function aplicarFiltros() {
+    const codigoTienda = document.getElementById('codigoTienda').value.trim().toUpperCase();
+    const estado = document.getElementById('estado').value;
+    const fechaSolicitudDesde = document.getElementById('fechaSolicitudDesde').value;
+    const fechaSolicitudHasta = document.getElementById('fechaSolicitudHasta').value;
+
+    // Filtrar las órdenes de compra según los criterios de filtro
+    const ordenesFiltradas = ordenesCompra.filter(orden => {
+        const matchesCodigoTienda = !codigoTienda || orden.codigo_tienda === codigoTienda;
+        const matchesEstado = !estado || orden.estado === estado;
+        
+        // Validar si la fecha de solicitud está dentro del rango (si se especifica)
+        const fechaSolicitud = orden.fecha_solicitud ? new Date(orden.fecha_solicitud) : null;
+        const matchesFechaSolicitud = (!fechaSolicitudDesde || (fechaSolicitud && fechaSolicitud >= new Date(fechaSolicitudDesde))) &&
+                                      (!fechaSolicitudHasta || (fechaSolicitud && fechaSolicitud <= new Date(fechaSolicitudHasta)));
+        
+        return matchesCodigoTienda && matchesEstado && matchesFechaSolicitud;
+    });
+
+    displayOrdenesCompra(ordenesFiltradas); // Muestra las órdenes filtradas en la tabla
+}
+
+// Llamar a la función para obtener y mostrar las órdenes de compra al cargar la página
+document.addEventListener('DOMContentLoaded', fetchOrdenesCompra);
+
+    </script>
+</body>
+</html>
