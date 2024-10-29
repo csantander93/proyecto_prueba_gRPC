@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:tns="http://example.com/miServicio"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             targetNamespace="http://example.com/miServicio">
+
+    <message name="ObtenerOrdenCompraRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+
+    <message name="ObtenerOrdenCompraResponse">
+        <part name="orden" type="tns:OrdenCompra"/>
+    </message>
+
+    <complexType name="OrdenCompra">
+        <sequence>
+            <element name="id" type="xsd:int"/>
+            <element name="codigo_tienda" type="xsd:string"/>
+            <element name="estado" type="xsd:string"/>
+            <element name="observaciones" type="xsd:string"/>
+            <element name="orden_despacho" type="xsd:string"/>
+            <element name="fecha_solicitud" type="xsd:dateTime"/>
+            <element name="fecha_recepcion" type="xsd:dateTime"/>
+        </sequence>
+    </complexType>
+
+    <portType name="OrdenCompraPortType">
+        <operation name="ObtenerOrdenCompra">
+            <input message="tns:ObtenerOrdenCompraRequest"/>
+            <output message="tns:ObtenerOrdenCompraResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="OrdenCompraBinding" type="tns:OrdenCompraPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="ObtenerOrdenCompra">
+            <soap:operation soapAction="http://example.com/miServicio/ObtenerOrdenCompra"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="OrdenCompraService">
+        <port name="OrdenCompraPort" binding="tns:OrdenCompraBinding">
+            <soap:address location="http://localhost:5000/orden_compra"/>
+        </port>
+    </service>
+</definitions>

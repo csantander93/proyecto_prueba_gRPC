@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "@grpc/grpc-js": "^1.11.3",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "kafka-node": "^5.0.0",
+    "kafkajs": "^2.2.4"
   },
   "name": "client",
   "version": "1.0.0",

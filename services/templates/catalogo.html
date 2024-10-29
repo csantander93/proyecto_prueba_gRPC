@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Catálogos</title>
+    <style>
+        /* Estilos básicos para organizar la vista */
+        body { font-family: Arial, sans-serif; }
+        .catalogo { border: 1px solid #ccc; padding: 10px; margin: 10px; }
+        .catalogo h3 { margin: 0; }
+    </style>
+</head>
+<body>
+
+    <h1>Administración de Catálogos</h1>
+
+    <!-- Formulario para crear un nuevo catálogo -->
+    <form id="formCrearCatalogo">
+        <label for="titulo">Título del Catálogo:</label>
+        <input type="text" id="titulo" name="titulo" required>
+        <label for="id_tienda">ID de Tienda:</label>
+        <input type="number" id="id_tienda" name="id_tienda" required>
+        <button type="submit">Crear Catálogo</button>
+    </form>
+
+    <!-- Sección para mostrar los catálogos existentes -->
+    <h2>Catálogos Existentes</h2>
+    <div id="catalogosContainer"></div>
+
+    <script>
+        const catalogosContainer = document.getElementById('catalogosContainer');
+        const formCrearCatalogo = document.getElementById('formCrearCatalogo');
+
+        // Función para obtener todos los catálogos
+        function obtenerCatalogos() {
+            fetch('/catalogos', { method: 'GET' })
+                .then(response => response.json())
+                .then(catalogos => {
+                    catalogosContainer.innerHTML = '';
+                    catalogos.forEach(catalogo => {
+                        catalogosContainer.innerHTML += `
+                            <div class="catalogo">
+                                <h3>${catalogo.titulo}</h3>
+                                <p>ID Tienda: ${catalogo.id_tienda}</p>
+                                <button onclick="eliminarCatalogo(${catalogo.id})">Eliminar</button>
+                                <button onclick="mostrarFormularioEditar(${catalogo.id}, '${catalogo.titulo}')">Editar</button>
+                            </div>
+                        `;
+                    });
+                });
+        }
+
+        // Función para crear un catálogo
+        formCrearCatalogo.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const titulo = document.getElementById('titulo').value;
+            const id_tienda = document.getElementById('id_tienda').value;
+
+            fetch('/catalogos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ titulo, id_tienda })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                obtenerCatalogos();
+            });
+        });
+
+        // Función para eliminar un catálogo
+        function eliminarCatalogo(id) {
+            fetch(`/catalogos/${id}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    obtenerCatalogos();
+                });
+        }
+
+        // Función para mostrar formulario de edición
+        function mostrarFormularioEditar(id, titulo) {
+            const nuevoTitulo = prompt("Nuevo título del catálogo:", titulo);
+            if (nuevoTitulo) {
+                actualizarCatalogo(id, nuevoTitulo);
+            }
+        }
+
+        // Función para actualizar un catálogo
+        function actualizarCatalogo(id, titulo) {
+            fetch(`/catalogos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ titulo })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                obtenerCatalogos();
+            });
+        }
+
+        // Inicializar la lista de catálogos al cargar la página
+        obtenerCatalogos();
+    </script>
+
+</body>
+</html>

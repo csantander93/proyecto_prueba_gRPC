@@ -1,5 +1,6 @@
 from .database import db
 
+
 class Tienda(db.Model):
     __tablename__ = 'tienda'
     id_tienda = db.Column(db.Integer, primary_key=True)
@@ -10,6 +11,9 @@ class Tienda(db.Model):
     provincia = db.Column(db.String(45))
     habilitada = db.Column(db.Boolean)  # TINYINT en MySQL
     casa_central = db.Column(db.Boolean)  # TINYINT en MySQL
+
+    orden_de_compra = db.relationship("OrdenCompraModel", back_populates="codigo_tienda", lazy=True)
+
     
     def __repr__(self):
         return f'<Tienda {self.codigo}, Nombre: {self.nombre}, Habilitada: {self.habilitada}>'

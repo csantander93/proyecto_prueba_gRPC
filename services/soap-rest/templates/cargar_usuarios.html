@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carga Masiva de Usuarios</title>
+    <link rel="stylesheet" href="/static/styles_user.css">
+</head>
+<body>
+    <h2>Carga Masiva de Usuarios</h2>
+    <form id="uploadForm" action="/cargar_usuarios" method="POST" enctype="multipart/form-data">
+        <label for="csvFile">Seleccione el archivo CSV:</label>
+        <input type="file" id="csvFile" name="csvFile" accept=".csv" required>
+        <button type="submit">Cargar Usuarios</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("uploadForm").onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch("/cargar_usuarios", {
+                method: "POST",
+                body: formData
+            });
+            const result = await response.json();
+            
+            document.getElementById("result").innerHTML = result.mensaje + "<br>" +
+                (result.errores.length ? "Errores:<br>" + result.errores.join("<br>") : "Sin errores");
+        };
+    </script>
+</body>
+</html>

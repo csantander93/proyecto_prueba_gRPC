@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Stock</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+ <!-- Menú de navegación con redirecciones -->
+ <nav style="text-align: center; margin-bottom: 20px;">
+    <a href="index.html" style="margin-right: 15px;">Stockearte</a>
+    <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
+<<<<<<< HEAD:client/frontend/index.html
+    <a href="usuarios.html" style="margin-right: 15px;">Usuarios</a>
+    <a href="productos.html">Productos</a>
+=======
+    <a href="usuario.html" style="margin-right: 15px;">Usuarios</a>
+    <a href="producto.html">Productos</a>
+>>>>>>> master:frontend/index.html
+    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+</nav>
+     <!-- Vista para crear tienda -->
+    <div class="lista-tiendas-container">
+        <h2>Listado de tienda</h2>
+        <a href="crearTienda.html"><button onclick="crearTienda()">Nueva Tienda</button></a>
+        <ul id="lista-tiendas"></ul>
+    </div>
+
+    <!-- Vista para crear tienda -->
+    <!-- <div>
+        <h2>Crear Tienda</h2>
+        <input id="tiendaCodigo" placeholder="Código de Tienda">
+        <input id="tiendaDireccion" placeholder="Dirección">
+        <input id="tiendaCiudad" placeholder="Ciudad">
+        <input id="tiendaProvincia" placeholder="Provincia">
+        <button onclick="crearTienda()">Crear Tienda</button>
+    </div>
+
+    <!-- Vista para modificar tienda -->
+    <!--<div>
+        <h2>Modificar Tienda</h2>
+        <input id="modificarTiendaCodigo" placeholder="Código de Tienda">
+        <input id="modificarTiendaDireccion" placeholder="Nueva Dirección">
+        <input id="modificarTiendaCiudad" placeholder="Nueva Ciudad">
+        <input id="modificarTiendaProvincia" placeholder="Nueva Provincia">
+        <button onclick="modificarTienda()">Modificar Tienda</button>
+    </div>
+
+    <!-- Vista para habilitar/deshabilitar tienda -->
+    <!-- <div>
+        <h2>Alternar Tienda</h2>
+        <input id="alternarTiendaCodigo" placeholder="Código de Tienda">
+        <button onclick="alternarTienda()">Habilitar/Inhabilitar Tienda</button>
+    </div> -->
+
+
+    <!-- Vista para crear producto -->
+    <!-- <div>
+        <h2>Crear Producto</h2>
+        <input id="productoNombre" placeholder="Nombre del Producto">
+        <input id="productoCodigo" placeholder="Código">
+        <input id="productoTalle" placeholder="Talle">
+        <input id="productoColor" placeholder="Color">
+        <input id="productoStock" placeholder="Stock">
+        <button onclick="crearProducto()">Crear Producto</button>
+    </div>
+
+    <!-- Vista para modificar producto -->
+    <!-- <div>
+        <h2>Modificar Producto</h2>
+        <input id="modificarProductoCodigo" placeholder="Código del Producto">
+        <input id="modificarProductoNombre" placeholder="Nuevo Nombre">
+        <input id="modificarProductoTalle" placeholder="Nuevo Talle">
+        <input id="modificarProductoColor" placeholder="Nuevo Color">
+        <input id="modificarProductoStock" placeholder="Nuevo Stock">
+        <button onclick="modificarProducto()">Modificar Producto</button>
+    </div> -->
+
+    <!-- Vista para eliminar producto -->
+    <!-- <div>
+        <h2>Eliminar Producto</h2>
+        <input id="eliminarProductoCodigo" placeholder="Código del Producto">
+        <button onclick="eliminarProducto()">Eliminar Producto</button>
+    </div> -->
+
+    <!-- Vista para buscar productos -->
+    <!-- <div>
+        <h2>Buscar Productos</h2>
+        <input id="busquedaProducto" placeholder="Nombre del Producto">
+        <button onclick="buscarProductos()">Buscar</button>
+    </div>
+
+    <div id="resultados"></div>  -->
+
+    <script>
+        // Función para crear tienda
+        async function crearTienda() {
+            const tienda = {
+                codigo: document.getElementById('tiendaCodigo').value,
+                direccion: document.getElementById('tiendaDireccion').value,
+                ciudad: document.getElementById('tiendaCiudad').value,
+                provincia: document.getElementById('tiendaProvincia').value
+            };
+
+            try {
+                const response = await fetch('/crear-tienda', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tienda)
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Tienda creada con éxito');
+            } catch (error) {
+                console.error('Error creando tienda:', error);
+            }
+        }
+
+        // Función para modificar tienda
+        async function modificarTienda() {
+            const tienda = {
+                codigo: document.getElementById('modificarTiendaCodigo').value,
+                direccion: document.getElementById('modificarTiendaDireccion').value,
+                ciudad: document.getElementById('modificarTiendaCiudad').value,
+                provincia: document.getElementById('modificarTiendaProvincia').value
+            };
+
+            try {
+                const response = await fetch('/modificar-tienda', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(tienda)
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Tienda modificada con éxito');
+            } catch (error) {
+                console.error('Error modificando tienda:', error);
+            }
+        }
+
+        // Función para alternar tienda
+        async function alternarTienda() {
+            const codigo = document.getElementById('alternarTiendaCodigo').value;
+
+            try {
+                const response = await fetch(`/alternar-tienda?codigo=${codigo}`, {
+                    method: 'PATCH'
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Tienda alternada con éxito');
+            } catch (error) {
+                console.error('Error alternando tienda:', error);
+            }
+        }
+
+        // Función para crear usuario
+        async function crearUsuario() {
+            const usuario = {
+                nombreUsuario: document.getElementById('usuarioNombre').value,
+                contrasena: document.getElementById('usuarioContrasena').value,
+                nombreReal: document.getElementById('usuarioNombreReal').value,
+                apellido: document.getElementById('usuarioApellido').value,
+                tienda: document.getElementById('tiendaUsuario').value
+            };
+
+            try {
+                const response = await fetch('/crear-usuario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(usuario)
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Usuario creado con éxito');
+            } catch (error) {
+                console.error('Error creando usuario:', error);
+            }
+        }
+
+        // Función para iniciar sesión
+        async function loginUsuario() {
+            const usuario = {
+                nombreUsuario: document.getElementById('loginNombre').value,
+                contrasena: document.getElementById('loginContrasena').value
+            };
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(usuario)
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Login exitoso');
+            } catch (error) {
+                console.error('Error en el login:', error);
+            }
+        }
+
+        // Función para crear producto
+        async function crearProducto() {
+            const producto = {
+                nombre: document.getElementById('productoNombre').value,
+                codigo: document.getElementById('productoCodigo').value,
+                talle: document.getElementById('productoTalle').value,
+                color: document.getElementById('productoColor').value,
+                stock: document.getElementById('productoStock').value
+            };
+
+            try {
+                const response = await fetch('/crear-producto', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(producto)
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Producto creado con éxito');
+            } catch (error) {
+                console.error('Error creando producto:', error);
+            }
+        }
+
+        // Función para modificar producto
+        async function modificarProducto() {
+            const producto = {
+                codigo: document.getElementById('modificarProductoCodigo').value,
+                nombre: document.getElementById('modificarProductoNombre').value,
+                talle: document.getElementById('modificarProductoTalle').value,
+                color: document.getElementById('modificarProductoColor').value,
+                stock: document.getElementById('modificarProductoStock').value
+            };
+
+            try {
+                const response = await fetch('/modificar-producto', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(producto)
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Producto modificado con éxito');
+            } catch (error) {
+                console.error('Error modificando producto:', error);
+            }
+        }
+
+        // Función para eliminar producto
+        async function eliminarProducto() {
+            const codigo = document.getElementById('eliminarProductoCodigo').value;
+
+            try {
+                const response = await fetch(`/eliminar-producto?codigo=${codigo}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                alert(result.mensaje || 'Producto eliminado con éxito');
+            } catch (error) {
+                console.error('Error eliminando producto:', error);
+            }
+        }
+// Función para enlistar tiendas
+async function enlistarTiendas() {
+            try {
+                const response = await fetch('/index'); // Ajusta la ruta según tu API
+                const tiendas = await response.json();
+
+                const listaTiendas = document.getElementById('lista-tiendas');
+                listaTiendas.innerHTML = ''; // Limpiar la lista antes de agregar nuevas tiendas
+
+                // Iterar sobre las tiendas y agregarlas al contenedor
+                tiendas.forEach(tienda => {
+                    const li = document.createElement('li'); // Crear un elemento <li> para cada tienda
+                    li.textContent = `${tienda.codigo} - ${tienda.direccion} - ${tienda.ciudad} - ${tienda.provincia}`; // Personaliza cómo mostrar los datos
+                    listaTiendas.appendChild(li); // Agregar el <li> al <ul>
+                });
+            } catch (error) {
+                console.error('Error enlistando tiendas:', error);
+            }
+        }
+
+        // Llamar a enlistarTiendas cuando cargue la página
+        window.onload = enlistarTiendas;
+        // Función para buscar productos
+        async function buscarProductos() {
+            const nombre = document.getElementById('busquedaProducto').value;
+
+            try {
+                const response = await fetch(`/buscar-productos?nombre=${nombre}`);
+                const productos = await response.json();
+
+                const resultadosDiv = document.getElementById('resultados');
+                resultadosDiv.innerHTML = '<h2>Resultados de búsqueda</h2>';
+                productos.forEach(producto => {
+                    resultadosDiv.innerHTML += `<p>${producto.nombre} - ${producto.codigo} - ${producto.stock}</p>`;
+                });
+            } catch (error) {
+                console.error('Error buscando productos:', error);
+            }
+        }
+        // Función para cerrar sesión 
+        function cerrarSesion() {
+            alert('Cerrando sesión...');
+            // aca hay que redireccionar el cierre de sesion falta hacerlo
+            // window.location.href = 'ruta_de_cierre_de_sesion';
+        }
+    </script>
+</body>
+</html>

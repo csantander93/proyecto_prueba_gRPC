@@ -10,4 +10,6 @@ from .order import EstadoOrden
 from .proveedor import ArticuloProveedor
 from .proveedor import OrdenDespacho
 from .novedad import NovedadProducto
-__all__ = ['Cadena', 'Tienda', 'Producto', 'Usuario', 'OrdenDeCompra','Item','EstadoOrden', 'ArticuloProveedor','OrdenDespacho', 'NovedadProducto','db']  # Esto permite que se importen las clases
+from .catalogo import CatalogoProducto
+from .catalogo_producto import catalogo_producto_rel
+__all__ = ['Cadena', 'Tienda', 'Producto', 'Usuario', 'OrdenDeCompra','Item','EstadoOrden', 'ArticuloProveedor','OrdenDespacho', 'NovedadProducto','catalogo_producto_rel','CatalogoProducto','db']  # Esto permite que se importen las clases
