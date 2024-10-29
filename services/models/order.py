@@ -11,7 +11,9 @@ class EstadoOrden(Enum):
 class OrdenDeCompra(db.Model):
     _tablename_ = 'orden_de_compra'
     id = db.Column(db.Integer, primary_key=True)
-    codigo_tienda = db.Column(db.String(10), nullable=False)
+    # codigo_tienda = db.Column(db.String(10), nullable=False)
+    codigo_tienda = db.Column(db.Integer, db.ForeignKey('tienda.id'))
+
     estado = db.Column(db.String(20), default=EstadoOrden.SOLICITADA.value)
     observaciones = db.Column(db.String(255))
     orden_despacho = db.Column(db.String(255))

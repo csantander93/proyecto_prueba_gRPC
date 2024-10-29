@@ -15,7 +15,8 @@ class Producto(db.Model):
     # Relación con Tienda
     id_tienda = db.Column(db.Integer, db.ForeignKey('tienda.id_tienda'), nullable=False)  # Clave foránea a tienda
     tienda = db.relationship('Tienda', backref=db.backref('productos', lazy=True))  # Relación con Tienda
-    
+    catalogos = db.relationship('CatalogoProducto', secondary='catalogo_producto_rel', lazy='subquery',
+                                backref=db.backref('productos', lazy=True))
 
     def __repr__(self):
         return f'<Producto {self.id}, Nombre: {self.nombre}>'
