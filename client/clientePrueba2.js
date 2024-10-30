@@ -3,7 +3,6 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const express = require('express');
 const app = express();
-const port = 3000;
 
 // Ruta hacia el archivo .proto de la tienda
 const STORE_PROTO_PATH = path.join(__dirname, 'proto', 'tienda.proto');
@@ -11,10 +10,6 @@ const STORE_PROTO_PATH = path.join(__dirname, 'proto', 'tienda.proto');
 const USER_PROTO_PATH = path.join(__dirname, 'proto', 'usuario.proto');
 // Ruta hacia el archivo .proto de producto
 const PRODUCTO_PROTO_PATH = path.join(__dirname, 'proto', 'producto.proto');
-
-// MIDDLEWARE PARA INTERACTUAR CON FRONT
-// Middleware para parsear el cuerpo de las solicitudes como JSON
-app.use(express.json());
 
 // Cargar el tienda .proto
 const packageDefinition = protoLoader.loadSync(STORE_PROTO_PATH, {
@@ -58,45 +53,82 @@ const productoClient = new productoProto.ProductoService('localhost:50051', grpc
 
 console.log('Iniciando el cliente...');
 
+// Middleware para parsear JSON y servir archivos estáticos
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
-// Ruta para crear una tienda
-app.post('/crearTienda', (req, res) => {
-  const nuevaTienda = req.body;
+//Funciones gRPC
 
-  // IMPORTANTE: Validar los datos de la tienda antes de enviarlos al servidor gRPC
-  if (!nuevaTienda.codigo || !nuevaTienda.nombre || !nuevaTienda.direccion || !nuevaTienda.ciudad || !nuevaTienda.provincia || typeof nuevaTienda.habilitada !== 'boolean' || typeof nuevaTienda.casa_central !== 'boolean') {
-    return res.status(400).send('Datos de tienda inválidos');
-  }
+function crearTienda(tienda, callback) {
+  client.CrearTienda(tienda, callback);
+}
 
-  tiendaClient.CrearTienda(nuevaTienda, (error, response) => {
-    if (error) {
-      console.error('Error creando tienda:', error.message);
-      res.status(500).send('Error creando tienda');
+function modificarTienda(tienda, callback) {
+  client.ModificarTienda(tienda, callback);
+}
+
+// Crear un usuario
+function crearUsuario(usuario, callback) {
+  client.CrearUsuario(usuario, callback);
+}
+
+// Autenticar un usuario
+function autenticarUsuario(usuario, callback) {
+  client.AutenticarUsuario(usuario, callback);
+}
+
+// Crear producto
+function crearProducto(tienda, callback) {
+  client.CrearProducto(tienda, callback);
+}
+
+// Ruta principal para servir el archivo login.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '.', 'frontend', 'login.html'));
+});
+
+// Ruta para servir el archivo index.html después de iniciar sesión
+app.get('/index', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+});
+
+// Ruta para iniciar sesión
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  autenticarUsuario({ nombre_usuario: username, contrasena: password }, (err, response) => {
+    if (err) {
+      console.error("Error iniciando sesión:", err.details);
+      res.status(500).send(err.details);
+      return;
+    }
+    if (response.exito) {
+      res.redirect('/index'); // Redirige al index si el login es exitoso
     } else {
-      res.status(201).json(response.tienda);
+      res.status(401).send({ mensaje: response.mensaje }); // Muestra el mensaje de error si falló
     }
   });
 });
-// Función para probar CrearTienda
-function crearTienda() {
-  const nuevaTienda = {
-    codigo: 'T123',
-    nombre: 'Mi Tienda',
-    direccion: '123 Calle Falsa',
-    ciudad: 'Ciudad Falsa',
-    provincia: 'Provincia Falsa',
-    habilitada: true,
-    casa_central: false,
-  };
 
-  tiendaClient.CrearTienda(nuevaTienda, (error, response) => {
-    if (error) {
-      console.error('Error creando tienda:', error);
-    } else {
-      console.log('Tienda creada con éxito:', response.tienda);
+// Ruta para crear una tienda
+app.post('/crearTienda', (req, res) => {
+  const tienda = req.body;
+  console.log('Datos recibidos del formulario:', tienda);
+
+  // Validar los datos de la tienda antes de enviarlos al servidor gRPC
+  if (!tienda.codigo || !tienda.nombre || !tienda.direccion || !tienda.ciudad || !tienda.provincia || typeof tienda.habilitada !== 'boolean' || typeof tienda.casa_central !== 'boolean') {
+    return res.status(400).send('Datos de tienda inválidos');
+  }
+
+  tiendaClient.CrearTienda(tienda, (err, response) => {
+    if (err) {
+      console.error("Error creando tienda:", err.details);
+      res.status(500).json({ mensaje: err.details });
+      return;
     }
+    console.log('Respuesta del servidor gRPC:', response);
+    res.status(201).json(response.tienda);
   });
-}
+});
 
 // Ruta para modificar una tienda
 app.put('/modificarTienda/:id', (req, res) => {
@@ -104,49 +136,23 @@ app.put('/modificarTienda/:id', (req, res) => {
   const tiendaModificada = req.body;
   tiendaModificada.id_tienda = idTienda;
 
-  // IMPORTANTE: Validar los datos de la tienda antes de enviarlos al servidor gRPC
+  console.log('Datos recibidos del formulario para modificar:', tiendaModificada);
+
+  // Validar los datos de la tienda antes de enviarlos al servidor gRPC
   if (!tiendaModificada.codigo || !tiendaModificada.nombre || !tiendaModificada.direccion || !tiendaModificada.ciudad || !tiendaModificada.provincia || typeof tiendaModificada.habilitada !== 'boolean' || typeof tiendaModificada.casa_central !== 'boolean') {
     return res.status(400).send('Datos de tienda inválidos');
   }
 
-  tiendaClient.ModificarTienda(tiendaModificada, (error, response) => {
-    if (error) {
-      console.error('Error modificando tienda:', error.message);
-
-      // Manejar errores específicos de gRPC
-      if (error.code === grpc.status.NOT_FOUND) {
-        return res.status(404).send('Tienda no encontrada');
-      } else if (error.code === grpc.status.INVALID_ARGUMENT) {
-        return res.status(400).send('Argumento inválido');
-      } else {
-        return res.status(500).send('Error modificando tienda');
-      }
-    } else {
-      res.status(200).json(response.tienda);
+  tiendaClient.ModificarTienda(tiendaModificada, (err, response) => {
+    if (err) {
+      console.error("Error modificando tienda:", err.details);
+      res.status(500).json({ mensaje: err.details });
+      return;
     }
+    console.log('Respuesta del servidor gRPC:', response);
+    res.status(200).json(response.tienda);
   });
 });
-// Función para probar ModificarTienda
-function modificarTienda(idTienda) {
-  const tiendaModificada = {
-    id_tienda: idTienda,
-    codigo: 'T111',
-    nombre: 'Tienda super duper Modificada',
-    direccion: '456 Calle Falsa falsa',
-    ciudad: 'Ciudad Falsa falsa',
-    provincia: 'Provincia Falsa falsa',
-    habilitada: true,
-    casa_central: true,
-  };
-
-  tiendaClient.ModificarTienda(tiendaModificada, (error, response) => {
-    if (error) {
-      console.error('Error modificando tienda:', error);
-    } else {
-      console.log('Tienda modificada con éxito:', response.tienda);
-    }
-  });
-}
 
 // Ruta para borrar una tienda
 app.delete('/borrarTienda/:id', (req, res) => {
@@ -169,16 +175,7 @@ app.delete('/borrarTienda/:id', (req, res) => {
     }
   });
 });
-// Función para probar BorrarTienda
-function borrarTienda(idTienda) {
-  tiendaClient.BorrarTienda({ id_tienda: idTienda }, (error, response) => {
-    if (error) {
-      console.error('Error borrando tienda:', error);
-    } else {
-      console.log('Tienda borrada con éxito:', response.tienda);
-    }
-  });
-}
+
 
 // Ruta para buscar una tienda
 app.get('/buscarTienda/:id', (req, res) => {
@@ -201,18 +198,18 @@ app.get('/buscarTienda/:id', (req, res) => {
     }
   });
 });
-// Función para probar BuscarTienda
-function buscarTienda(idTienda) {
-  tiendaClient.BuscarTienda({ id_tienda: idTienda }, (error, response) => {
-    if (error) {
-      console.error('Error buscando tienda:', error);
-    } else if (response.tienda) {
-      console.log('Tienda encontrada:', response.tienda);
-    } else {
-      console.log('Tienda no encontrada');
+
+// Ruta para obtener la lista de usuarios
+app.get('/obtenerUsuarios', (req, res) => {
+  userClient.ObtenerUsuarios({}, (err, response) => {
+    if (err) {
+      console.error("Error obteniendo usuarios:", err.details);
+      res.status(500).json({ mensaje: err.details });
+      return;
     }
+    res.status(200).json(response.usuarios);
   });
-}
+});
 
 // Ruta para enlistar tiendas
 app.get('/enlistarTiendas', (req, res) => {
@@ -496,42 +493,24 @@ function autenticarUsuario() {
 
 // Ruta para crear un producto
 app.post('/crearProducto', (req, res) => {
-  const nuevoProducto = req.body;
+  const producto = req.body;
+  console.log('Datos recibidos del formulario:', producto);
 
   // Validar los datos del producto antes de enviarlos al servidor gRPC
-  if (!nuevoProducto.codigo || !nuevoProducto.nombre || !nuevoProducto.descripcion || !nuevoProducto.precio || !nuevoProducto.stock) {
+  if (!producto.codigo || !producto.nombre || !producto.talle || typeof producto.color || typeof producto.stock !== 'number') {
     return res.status(400).send('Datos de producto inválidos');
   }
 
-  productoClient.CrearProducto(nuevoProducto, (error, response) => {
-    if (error) {
-      console.error('Error creando producto:', error.message);
-      res.status(500).send('Error creando producto');
-    } else {
-      res.status(201).json(response.producto);
+  productoClient.CrearProducto(producto, (err, response) => {
+    if (err) {
+      console.error("Error creando producto:", err.details);
+      res.status(500).json({ mensaje: err.details });
+      return;
     }
+    console.log('Respuesta del servidor gRPC:', response);
+    res.status(201).json(response.producto);
   });
 });
-// Función para probar CrearProducto
-function crearProducto() {
-  const nuevoProducto = {
-    codigo: 'P321',
-    nombre: 'prodej',  // Agregado: nombre del producto
-    talle: 'S',
-    foto: 'url_a_la_foto',
-    color: 'verde',
-    stock: 300,
-    id_tienda: 'ID_de_la_tienda'  // Agregado: ID de la tienda
-  };
-
-  productoClient.CrearProducto(nuevoProducto, (error, response) => {
-    if (error) {
-      console.error('Error creando producto:', error);
-    } else {
-      console.log('Producto creado con éxito:', response.producto);
-    }
-  });
-}
 
 // Ruta para modificar un producto
 app.put('/modificarProducto/:id', (req, res) => {
@@ -540,7 +519,7 @@ app.put('/modificarProducto/:id', (req, res) => {
   productoModificado.id_producto = idProducto;
 
   // Validar los datos del producto antes de enviarlos al servidor gRPC
-  if (!productoModificado.codigo || !productoModificado.nombre || !productoModificado.descripcion || !productoModificado.precio || !productoModificado.stock) {
+  if (!productoModificado.codigo || !productoModificado.nombre || !productoModificado.talle || !productoModificado.color || !productoModificado.stock) {
     return res.status(400).send('Datos de producto inválidos');
   }
 
@@ -561,27 +540,6 @@ app.put('/modificarProducto/:id', (req, res) => {
     }
   });
 });
-// Función para probar ModificarProducto
-function modificarProducto(idProducto) {
-  const productoModificado = {
-    id_producto: idProducto,
-    codigo: 'P111',
-    nombre: 'Nuevo Nombre', // Agregado: nombre del producto
-    talle: 'L',
-    foto: 'nueva_url_a_la_foto',
-    color: 'azul',
-    stock: 100,
-    id_tienda: 3 // Agregado: ID de la tienda
-  };
-
-  productoClient.ModificarProducto(productoModificado, (error, response) => {
-    if (error) {
-      console.error('Error modificando producto:', error);
-    } else {
-      console.log('Producto modificado con éxito:', response.producto);
-    }
-  });
-}
 
 // Ruta para borrar un producto
 app.delete('/borrarProducto/:id', (req, res) => {
@@ -679,9 +637,12 @@ function enlistarProductos() {
   });
 }
 
-app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
+// Iniciar el servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Cliente escuchando en http://localhost:${PORT}`);
 });
+
 
 // Llamadas de prueba Tienda
 // crearTienda(); //probado ok
