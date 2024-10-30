@@ -8,24 +8,85 @@
 </head>
 <body>
 
- <!-- Menú de navegación con redirecciones -->
- <nav style="text-align: center; margin-bottom: 20px;">
+<!-- Menú de navegación con redirecciones -->
+<nav style="text-align: center; margin-bottom: 20px;">
     <a href="index.html" style="margin-right: 15px;">Stockearte</a>
     <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
     <a href="usuario.html" style="margin-right: 15px;">Usuarios</a>
     <a href="producto.html">Productos</a>
-    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <a href="http://127.0.0.1:5000/cargar_usuarios" style="margin-right: 15px;">Carga masiva</a>
+    <a href="http://127.0.0.1:5000/ordenes_compra" style="margin-right: 15px;">Ordenes de compras</a>
 </nav>
-    <!-- Vista para crear producto -->
-    <div class="form-container">
-        <h2>Crear Producto</h2>
-        <input id="productoNombre" placeholder="Nombre del Producto">
-        <input id="productoCodigo" placeholder="Código">
-        <input id="productoTalle" placeholder="Talle">
-        <input id="productoColor" placeholder="Color">
-        <input id="productoStock" placeholder="Stock">
-        <button onclick="crearProducto()">Crear Producto</button>
-    </div>
+
+<h1>Crear Nuevo Producto</h1>
+<form id="crearProductoForm">
+    <label for="codigo">Código:</label>
+    <input type="text" id="codigo" name="codigo" required><br>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required><br>
+    <label for="talle">Talle:</label>
+    <input type="text" id="talle" name="talle" required><br>
+    <label for="color">Color:</label>
+    <input type="text" id="color" name="color" required><br>
+    <label for="stock">Stock:</label>
+    <input type="number" id="stock" name="stock" required><br>
+    <label for="id_tienda">ID de Tienda:</label>
+    <input type="number" id="id_tienda" name="id_tienda" required><br>
+    <button type="submit">Crear Producto</button>
+</form>
+<script>
+    async function verificarTienda(id_tienda) {
+        try {
+            const response = await fetch(`/buscarTienda/${id_tienda}`);
+            if (!response.ok) {
+                throw new Error('Tienda no encontrada');
+            }
+            const tienda = await response.json();
+            return tienda;
+        } catch (error) {
+            console.error('Error verificando tienda:', error);
+            return null;
+        }
+    }
+
+    document.getElementById('crearProductoForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const id_tienda = parseInt(document.getElementById('id_tienda').value);
+        const tienda = await verificarTienda(id_tienda);
+        if (!tienda) {
+            alert('Tienda no encontrada');
+            return;
+        }
+
+        const producto = {
+            codigo: document.getElementById('codigo').value,
+            nombre: document.getElementById('nombre').value,
+            talle: document.getElementById('talle').value,
+            color: document.getElementById('color').value,
+            stock: parseInt(document.getElementById('stock').value),
+            id_tienda: id_tienda
+        };
+
+        try {
+            const response = await fetch('/crearProducto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(producto)
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText);
+            }
+            const result = await response.json();
+            alert(result.mensaje || 'Producto creado con éxito');
+        } catch (error) {
+            console.error('Error creando producto:', error);
+            alert('Error creando producto: ' + error.message);
+        }
+    });
+</script>
 
     <!-- Vista para modificar producto -->
     <div class="form-container">

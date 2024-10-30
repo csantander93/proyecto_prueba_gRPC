@@ -8,17 +8,20 @@
 </head>
 <body>
 
- <!-- Menú de navegación con redirecciones -->
- <nav style="text-align: center; margin-bottom: 20px;">
+<!-- Menú de navegación con redirecciones -->
+<nav style="text-align: center; margin-bottom: 20px;">
     <a href="index.html" style="margin-right: 15px;">Stockearte</a>
     <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
-    <a href="usuarios.html" style="margin-right: 15px;">Usuarios</a>
-    <a href="productos.html">Productos</a>
-    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <a href="usuario.html" style="margin-right: 15px;">Usuarios</a>
+    <a href="producto.html">Productos</a>
+    <a href="http://127.0.0.1:5000/cargar_usuarios" style="margin-right: 15px;">Carga masiva</a>
+    <a href="http://127.0.0.1:5000/ordenes_compra" style="margin-right: 15px;">Ordenes de compras</a>
 </nav>
+
      <!-- Vista para crear tienda -->
     <div class="lista-tiendas-container">
-        <h2>Listado de tienda</h2>
+        <h2>Agregar una tienda</h2>
+        
         <a href="crearTienda.html"><button onclick="crearTienda()">Nueva Tienda</button></a>
         <ul id="lista-tiendas"></ul>
     </div>

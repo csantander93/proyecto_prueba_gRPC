@@ -82,6 +82,10 @@ function crearProducto(tienda, callback) {
   client.CrearProducto(tienda, callback);
 }
 
+function borrarTienda(tienda, callback) {
+  client.BorrarTienda(tienda, callback);
+}
+
 // Ruta principal para servir el archivo login.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '.', 'frontend', 'login.html'));
@@ -154,48 +158,38 @@ app.put('/modificarTienda/:id', (req, res) => {
   });
 });
 
-// Ruta para borrar una tienda
-app.delete('/borrarTienda/:id', (req, res) => {
-  const idTienda = req.params.id;
 
-  tiendaClient.BorrarTienda({ id_tienda: idTienda }, (error, response) => {
-    if (error) {
-      console.error('Error borrando tienda:', error.message);
-
-      // Manejar errores específicos de gRPC
-      if (error.code === grpc.status.NOT_FOUND) {
-        return res.status(404).send('Tienda no encontrada');
-      } else if (error.code === grpc.status.INVALID_ARGUMENT) {
-        return res.status(400).send('Argumento inválido');
-      } else {
-        return res.status(500).send('Error borrando tienda');
-      }
-    } else {
-      res.status(200).send('Tienda borrada con éxito');
+// Ruta para buscar una tienda por ID
+app.get('/buscarTienda/:id_tienda', (req, res) => {
+  const id_tienda = parseInt(req.params.id_tienda);
+  tiendaClient.BuscarTienda({ id_tienda: id_tienda }, (err, response) => {
+    if (err || !response.tienda) {
+      console.error("Error buscando tienda:", err ? err.details : 'Tienda no encontrada');
+      return res.status(404).json({ mensaje: 'Tienda no encontrada' });
     }
+    res.status(200).json(response.tienda);
   });
 });
 
-
-// Ruta para buscar una tienda
-app.get('/buscarTienda/:id', (req, res) => {
-  const idTienda = req.params.id;
-
-  tiendaClient.BuscarTienda({ id_tienda: idTienda }, (error, response) => {
-    if (error) {
-      console.error('Error buscando tienda:', error.message);
-
-      // Manejar errores específicos de gRPC
-      if (error.code === grpc.status.NOT_FOUND) {
-        return res.status(404).send('Tienda no encontrada');
-      } else if (error.code === grpc.status.INVALID_ARGUMENT) {
-        return res.status(400).send('Argumento inválido');
-      } else {
-        return res.status(500).send('Error buscando tienda');
-      }
-    } else {
-      res.status(200).json(response.tienda);
+// Ruta para borrar una tienda
+app.delete('/borrarTienda/:id_tienda', (req, res) => {
+  const id_tienda = parseInt(req.params.id_tienda);
+  
+  // Verificar que el id_tienda existe en la tabla tienda
+  tiendaClient.BuscarTienda({ id_tienda: id_tienda }, (err, response) => {
+    if (err || !response.tienda) {
+      console.error("Error buscando tienda:", err ? err.details : 'Tienda no encontrada');
+      return res.status(404).json({ mensaje: 'Tienda no encontrada' });
     }
+
+    // Borrar la tienda si existe
+    tiendaClient.BorrarTienda({ id_tienda: id_tienda }, (err, response) => {
+      if (err) {
+        console.error("Tienda borrada con éxito");
+      }
+      console.log('Respuesta del servidor gRPC:', response);
+      res.status(200).json({ mensaje: 'Tienda borrada con éxito' });
+    });
   });
 });
 
@@ -497,18 +491,27 @@ app.post('/crearProducto', (req, res) => {
   console.log('Datos recibidos del formulario:', producto);
 
   // Validar los datos del producto antes de enviarlos al servidor gRPC
-  if (!producto.codigo || !producto.nombre || !producto.talle || typeof producto.color || typeof producto.stock !== 'number') {
-    return res.status(400).send('Datos de producto inválidos');
+  if (!producto.codigo || !producto.nombre || !producto.talle || !producto.color || typeof producto.stock !== 'number' || typeof producto.id_tienda !== 'number') {
+    return res.status(400).json({ mensaje: 'Datos de producto inválidos' });
   }
 
-  productoClient.CrearProducto(producto, (err, response) => {
-    if (err) {
-      console.error("Error creando producto:", err.details);
-      res.status(500).json({ mensaje: err.details });
-      return;
+  // Verificar que el id_tienda existe en la tabla tienda
+  tiendaClient.BuscarTienda({ id_tienda: producto.id_tienda }, (err, response) => {
+    if (err || !response.tienda) {
+      console.error("Error buscando tienda:", err ? err.details : 'Tienda no encontrada');
+      return res.status(400).json({ mensaje: 'Tienda no encontrada' });
     }
-    console.log('Respuesta del servidor gRPC:', response);
-    res.status(201).json(response.producto);
+
+    // Crear el producto si la tienda existe
+    productoClient.CrearProducto(producto, (err, response) => {
+      if (err) {
+        console.error("Error creando producto:", err.details);
+        res.status(500).json({ mensaje: err.details });
+        return;
+      }
+      console.log('Respuesta del servidor gRPC:', response);
+      res.status(201).json(response.producto);
+    });
   });
 });
 

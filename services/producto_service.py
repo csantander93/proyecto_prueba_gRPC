@@ -12,12 +12,11 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                 # Crear un nuevo producto en la base de datos
                 nuevo_producto = ProductoModel(
                     codigo=request.codigo,
-                    nombre=request.nombre,  # Agregado: nombre del producto
+                    nombre=request.nombre,
                     talle=request.talle,
-                    foto=request.foto,
                     color=request.color,
                     stock=request.stock,
-                    id_tienda=request.id_tienda  # Agregado: ID de la tienda
+                    id_tienda=request.id_tienda  # Añadir el campo id_tienda
                 )
                 db.session.add(nuevo_producto)
                 db.session.commit()
@@ -25,14 +24,14 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                 return ProductoResponse(producto=Producto(
                     id_producto=nuevo_producto.id_producto,
                     codigo=nuevo_producto.codigo,
-                    nombre=nuevo_producto.nombre,  # Agregado: nombre del producto
+                    nombre=nuevo_producto.nombre,
                     talle=nuevo_producto.talle,
-                    foto=nuevo_producto.foto,
                     color=nuevo_producto.color,
                     stock=nuevo_producto.stock,
-                    id_tienda=nuevo_producto.id_tienda  # Agregado: ID de la tienda
+                    id_tienda=nuevo_producto.id_tienda  # Añadir el campo id_tienda
                 ))
         except Exception as e:
+            print(f"Error al crear producto: {e}")
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details("Error al crear producto")
             return ProductoResponse()
@@ -47,7 +46,6 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                     producto.codigo = request.codigo
                     producto.nombre = request.nombre  # Agregado: nombre del producto
                     producto.talle = request.talle
-                    producto.foto = request.foto
                     producto.color = request.color
                     producto.stock = request.stock
                     producto.id_tienda = request.id_tienda  # Agregado: ID de la tienda
@@ -58,7 +56,6 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                         codigo=producto.codigo,
                         nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
-                        foto=producto.foto,
                         color=producto.color,
                         stock=producto.stock,
                         id_tienda=producto.id_tienda  # Agregado: ID de la tienda
@@ -86,7 +83,6 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                         codigo=producto.codigo,
                         nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
-                        foto=producto.foto,
                         color=producto.color,
                         stock=producto.stock,
                         id_tienda=producto.id_tienda  # Agregado: ID de la tienda
@@ -111,7 +107,6 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                         codigo=producto.codigo,
                         nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
-                        foto=producto.foto,
                         color=producto.color,
                         stock=producto.stock,
                         id_tienda=producto.id_tienda  # Agregado: ID de la tienda
@@ -137,7 +132,6 @@ class ProductoService(producto_pb2_grpc.ProductoServiceServicer):
                         codigo=producto.codigo,
                         nombre=producto.nombre,  # Agregado: nombre del producto
                         talle=producto.talle,
-                        foto=producto.foto,
                         color=producto.color,
                         stock=producto.stock,
                         id_tienda=producto.id_tienda  # Agregado: ID de la tienda

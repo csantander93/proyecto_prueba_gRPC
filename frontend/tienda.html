@@ -8,31 +8,157 @@
 </head>
 <body>
 
- <!-- Menú de navegación con redirecciones -->
- <nav style="text-align: center; margin-bottom: 20px;">
+<!-- Menú de navegación con redirecciones -->
+<nav style="text-align: center; margin-bottom: 20px;">
     <a href="index.html" style="margin-right: 15px;">Stockearte</a>
     <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
     <a href="usuario.html" style="margin-right: 15px;">Usuarios</a>
     <a href="producto.html">Productos</a>
-    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <a href="http://127.0.0.1:5000/cargar_usuarios" style="margin-right: 15px;">Carga masiva</a>
+    <a href="http://127.0.0.1:5000/ordenes_compra" style="margin-right: 15px;">Ordenes de compras</a>
 </nav>
-    <!-- Vista para modificar tienda -->
-    <div class="form-container">
-        <h2>Modificar Tienda</h2>
-        <input id="modificarTiendaCodigo" placeholder="Código de Tienda">
-        <input id="modificarTiendaDireccion" placeholder="Nueva Dirección">
-        <input id="modificarTiendaCiudad" placeholder="Nueva Ciudad">
-        <input id="modificarTiendaProvincia" placeholder="Nueva Provincia">
-        <button onclick="modificarTienda()">Modificar Tienda</button>
-    </div>
 
-    <!-- Vista para habilitar/deshabilitar tienda -->
-    <div class="form-container">
-        <h2>Alternar Tienda</h2>
-        <input id="alternarTiendaCodigo" placeholder="Código de Tienda">
-        <button onclick="alternarTienda()">Habilitar/Inhabilitar Tienda</button>
-    </div> 
+<!-- Vista para modificar tienda -->
+<div class="form-container">
+    <h2>Modificar Tienda</h2>
+    <form id="modificarTiendaForm">
+        <label for="idTienda">ID de Tienda:</label>
+        <input type="text" id="idTienda" name="idTienda" required><br>
+        <label for="codigo">Código:</label>
+        <input type="text" id="codigo" name="codigo" required><br>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br>
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" required><br>
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad" required><br>
+        <label for="provincia">Provincia:</label>
+        <input type="text" id="provincia" name="provincia" required><br>
+        <label for="habilitada">Habilitada:</label>
+        <input type="checkbox" id="habilitada" name="habilitada"><br>
+        <label for="casa_central">Casa Central:</label>
+        <input type="checkbox" id="casa_central" name="casa_central"><br>
+        <button type="submit">Modificar Tienda</button>
+    </form>
+</div>
 
-    <div id="resultados"></div> 
+<script>
+    document.getElementById('modificarTiendaForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const idTienda = document.getElementById('idTienda').value;
+        const tiendaModificada = {
+            codigo: document.getElementById('codigo').value,
+            nombre: document.getElementById('nombre').value,
+            direccion: document.getElementById('direccion').value,
+            ciudad: document.getElementById('ciudad').value,
+            provincia: document.getElementById('provincia').value,
+            habilitada: document.getElementById('habilitada').checked,
+            casa_central: document.getElementById('casa_central').checked
+        };
+        try {
+            const response = await fetch(`/modificarTienda/${idTienda}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tiendaModificada)
+            });
+            const result = await response.json();
+            alert(result.mensaje || 'Tienda modificada con éxito');
+        } catch (error) {
+            console.error('Error modificando tienda:', error);
+        }
+    });
+</script>
+<!-- Vista para buscar tienda -->
+<div class="form-container">
+    <h2>Buscar Tienda</h2>
+    <form id="buscarTiendaForm">
+        <label for="buscarIdTienda">ID de Tienda:</label>
+        <input type="text" id="buscarIdTienda" name="buscarIdTienda" required><br>
+        <button type="submit">Buscar Tienda</button>
+    </form>
+    <div id="resultadoBusqueda"></div>
+</div>
+
+<!-- Vista para borrar tienda -->
+<div class="form-container">
+    <h2>Borrar Tienda</h2>
+    <form id="borrarTiendaForm">
+        <label for="borrarIdTienda">ID de Tienda:</label>
+        <input type="text" id="borrarIdTienda" name="borrarIdTienda" required><br>
+        <button type="submit">Borrar Tienda</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('modificarTiendaForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const idTienda = document.getElementById('idTienda').value;
+        const tiendaModificada = {
+            codigo: document.getElementById('codigo').value,
+            nombre: document.getElementById('nombre').value,
+            direccion: document.getElementById('direccion').value,
+            ciudad: document.getElementById('ciudad').value,
+            provincia: document.getElementById('provincia').value,
+            habilitada: document.getElementById('habilitada').checked,
+            casa_central: document.getElementById('casa_central').checked
+        };
+        try {
+            const response = await fetch(`/modificarTienda/${idTienda}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(tiendaModificada)
+            });
+            const result = await response.json();
+            alert(result.mensaje || 'Tienda modificada con éxito');
+        } catch (error) {
+            console.error('Error modificando tienda:', error);
+        }
+    });
+
+    document.getElementById('buscarTiendaForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const idTienda = document.getElementById('buscarIdTienda').value;
+        try {
+            const response = await fetch(`/buscarTienda/${idTienda}`);
+            if (!response.ok) {
+                throw new Error('Tienda no encontrada');
+                }
+            const tienda = await response.json();
+            const resultadoBusqueda = document.getElementById('resultadoBusqueda');
+            resultadoBusqueda.innerHTML = `
+                <p><strong>Código:</strong> ${tienda.codigo}</p>
+                <p><strong>Nombre:</strong> ${tienda.nombre}</p>
+                <p><strong>Dirección:</strong> ${tienda.direccion}</p>
+                <p><strong>Ciudad:</strong> ${tienda.ciudad}</p>
+                <p><strong>Provincia:</strong> ${tienda.provincia}</p>
+                <p><strong>Habilitada:</strong> ${tienda.habilitada ? 'Sí' : 'No'}</p>
+                <p><strong>Casa Central:</strong> ${tienda.casa_central ? 'Sí' : 'No'}</p>
+            `;
+        } catch (error) {
+            console.error('Error buscando tienda:', error);
+            alert('Error buscando tienda: ' + error.message);
+        }
+    });
+
+    document.getElementById('borrarTiendaForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const idTienda = document.getElementById('borrarIdTienda').value;
+        try {
+            const response = await fetch(`/borrarTienda/${idTienda}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+            alert(result.mensaje || 'Tienda borrada con éxito');
+        } catch (error) {
+            console.error('Tienda borrada con éxito');
+            alert('Tienda borrada con éxito');
+        }
+    });
+</script>
+
 </body>
 </html>

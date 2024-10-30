@@ -55,9 +55,10 @@ class TiendaService(tienda_pb2_grpc.TiendaServiceServicer):
                     tienda.casa_central = request.casa_central
                     db.session.commit()
 
-                    print("Tienda modificada con exito")
+                    print(f"Tienda modificada con éxito: {tienda.id_tienda}")
 
                     return TiendaResponse(tienda=Tienda(
+                        id_tienda=tienda.id_tienda,
                         codigo=tienda.codigo,
                         nombre=tienda.nombre,
                         direccion=tienda.direccion,
@@ -65,12 +66,13 @@ class TiendaService(tienda_pb2_grpc.TiendaServiceServicer):
                         provincia=tienda.provincia,
                         habilitada=tienda.habilitada,
                         casa_central=tienda.casa_central
-                    ))
+                        ))
                 else:
                     context.set_code(grpc.StatusCode.NOT_FOUND)
                     context.set_details("Tienda no encontrada")
                     return TiendaResponse()
         except Exception as e:
+            print(f"Error al modificar tienda: {e}")
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details("Error al modificar tienda")
             return TiendaResponse()
@@ -175,3 +177,21 @@ class TiendaService(tienda_pb2_grpc.TiendaServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Error al enlistar tiendas: {str(e)}")  # Include the error details
             return TiendasResponse()
+        
+    def BorrarTienda(self, request, context):
+        try:
+            with app.app_context():
+                tienda = TiendaModel.query.get(request.id_tienda)
+                if tienda:
+                    db.session.delete(tienda)
+                    db.session.commit()
+                    return TiendaResponse(mensaje="Tienda borrada con éxito")
+                else:
+                    context.set_code(grpc.StatusCode.NOT_FOUND)
+                    context.set_details("Tienda no encontrada")
+                    return TiendaResponse()
+        except Exception as e:
+            print(f"Error al borrar tienda: {e}")
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details("Error al borrar tienda")
+            return TiendaResponse() 

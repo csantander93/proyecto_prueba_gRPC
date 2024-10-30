@@ -4,45 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Nueva Tienda</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Menú de navegación con redirecciones -->
+ <nav style="text-align: center; margin-bottom: 20px;">
+    <a href="index.html" style="margin-right: 15px;">Stockearte</a>
+    <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
+    <a href="usuario.html" style="margin-right: 15px;">Usuarios</a>
+    <a href="producto.html">Productos</a>
+    <a href="http://127.0.0.1:5000/cargar_usuarios" style="margin-right: 15px;">Carga masiva</a>
+    <a href="http://127.0.0.1:5000/ordenes_compra" style="margin-right: 15px;">Ordenes de compras</a>
+</nav>
     <h1>Crear Nueva Tienda</h1>
+    <form id="crearTiendaForm">
         <label for="codigo">Código:</label>
-        <input type="text" id="tiendaCodigo" name="codigo" required><br>
+        <input type="text" id="codigo" name="codigo" required><br>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br>
         <label for="direccion">Dirección:</label>
-        <input type="text" id="tiendaDireccion" name="direccion" required><br>
+        <input type="text" id="direccion" name="direccion" required><br>
         <label for="ciudad">Ciudad:</label>
-        <input type="text" id="tiendaCiudad" name="ciudad" required><br>
+        <input type="text" id="ciudad" name="ciudad" required><br>
         <label for="provincia">Provincia:</label>
-        <input type="text" id="tiendaProvincia" name="provincia" required><br>
-        <button onclick="crearTienda()">Confirmar Tienda</button>
+        <input type="text" id="provincia" name="provincia" required><br>
+        <label for="habilitada">Habilitada:</label>
+        <input type="checkbox" id="habilitada" name="habilitada"><br>
+        <label for="casa_central">Casa Central:</label>
+        <input type="checkbox" id="casa_central" name="casa_central"><br>
+        <button type="submit">Crear Tienda</button>
     </form>
-</body>
-<script>
-    // Función para crear tienda
-    async function crearTienda() {
+    <script>
+        document.getElementById('crearTiendaForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
             const tienda = {
-                codigo: document.getElementById('tiendaCodigo').value,
-                direccion: document.getElementById('tiendaDireccion').value,
-                ciudad: document.getElementById('tiendaCiudad').value,
-                provincia: document.getElementById('tiendaProvincia').value
+                codigo: document.getElementById('codigo').value,
+                nombre: document.getElementById('nombre').value,
+                direccion: document.getElementById('direccion').value,
+                ciudad: document.getElementById('ciudad').value,
+                provincia: document.getElementById('provincia').value,
+                habilitada: document.getElementById('habilitada').checked,
+                casa_central: document.getElementById('casa_central').checked
             };
-
             try {
-                const response = await fetch('/crear-tienda', {
+                const response = await fetch('/crearTienda', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(tienda)
                 });
-
                 const result = await response.json();
                 alert(result.mensaje || 'Tienda creada con éxito');
             } catch (error) {
                 console.error('Error creando tienda:', error);
             }
-        }
-
-</script>
+        });
+    </script>
+</body>
 </html>
