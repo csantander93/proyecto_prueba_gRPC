@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Nueva Tienda</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Crear Nueva Tienda</h1>
+    <!-- Menú de navegación con redirecciones -->
+ <nav style="text-align: center; margin-bottom: 20px;">
+    <a href="index.html" style="margin-right: 15px;">Stockearte</a>
+    <a href="tienda.html" style="margin-right: 15px;">Tienda</a>
+    <a href="usuario.html" style="margin-right: 15px;">Usuarios</a>
+    <a href="producto.html">Productos</a>
+    <button id="cerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+</nav>
+    <div class="form-container">
+        <h1>Crear Nueva Tienda</h1>
         <label for="codigo">Código:</label>
         <input type="text" id="tiendaCodigo" name="codigo" required><br>
         <label for="direccion">Dirección:</label>
@@ -16,7 +26,7 @@
         <label for="provincia">Provincia:</label>
         <input type="text" id="tiendaProvincia" name="provincia" required><br>
         <button onclick="crearTienda()">Confirmar Tienda</button>
-    </form>
+    </div>
 </body>
 <script>
     // Función para crear tienda

@@ -28,6 +28,7 @@ button {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s; /* Efecto de transición */
+    border-radius: 20px;
 }
 
 button:hover {
